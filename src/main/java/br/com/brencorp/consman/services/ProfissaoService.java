@@ -34,6 +34,18 @@ public class ProfissaoService {
 		Profissao profissao = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new ProfissaoDTO(profissao);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ProfissaoDTO> findByNome(String nome) {
+		List<Profissao> profissoes = repository.findByNomeContainingIgnoreCase(nome);
+		return profissoes.stream().map(ProfissaoDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<ProfissaoDTO> findByArea(String area) {
+		List<Profissao> profissoes = repository.findByAreaContainingIgnoreCase(area);
+		return profissoes.stream().map(ProfissaoDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public ProfissaoDTO insert(ProfissaoDTO profissaoDTO) {

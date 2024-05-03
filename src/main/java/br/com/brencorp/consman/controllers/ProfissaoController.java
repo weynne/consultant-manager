@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,10 +38,26 @@ public class ProfissaoController {
 		return ResponseEntity.ok(profissaoDTO);
 	}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<ProfissaoDTO>> search(@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "area", required = false) String area) {
+		if (nome != null) {
+			List<ProfissaoDTO> list = service.findByNome(nome);
+			return ResponseEntity.ok(list);
+		} else if (area != null) {
+			List<ProfissaoDTO> list = service.findByArea(area);
+			return ResponseEntity.ok(list);
+		} else {
+			List<ProfissaoDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
+	}
+
 	@PostMapping
 	public ResponseEntity<ProfissaoDTO> insert(@RequestBody ProfissaoDTO profissaoDTO) {
 		profissaoDTO = service.insert(profissaoDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId())
+				.toUri();
 		return ResponseEntity.created(uri).body(profissaoDTO);
 	}
 

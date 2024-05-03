@@ -63,7 +63,7 @@ public class ConsultorService {
 			Cat cats = modelMapper.map(cat, Cat.class);
 			consultor.getCat().add(cats);
 		}
-		
+
 		return new ConsultorDTO(repository.save(consultor));
 	}
 
@@ -86,7 +86,8 @@ public class ConsultorService {
 		consultor.setEmail(consultorDTO.getEmail());
 		consultor.setNascimento(consultorDTO.getNascimento());
 		consultor.setCidade(consultorDTO.getCidade());
-		}
+		
+	}
 
 	@Transactional
 	public void delete(Long id) {
