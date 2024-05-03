@@ -1,0 +1,38 @@
+package br.com.brencorp.consman.dto;
+
+import br.com.brencorp.consman.entities.Cat;
+
+public class CatDTO {
+
+	private Long id;
+	private String descricao;
+
+	public CatDTO() {
+	}
+
+	public CatDTO(Long id, String descricao) {
+		this.id = id;
+		this.descricao = descricao;
+	}
+
+	public CatDTO(Cat cat) {
+		id = cat.getId();
+		descricao = cat.getDescricao();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}	
+}
