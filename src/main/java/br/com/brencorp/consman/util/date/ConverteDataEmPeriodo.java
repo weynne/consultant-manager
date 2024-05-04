@@ -9,13 +9,14 @@ public class ConverteDataEmPeriodo {
 	private ConverteDataEmPeriodo() {
 	}
 	
-	public static Integer idadeAtual(String nascimento) {
+	public static Integer periodoTempoData(String data) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		Period periodo = Period.between(LocalDate.parse(nascimento, formatter), LocalDate.now());
+		Period periodo = Period.between(LocalDate.parse(data, formatter), LocalDate.now());
 		return periodo.getYears();
 	}
 	
-	public static Integer tempoFormacao(Integer anoConclusao) {
-		return LocalDate.now().getYear() - anoConclusao;
+	public static Integer periodoTempoAno(String anoConclusao) {
+		Integer conclusao = Integer.parseInt(anoConclusao);
+		return LocalDate.now().getYear() - conclusao;
 	}
 }

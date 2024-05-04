@@ -27,8 +27,8 @@ public class FormacaoAcademica implements Serializable {
 	private String nome;
 	private String instituicao;
 	private String tipo;
-	private Integer anoConclusao;
-	
+	private String anoConclusao;
+
 	@Transient
 	private Integer tempoFormacao;
 
@@ -39,7 +39,7 @@ public class FormacaoAcademica implements Serializable {
 	public FormacaoAcademica() {
 	}
 
-	public FormacaoAcademica(Long id, String nome, String instituicao, String tipo, Integer anoConclusao) {
+	public FormacaoAcademica(Long id, String nome, String instituicao, String tipo, String anoConclusao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -80,16 +80,16 @@ public class FormacaoAcademica implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public Integer getAnoConclusao() {
+	public String getAnoConclusao() {
 		return anoConclusao;
 	}
 
-	public void setAnoConclusao(Integer anoConclusao) {
+	public void setAnoConclusao(String anoConclusao) {
 		this.anoConclusao = anoConclusao;
 	}
-	
+
 	public Integer getTempoFormacao() {
-		return ConverteDataEmPeriodo.tempoFormacao(this.anoConclusao);
+		return ConverteDataEmPeriodo.periodoTempoAno(this.anoConclusao);
 	}
 
 	public List<Consultor> getConsultores() {

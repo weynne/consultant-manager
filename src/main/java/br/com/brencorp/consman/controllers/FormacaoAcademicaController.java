@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,19 +38,45 @@ public class FormacaoAcademicaController {
 		return ResponseEntity.ok(formacaoDTO);
 	}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<FormacaoAcademicaDTO>> search(
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "instituicao", required = false) String instituicao,
+			@RequestParam(value = "tipo", required = false) String tipo,
+			@RequestParam(value = "conclusao", required = false) String conclusao) {
+		if (nome != null) {
+			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
+			return ResponseEntity.ok(list);
+		} else if (instituicao != null) {
+			List<FormacaoAcademicaDTO> list = service.findByInstituicao(instituicao);
+			return ResponseEntity.ok(list);
+		} else if (tipo != null) {
+			List<FormacaoAcademicaDTO> list = service.findByTipo(tipo);
+			return ResponseEntity.ok(list);
+		} else if (conclusao != null) {
+			List<FormacaoAcademicaDTO> list = service.findByAnoConclusao(conclusao);
+			return ResponseEntity.ok(list);
+		} else {
+			List<FormacaoAcademicaDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
+	}
+
 	@PostMapping
 	public ResponseEntity<FormacaoAcademicaDTO> insert(@RequestBody FormacaoAcademicaDTO formacaoDTO) {
 		formacaoDTO = service.insert(formacaoDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(formacaoDTO.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(formacaoDTO.getId())
+				.toUri();
 		return ResponseEntity.created(uri).body(formacaoDTO);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<FormacaoAcademicaDTO> update(@PathVariable Long id, @RequestBody FormacaoAcademicaDTO formacaoDTO) {
+	public ResponseEntity<FormacaoAcademicaDTO> update(@PathVariable Long id,
+			@RequestBody FormacaoAcademicaDTO formacaoDTO) {
 		formacaoDTO = service.update(id, formacaoDTO);
 		return ResponseEntity.ok().body(formacaoDTO);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);

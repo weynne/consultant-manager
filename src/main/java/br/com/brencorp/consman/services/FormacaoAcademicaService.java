@@ -34,6 +34,30 @@ public class FormacaoAcademicaService {
 		FormacaoAcademica formacao = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new FormacaoAcademicaDTO(formacao);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<FormacaoAcademicaDTO> findByNome(String nome) {
+		List<FormacaoAcademica> formacoes = repository.findByNomeContainingIgnoreCase(nome);
+		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<FormacaoAcademicaDTO> findByInstituicao(String instituicao) {
+		List<FormacaoAcademica> formacoes = repository.findByInstituicaoContainingIgnoreCase(instituicao);
+		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<FormacaoAcademicaDTO> findByTipo(String tipo) {
+		List<FormacaoAcademica> formacoes = repository.findByTipoContainingIgnoreCase(tipo);
+		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<FormacaoAcademicaDTO> findByAnoConclusao(String anoConclusao) {
+		List<FormacaoAcademica> formacoes = repository.findByAnoConclusaoContainingIgnoreCase(anoConclusao);
+		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public FormacaoAcademicaDTO insert(FormacaoAcademicaDTO formacaoDTO) {

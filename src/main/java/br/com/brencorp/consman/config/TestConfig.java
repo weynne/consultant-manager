@@ -51,11 +51,11 @@ public class TestConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 				
-		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
-		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2023);
-		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", 2010);
-		FormacaoAcademica f4 = new FormacaoAcademica(null, "Administração", "CESAR School", "Tecnólogo", 2025);
-		FormacaoAcademica f5 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
+		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", "2018");
+		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", "2023");
+		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", "2010");
+		FormacaoAcademica f4 = new FormacaoAcademica(null, "Administração", "CESAR School", "Tecnólogo", "2025");
+		FormacaoAcademica f5 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", "2018");
 		
 		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
 		

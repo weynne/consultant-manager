@@ -129,7 +129,7 @@ public class Consultor implements Serializable {
 	}
 	
 	public Integer getIdade() {
-		return ConverteDataEmPeriodo.idadeAtual(this.nascimento);
+		return ConverteDataEmPeriodo.periodoTempoData(this.nascimento);
 	}
 
 	public Cidade getCidade() {
