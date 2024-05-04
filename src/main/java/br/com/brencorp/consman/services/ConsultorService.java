@@ -24,6 +24,8 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class ConsultorService {
 
+	ModelMapper modelMapper = new ModelMapper();
+
 	@Autowired
 	private ConsultorRepository repository;
 
@@ -41,7 +43,6 @@ public class ConsultorService {
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
-		ModelMapper modelMapper = new ModelMapper();
 		Consultor consultor = modelMapper.map(consultorDTO, Consultor.class);
 
 		for (FormacaoAcademica formacao : consultorDTO.getFormacoes()) {
@@ -86,7 +87,26 @@ public class ConsultorService {
 		consultor.setEmail(consultorDTO.getEmail());
 		consultor.setNascimento(consultorDTO.getNascimento());
 		consultor.setCidade(consultorDTO.getCidade());
+
+		for (int i = 0; i < consultorDTO.getFormacoes().size(); i++) {
+			FormacaoAcademica formacoes = modelMapper.map(consultorDTO.getFormacoes().get(i), FormacaoAcademica.class);
+			consultor.getFormacao().set(i, formacoes);
+		}
 		
+		for (int i = 0; i < consultorDTO.getProfissoes().size(); i++) {
+			Profissao profissoes = modelMapper.map(consultorDTO.getProfissoes().get(i), Profissao.class);
+			consultor.getProfissao().set(i, profissoes);
+		}
+		
+		for (int i = 0; i < consultorDTO.getProjetos().size(); i++) {
+			Projeto projetos = modelMapper.map(consultorDTO.getProjetos().get(i), Projeto.class);
+			consultor.getProjeto().set(i, projetos);
+		}
+		
+		for (int i = 0; i < consultorDTO.getCat().size(); i++) {
+			Cat cats = modelMapper.map(consultorDTO.getCat().get(i), Cat.class);
+			consultor.getCat().set(i, cats);
+		}
 	}
 
 	@Transactional
