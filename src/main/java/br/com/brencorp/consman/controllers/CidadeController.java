@@ -38,11 +38,16 @@ public class CidadeController {
 		return ResponseEntity.ok(cidadeDTO);
 	}
 	
-	 @GetMapping("/search")
-	    public ResponseEntity<List<CidadeDTO>> findByNome(@RequestParam String nome) {
-	        List<CidadeDTO> cidades = service.findByNome(nome);
-	        return ResponseEntity.ok(cidades);
-	    }
+	@GetMapping("/search")
+	public ResponseEntity<List<CidadeDTO>> find(@RequestParam(value = "Cidade", required = false) String nome) {
+		if (nome != null) {
+			List<CidadeDTO> list = service.findByNome(nome);
+			return ResponseEntity.ok(list);
+		} else {
+			List<CidadeDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
+	}
 
 	@PostMapping
 	public ResponseEntity<CidadeDTO> insert(@RequestBody CidadeDTO cidadeDTO) {

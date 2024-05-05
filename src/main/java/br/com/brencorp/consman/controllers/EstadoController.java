@@ -38,11 +38,16 @@ public class EstadoController {
 		return ResponseEntity.ok(estadoDTO);
 	}
 	
-    @GetMapping("/search")
-    public ResponseEntity<List<EstadoDTO>> findByNome(@RequestParam String uf) {
-        List<EstadoDTO> estados = service.findByUf(uf);
-        return ResponseEntity.ok(estados);
-    }
+	@GetMapping("/search")
+	public ResponseEntity<List<EstadoDTO>> find(@RequestParam(value = "Estado", required = false) String uf) {
+		if (uf != null) {
+			List<EstadoDTO> list = service.findByUf(uf);
+			return ResponseEntity.ok(list);
+		} else {
+			List<EstadoDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
+	}
 
 	@PostMapping
 	public ResponseEntity<EstadoDTO> insert(@RequestBody EstadoDTO estadoDTO) {

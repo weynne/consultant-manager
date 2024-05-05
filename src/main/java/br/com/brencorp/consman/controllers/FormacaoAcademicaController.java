@@ -40,10 +40,10 @@ public class FormacaoAcademicaController {
 
 	@GetMapping("/search")
 	public ResponseEntity<List<FormacaoAcademicaDTO>> find(
-			@RequestParam(value = "nome", required = false) String nome,
-			@RequestParam(value = "instituicao", required = false) String instituicao,
-			@RequestParam(value = "tipo", required = false) String tipo,
-			@RequestParam(value = "conclusao", required = false) String anoConclusao) {
+			@RequestParam(value = "Nome", required = false) String nome,
+			@RequestParam(value = "Nome da instituição", required = false) String instituicao,
+			@RequestParam(value = "Tipo da formação", required = false) String tipo,
+			@RequestParam(value = "Ano de conclusão", required = false) String anoConclusao) {
 		if (nome != null) {
 			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);

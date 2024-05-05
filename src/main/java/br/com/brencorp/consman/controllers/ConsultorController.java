@@ -40,9 +40,9 @@ public class ConsultorController {
 
 	@GetMapping("/search")
 	public ResponseEntity<List<ConsultorDTO>> find(
-			@RequestParam(value = "nome", required = false) String nome,
-			@RequestParam(value = "cidade", required = false) String cidade,
-			@RequestParam(value = "estado", required = false) String estado){
+			@RequestParam(value = "Nome", required = false) String nome,
+			@RequestParam(value = "Cidade", required = false) String cidade,
+			@RequestParam(value = "Estado", required = false) String estado){
 		if (nome != null) {
 			List<ConsultorDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);

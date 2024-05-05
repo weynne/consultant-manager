@@ -39,8 +39,9 @@ public class ProfissaoController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<ProfissaoDTO>> search(@RequestParam(value = "nome", required = false) String nome,
-			@RequestParam(value = "area", required = false) String area) {
+	public ResponseEntity<List<ProfissaoDTO>> find(
+			@RequestParam(value = "Profissão", required = false) String nome,
+			@RequestParam(value = "Área de atuação", required = false) String area) {
 		if (nome != null) {
 			List<ProfissaoDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
