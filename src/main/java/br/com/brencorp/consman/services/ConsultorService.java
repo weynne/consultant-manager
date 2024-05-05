@@ -40,6 +40,24 @@ public class ConsultorService {
 		Consultor consultor = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new ConsultorDTO(consultor);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ConsultorDTO> findByNome(String nome) {
+		List<Consultor> consultores = repository.findByNomeContainingIgnoreCase(nome);
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+    public List<ConsultorDTO> findByCidade(String cidade) {
+    	List<Consultor> consultores = repository.findByCidadeContainingIgnoreCase(cidade);
+    	return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+    }
+	
+	@Transactional(readOnly = true)
+    public List<ConsultorDTO> findByEstado(String estado) {
+    	List<Consultor> consultores = repository.findByEstadoContainingIgnoreCase(estado);
+    	return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+    }
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {

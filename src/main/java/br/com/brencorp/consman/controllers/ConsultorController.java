@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,10 +38,31 @@ public class ConsultorController {
 		return ResponseEntity.ok(consultorDTO);
 	}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<ConsultorDTO>> find(
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "cidade", required = false) String cidade,
+			@RequestParam(value = "estado", required = false) String estado){
+		if (nome != null) {
+			List<ConsultorDTO> list = service.findByNome(nome);
+			return ResponseEntity.ok(list);
+		} else if (cidade != null) {
+			List<ConsultorDTO> list = service.findByCidade(cidade);
+			return ResponseEntity.ok(list);
+		} else if (estado != null) {
+			List<ConsultorDTO> list = service.findByEstado(estado);
+			return ResponseEntity.ok(list);
+		}else {
+			List<ConsultorDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
+	}
+	
 	@PostMapping
 	public ResponseEntity<ConsultorDTO> insert(@RequestBody ConsultorDTO consultorDTO) {
 		consultorDTO = service.insert(consultorDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId())
+				.toUri();
 		return ResponseEntity.created(uri).body(consultorDTO);
 	}
 
@@ -49,6 +71,7 @@ public class ConsultorController {
 		consultorDTO = service.update(id, consultorDTO);
 		return ResponseEntity.ok().body(consultorDTO);
 	}
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);

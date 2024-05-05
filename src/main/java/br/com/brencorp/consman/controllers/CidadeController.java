@@ -39,7 +39,7 @@ public class CidadeController {
 	}
 	
 	 @GetMapping("/search")
-	    public ResponseEntity<List<CidadeDTO>> searchByName(@RequestParam String nome) {
+	    public ResponseEntity<List<CidadeDTO>> findByNome(@RequestParam String nome) {
 	        List<CidadeDTO> cidades = service.findByNome(nome);
 	        return ResponseEntity.ok(cidades);
 	    }

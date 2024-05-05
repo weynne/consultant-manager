@@ -93,7 +93,7 @@ public class TestConfig implements CommandLineRunner {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 		
 		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "8188888888", "wjgcl@cesar.school", "24/09/1991", c2);
-		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school", "01/11/1999", c4);
+		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school", "01/11/1999", c3);
 		
 		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
 		

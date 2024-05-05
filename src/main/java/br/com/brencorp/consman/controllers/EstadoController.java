@@ -39,7 +39,7 @@ public class EstadoController {
 	}
 	
     @GetMapping("/search")
-    public ResponseEntity<List<EstadoDTO>> searchByName(@RequestParam String uf) {
+    public ResponseEntity<List<EstadoDTO>> findByNome(@RequestParam String uf) {
         List<EstadoDTO> estados = service.findByUf(uf);
         return ResponseEntity.ok(estados);
     }

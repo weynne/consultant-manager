@@ -39,11 +39,11 @@ public class FormacaoAcademicaController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<FormacaoAcademicaDTO>> search(
+	public ResponseEntity<List<FormacaoAcademicaDTO>> find(
 			@RequestParam(value = "nome", required = false) String nome,
 			@RequestParam(value = "instituicao", required = false) String instituicao,
 			@RequestParam(value = "tipo", required = false) String tipo,
-			@RequestParam(value = "conclusao", required = false) String conclusao) {
+			@RequestParam(value = "conclusao", required = false) String anoConclusao) {
 		if (nome != null) {
 			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -53,8 +53,8 @@ public class FormacaoAcademicaController {
 		} else if (tipo != null) {
 			List<FormacaoAcademicaDTO> list = service.findByTipo(tipo);
 			return ResponseEntity.ok(list);
-		} else if (conclusao != null) {
-			List<FormacaoAcademicaDTO> list = service.findByAnoConclusao(conclusao);
+		} else if (anoConclusao != null) {
+			List<FormacaoAcademicaDTO> list = service.findByAnoConclusao(anoConclusao);
 			return ResponseEntity.ok(list);
 		} else {
 			List<FormacaoAcademicaDTO> list = service.findAll();
