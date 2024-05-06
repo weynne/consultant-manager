@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.EstadoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -43,8 +43,7 @@ public class EstadoService {
 
 	@Transactional
 	public EstadoDTO insert(EstadoDTO estadoDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		Estado estado = modelMapper.map(estadoDTO, Estado.class);
+		Estado estado = EstadoServiceUtil.insert(estadoDTO);
 		return new EstadoDTO(repository.save(estado));
 	}
 
@@ -52,15 +51,11 @@ public class EstadoService {
 	public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
 		try {
 			Estado estado = repository.getReferenceById(id);
-			updateEstado(estado, estadoDTO);
+			EstadoServiceUtil.update(estado, estadoDTO);
 			return new EstadoDTO(repository.save(estado));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateEstado(Estado estado, EstadoDTO estadoDTO) {
-		estado.setUf(estadoDTO.getUf());
 	}
 
 	@Transactional

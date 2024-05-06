@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Estado implements Serializable {
 	private Long id;
 	@NotBlank(message = "Sigla do estado é obrigatório")
 	@Pattern(regexp = "[A-Z]{2}", message = "Formato do estado inválido. Exemplo válido: PE")
+	@Column(unique = true)
 	private String uf;
 	@JsonIgnore
 	@OneToMany(mappedBy = "estado")

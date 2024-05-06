@@ -14,8 +14,7 @@ import br.com.brencorp.consman.entities.Consultor;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
-import br.com.brencorp.consman.services.utils.InsertConsultor;
-import br.com.brencorp.consman.services.utils.UpdateConsultor;
+import br.com.brencorp.consman.services.utils.ConsultorServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -56,7 +55,7 @@ public class ConsultorService {
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
-		Consultor consultor = InsertConsultor.insert(consultorDTO);
+		Consultor consultor = ConsultorServiceUtil.insert(consultorDTO);
 		return new ConsultorDTO(repository.save(consultor));
 	}
 
@@ -64,7 +63,7 @@ public class ConsultorService {
 	public ConsultorDTO update(Long id, ConsultorDTO consultorDTO) {
 		try {
 			Consultor consultor = repository.getReferenceById(id);
-			UpdateConsultor.update(consultor, consultorDTO);
+			ConsultorServiceUtil.update(consultor, consultorDTO);
 			return new ConsultorDTO(repository.save(consultor));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
