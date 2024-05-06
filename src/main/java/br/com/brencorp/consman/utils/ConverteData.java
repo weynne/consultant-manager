@@ -1,4 +1,4 @@
-package br.com.brencorp.consman.util.date;
+package br.com.brencorp.consman.utils;
 
 import java.time.LocalDate;
 import java.time.Period;

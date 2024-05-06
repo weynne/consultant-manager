@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.brencorp.consman.util.date.ConverteData;
+import br.com.brencorp.consman.utils.ConverteData;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
