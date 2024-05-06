@@ -29,4 +29,9 @@ public interface ConsultorRepository extends JpaRepository<Consultor, Long> {
 		       + "WHERE LOWER(fo.nome) LIKE LOWER(CONCAT('%', :formacao, '%'))")
 	List<Consultor> findByFormacaoContainingIgnoreCase(String formacao);
 
+	@Query("SELECT c FROM Consultor c "
+			+ "JOIN FETCH c.formacoes fo "
+			+ "WHERE fo.anoConclusao BETWEEN :anoInicio AND :anoFim")
+	List<Consultor> findByAnoConclusaoBetween(Integer anoInicio, Integer anoFim);
+
 }

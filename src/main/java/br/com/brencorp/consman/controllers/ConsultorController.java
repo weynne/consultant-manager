@@ -44,8 +44,9 @@ public class ConsultorController {
 			@RequestParam(value = "Nome", required = false) String nome,
 			@RequestParam(value = "Cidade", required = false) String cidade,
 			@RequestParam(value = "Estado", required = false) String estado,
-			@RequestParam(value = "Nome do curso", required = false) String formacao)
-	{
+			@RequestParam(value = "Nome do curso", required = false) String formacao,
+			@RequestParam(value = "Formados de", required = false) Integer anoInicio,
+			@RequestParam(value = "Formados até", required = false) Integer anoFim) {
 		if (nome != null) {
 			List<ConsultorDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -57,6 +58,9 @@ public class ConsultorController {
 			return ResponseEntity.ok(list);		
 		} else if (formacao != null) {
 			List<ConsultorDTO> list = service.findByFormacao(formacao);
+			return ResponseEntity.ok(list);
+		} else if (anoInicio != null && anoFim != null) {
+			List<ConsultorDTO> list = service.findByFormadosByPeriodo(anoInicio, anoFim);
 			return ResponseEntity.ok(list);
 		}else {
 			List<ConsultorDTO> list = service.findAll();

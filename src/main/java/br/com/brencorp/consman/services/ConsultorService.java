@@ -58,6 +58,12 @@ public class ConsultorService {
 		List<Consultor> consultores = repository.findByFormacaoContainingIgnoreCase(formacao);
 		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ConsultorDTO> findByFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
+	    List<Consultor> formacoes = repository.findByAnoConclusaoBetween(anoInicio, anoFim);
+	    return formacoes.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
