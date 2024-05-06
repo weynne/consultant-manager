@@ -3,7 +3,7 @@ package br.com.brencorp.consman.dto;
 import br.com.brencorp.consman.entities.FormacaoAcademica;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 
 public class FormacaoAcademicaDTO {
 
@@ -14,8 +14,7 @@ public class FormacaoAcademicaDTO {
 	private String instituicao;
 	@NotBlank(message = "Tipo do curso é obrigatório. Ex: Técnologo, Bacharelado, Mestrado")
 	private String tipo;
-	@NotBlank(message = "Ano de conclusão do curso é obrigatório.")
-	@Pattern(regexp = "[0-9]{4}", message = "Formato do ano inválido. Exemplo válido: 2010")
+	@NotNull(message = "Ano de conclusão do curso é obrigatório.")
 	private Integer anoConclusao;
 	@Transient
 	private Integer tempoFormacao;
