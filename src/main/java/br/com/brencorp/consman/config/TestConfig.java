@@ -53,13 +53,18 @@ public class TestConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
-		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2023);
-		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", 2010);
-		FormacaoAcademica f4 = new FormacaoAcademica(null, "Administração", "CESAR School", "Tecnólogo", 2025);
-		FormacaoAcademica f5 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
+		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2012);
+		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2018);
+		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras - Português", "UNICAP", "Licenciatura", 2010);
+		FormacaoAcademica f4 = new FormacaoAcademica(null, "Gestão de Tecnologia da Informação", "CESAR School", "Tecnólogo", 2019);
+		FormacaoAcademica f5 = new FormacaoAcademica(null, "Ciência da Computação", "UFPE", "Bacharelado", 2012);
+		FormacaoAcademica f6 = new FormacaoAcademica(null, "Contabilidade", "UNIBRA", "Bacharelado", 2013);
+		FormacaoAcademica f7 = new FormacaoAcademica(null, "Educação Física", "UNIFBV", "Licenciatura", 2014);
+		FormacaoAcademica f8 = new FormacaoAcademica(null, "Direito Tributário", "UNINASSAU", "Mestrado", 2015);
+		FormacaoAcademica f9 = new FormacaoAcademica(null, "Direito", "UNIFG", "Bacharelado", 2016);
+		FormacaoAcademica f10 = new FormacaoAcademica(null, "Administração", "UNINABUCO", "Bacharelado", 2017);
 
-		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
+		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10));
 
 		Profissao prof1 = new Profissao(null, "Desenvolvedor", "Backend");
 		Profissao prof2 = new Profissao(null, "Desenvolvedor", "Frontend");

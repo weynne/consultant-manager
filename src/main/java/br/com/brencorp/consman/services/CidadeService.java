@@ -40,6 +40,14 @@ public class CidadeService {
 		List<Cidade> cidades = repository.findByNomeContainingIgnoreCase(nome);
 		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
 	}
+	
+	@Transactional(readOnly = true)
+	public List<CidadeDTO> findByEstado(String estado) {
+		List<Cidade> cidades = repository.findByEstadoContainingIgnoreCase(estado);
+		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
+	}
+	
+
 
 	@Transactional
 	public CidadeDTO insert(CidadeDTO cidadeDTO) {
