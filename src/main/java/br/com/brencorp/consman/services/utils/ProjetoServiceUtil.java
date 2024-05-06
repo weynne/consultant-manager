@@ -15,6 +15,6 @@ public class ProjetoServiceUtil {
 	}
 
 	public static void update(Projeto projeto, ProjetoDTO projetoDTO) {
-		projeto.setDescricaoProjeto(projetoDTO.getDescricao());
+		projeto.setNome(projetoDTO.getNome());
 	}
 }

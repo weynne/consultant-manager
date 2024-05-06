@@ -22,7 +22,7 @@ public class Projeto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String descricao;
+	private String nome;
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "projetos")
@@ -31,10 +31,10 @@ public class Projeto implements Serializable {
 	public Projeto() {
 	}
 
-	public Projeto(Long id, String descricao) {
+	public Projeto(Long id, String nome) {
 		super();
 		this.id = id;
-		this.descricao = descricao;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -45,12 +45,12 @@ public class Projeto implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricaoProjeto(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
 	public List<Consultor> getConsultores() {

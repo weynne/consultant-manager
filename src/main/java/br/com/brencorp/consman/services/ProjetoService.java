@@ -34,6 +34,12 @@ public class ProjetoService {
 		Projeto projeto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new ProjetoDTO(projeto);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ProjetoDTO> findByNome(String nome) {
+		List<Projeto> projetos = repository.findByNomeContainingIgnoreCase(nome);
+		return projetos.stream().map(ProjetoDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public ProjetoDTO insert(ProjetoDTO projetoDTO) {

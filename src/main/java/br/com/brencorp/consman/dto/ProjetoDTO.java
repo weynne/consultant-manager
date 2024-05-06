@@ -5,19 +5,19 @@ import br.com.brencorp.consman.entities.Projeto;
 public class ProjetoDTO {
 
 	private Long id;
-	private String descricao;
+	private String nome;
 	
 	public ProjetoDTO() {
 	}
 
 	public ProjetoDTO(Long id, String descricao) {
 		this.id = id;
-		this.descricao = descricao;
+		this.nome = descricao;
 	}
 	
 	public ProjetoDTO(Projeto projeto) {
 		id = projeto.getId();
-		descricao = projeto.getDescricao();
+		nome = projeto.getNome();
 	}
 
 	public Long getId() {
@@ -28,11 +28,11 @@ public class ProjetoDTO {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 }

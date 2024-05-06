@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,6 +36,17 @@ public class ProjetoController {
 	public ResponseEntity<ProjetoDTO> findById(@PathVariable Long id) {
 		ProjetoDTO projetoDTO = service.findById(id);
 		return ResponseEntity.ok(projetoDTO);
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<ProjetoDTO>> find(@RequestParam(value = "Projeto", required = false) String nome) {
+		if (nome != null) {
+			List<ProjetoDTO> list = service.findByNome(nome);
+			return ResponseEntity.ok(list);
+		} else {
+			List<ProjetoDTO> list = service.findAll();
+			return ResponseEntity.ok().body(list);
+		}
 	}
 
 	@PostMapping
