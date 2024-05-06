@@ -43,7 +43,9 @@ public class ConsultorController {
 	public ResponseEntity<List<ConsultorDTO>> find(
 			@RequestParam(value = "Nome", required = false) String nome,
 			@RequestParam(value = "Cidade", required = false) String cidade,
-			@RequestParam(value = "Estado", required = false) String estado){
+			@RequestParam(value = "Estado", required = false) String estado,
+			@RequestParam(value = "Nome do curso", required = false) String formacao)
+	{
 		if (nome != null) {
 			List<ConsultorDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -52,6 +54,9 @@ public class ConsultorController {
 			return ResponseEntity.ok(list);
 		} else if (estado != null) {
 			List<ConsultorDTO> list = service.findByEstado(estado);
+			return ResponseEntity.ok(list);		
+		} else if (formacao != null) {
+			List<ConsultorDTO> list = service.findByFormacao(formacao);
 			return ResponseEntity.ok(list);
 		}else {
 			List<ConsultorDTO> list = service.findAll();

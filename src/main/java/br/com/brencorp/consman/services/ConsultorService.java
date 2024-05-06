@@ -52,6 +52,12 @@ public class ConsultorService {
 		List<Consultor> consultores = repository.findByEstadoContainingIgnoreCase(estado);
 		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ConsultorDTO> findByFormacao(String formacao) {
+		List<Consultor> consultores = repository.findByFormacaoContainingIgnoreCase(formacao);
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {

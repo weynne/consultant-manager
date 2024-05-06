@@ -23,5 +23,10 @@ public interface ConsultorRepository extends JpaRepository<Consultor, Long> {
             "JOIN FETCH ci.estado es " + 
             "WHERE LOWER(es.uf) LIKE LOWER(CONCAT('%', :estado, '%'))")
 	List<Consultor> findByEstadoContainingIgnoreCase(String estado);
+	
+	@Query("SELECT c FROM Consultor c "
+		       + "JOIN FETCH c.formacoes fo "
+		       + "WHERE LOWER(fo.nome) LIKE LOWER(CONCAT('%', :formacao, '%'))")
+	List<Consultor> findByFormacaoContainingIgnoreCase(String formacao);
 
 }
