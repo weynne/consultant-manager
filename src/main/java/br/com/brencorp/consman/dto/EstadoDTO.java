@@ -1,10 +1,14 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Estado;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class EstadoDTO {
 	
 	private Long id;
+	@NotBlank(message = "Sigla do estado é obrigatório")
+	@Pattern(regexp = "[A-Z]{2}", message = "Formato do estado inválido. Exemplo válido: PE")
 	private String uf;
 
 	public EstadoDTO() {

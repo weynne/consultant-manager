@@ -36,7 +36,7 @@ public class InsertConsultor {
 			Cat cats = modelMapper.map(cat, Cat.class);
 			consultor.getCat().add(cats);
 		}
-		
+
 		return consultor;
 	}
 }

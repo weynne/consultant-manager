@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.brencorp.consman.dto.EstadoDTO;
 import br.com.brencorp.consman.services.EstadoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/estados")
@@ -50,14 +51,14 @@ public class EstadoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<EstadoDTO> insert(@RequestBody EstadoDTO estadoDTO) {
+	public ResponseEntity<EstadoDTO> insert(@RequestBody @Valid EstadoDTO estadoDTO) {
 		estadoDTO = service.insert(estadoDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(estadoDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(estadoDTO);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<EstadoDTO> update(@PathVariable Long id, @RequestBody EstadoDTO estadoDTO) {
+	public ResponseEntity<EstadoDTO> update(@PathVariable Long id, @RequestBody @Valid EstadoDTO estadoDTO) {
 		estadoDTO = service.update(id, estadoDTO);
 		return ResponseEntity.ok().body(estadoDTO);
 	}

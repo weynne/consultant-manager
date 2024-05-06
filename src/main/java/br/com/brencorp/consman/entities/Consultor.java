@@ -32,48 +32,36 @@ public class Consultor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	@Pattern(regexp = "[0-9]{11}", message = "Formato de CPF inválido")
 	private String cpf;
-
 	@Pattern(regexp = "[0-9]{14}", message = "Formato de CNPJ inválido")
 	private String cnpj;
-
 	@NotBlank(message = "Nome do consultor é obrigatório")
 	private String nome;
-
 	@Pattern(regexp = "[0-9]{11}", message = "Formato de telefone inválido")
 	private String telefone;
-	
 	@Email(message = "E-mail inválido")
 	private String email;
-
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
-
 	@Transient
 	private Integer idade;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_formacao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "formacao_id"))
 	private List<FormacaoAcademica> formacoes = new ArrayList<>();
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_profissao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "profissao_id"))
 	private List<Profissao> profissoes = new ArrayList<>();
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_projetos", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
 	private List<Projeto> projetos = new ArrayList<>();
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_cat", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "cat_id"))
 	private List<Cat> cat = new ArrayList<>();
-
+	
 	public Consultor() {
 	}
 

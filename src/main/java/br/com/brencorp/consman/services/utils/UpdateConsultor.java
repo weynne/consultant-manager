@@ -12,9 +12,9 @@ import br.com.brencorp.consman.entities.Projeto;
 public class UpdateConsultor {
 
 	public static void update(Consultor consultor, ConsultorDTO consultorDTO) {
-		
+
 		ModelMapper modelMapper = new ModelMapper();
-		
+
 		consultor.setCpf(consultorDTO.getCpf());
 		consultor.setCnpj(consultorDTO.getCnpj());
 		consultor.setNome(consultorDTO.getNome());

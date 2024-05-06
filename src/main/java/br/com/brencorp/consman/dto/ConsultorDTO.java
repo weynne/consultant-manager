@@ -22,38 +22,25 @@ import jakarta.validation.constraints.Pattern;
 public class ConsultorDTO {
 
 	private Long id;
-	
 	@Pattern(regexp = "[0-9]{11}", message = "Formato de CPF inválido")
 	private String cpf;
-	
 	@Pattern(regexp = "[0-9]{14}", message = "Formato de CNPJ inválido")
 	private String cnpj;
-	
 	@NotBlank(message = "Nome do consultor é obrigatório")
 	private String nome;
-	
 	@Pattern(regexp = "[0-9]{11}", message = "Formato de telefone inválido")
 	private String telefone;
-	
 	@Email(message = "E-mail inválido")
 	private String email;
-	
-	
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
-	
 	private Integer idade;
-	
 	private Cidade cidade;
-
 	private List<FormacaoAcademica> formacoes;
-	
 	private List<Profissao> profissoes;
-	
 	private List<Projeto> projetos;
-	
 	private List<Cat> cat;
 
 	public ConsultorDTO() {
