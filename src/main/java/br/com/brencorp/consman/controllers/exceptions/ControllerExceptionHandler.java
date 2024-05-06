@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,16 +37,24 @@ public class ControllerExceptionHandler {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ValidationError> handleValidationException(MethodArgumentNotValidException ex,
+	public ResponseEntity<ValidationError> validationData(MethodArgumentNotValidException e,
 			HttpServletRequest request) {
 		Map<String, String> messages = new HashMap<>();
-		ex.getBindingResult().getFieldErrors().forEach(error -> {
+		e.getBindingResult().getFieldErrors().forEach(error -> {
 			messages.put(error.getField(), error.getDefaultMessage());
 		});
-		String error = "Bad Request";
+		String error = "Validation error";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		ValidationError err = new ValidationError(Instant.now(), status.value(), error, request.getRequestURI());
 		err.setMessages(messages);
+		return ResponseEntity.status(status).body(err);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<DuplicatedError> dadoDuplicado(DataIntegrityViolationException e, HttpServletRequest request) {
+		String error = "Duplicated data error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		DuplicatedError err = new DuplicatedError(Instant.now(), status.value(), error, request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 }
