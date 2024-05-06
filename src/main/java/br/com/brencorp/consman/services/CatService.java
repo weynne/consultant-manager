@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.CatServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -37,8 +37,7 @@ public class CatService {
 
 	@Transactional
 	public CatDTO insert(CatDTO catDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		Cat cat = modelMapper.map(catDTO, Cat.class);
+		Cat cat = CatServiceUtil.insert(catDTO);
 		return new CatDTO(repository.save(cat));
 	}
 
@@ -46,15 +45,11 @@ public class CatService {
 	public CatDTO update(Long id, CatDTO catDTO) {
 		try {
 			Cat cat = repository.getReferenceById(id);
-			updateCat(cat, catDTO);
+			CatServiceUtil.update(cat, catDTO);
 			return new CatDTO(repository.save(cat));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateCat(Cat cat, CatDTO catDTO) {
-		cat.setDescricao(catDTO.getDescricao());
 	}
 
 	@Transactional

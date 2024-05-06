@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.ProjetoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -37,8 +37,7 @@ public class ProjetoService {
 
 	@Transactional
 	public ProjetoDTO insert(ProjetoDTO projetoDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		Projeto projeto = modelMapper.map(projetoDTO, Projeto.class);
+		Projeto projeto = ProjetoServiceUtil.insert(projetoDTO);
 		return new ProjetoDTO(repository.save(projeto));
 	}
 
@@ -46,15 +45,11 @@ public class ProjetoService {
 	public ProjetoDTO update(Long id, ProjetoDTO projetoDTO) {
 		try {
 			Projeto projeto = repository.getReferenceById(id);
-			updateProjeto(projeto, projetoDTO);
+			ProjetoServiceUtil.update(projeto, projetoDTO);
 			return new ProjetoDTO(repository.save(projeto));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateProjeto(Projeto projeto, ProjetoDTO projetoDTO) {
-		projeto.setDescricaoProjeto(projetoDTO.getDescricao());
 	}
 
 	@Transactional

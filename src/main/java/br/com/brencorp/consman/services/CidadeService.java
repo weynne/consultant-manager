@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.CidadeServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -34,34 +34,28 @@ public class CidadeService {
 		Cidade cidade = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new CidadeDTO(cidade);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<CidadeDTO> findByNome(String nome) {
 		List<Cidade> cidades = repository.findByNomeContainingIgnoreCase(nome);
 		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
 	}
-	
+
 	@Transactional
 	public CidadeDTO insert(CidadeDTO cidadeDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		Cidade estado = modelMapper.map(cidadeDTO, Cidade.class);
-		return new CidadeDTO(repository.save(estado));
+		Cidade cidade = CidadeServiceUtil.insert(cidadeDTO);
+		return new CidadeDTO(repository.save(cidade));
 	}
 
 	@Transactional
 	public CidadeDTO update(Long id, CidadeDTO cidadeDTO) {
 		try {
 			Cidade cidade = repository.getReferenceById(id);
-			updateCidade(cidade, cidadeDTO);
+			CidadeServiceUtil.update(cidade, cidadeDTO);
 			return new CidadeDTO(repository.save(cidade));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateCidade(Cidade cidade, CidadeDTO cidadeDTO) {
-		cidade.setNome(cidadeDTO.getNome());
-		cidade.setEstado(cidadeDTO.getEstado());
 	}
 
 	@Transactional

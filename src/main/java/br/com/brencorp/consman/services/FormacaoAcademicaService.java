@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.FormacaoAcademicaServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -55,8 +55,7 @@ public class FormacaoAcademicaService {
 
 	@Transactional
 	public FormacaoAcademicaDTO insert(FormacaoAcademicaDTO formacaoDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		FormacaoAcademica formacao = modelMapper.map(formacaoDTO, FormacaoAcademica.class);
+		FormacaoAcademica formacao = FormacaoAcademicaServiceUtil.insert(formacaoDTO);
 		return new FormacaoAcademicaDTO(repository.save(formacao));
 	}
 
@@ -64,18 +63,11 @@ public class FormacaoAcademicaService {
 	public FormacaoAcademicaDTO update(Long id, FormacaoAcademicaDTO formacaoDTO) {
 		try {
 			FormacaoAcademica formacao = repository.getReferenceById(id);
-			updateFormacao(formacao, formacaoDTO);
+			FormacaoAcademicaServiceUtil.update(formacao, formacaoDTO);
 			return new FormacaoAcademicaDTO(repository.save(formacao));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateFormacao(FormacaoAcademica formacao, FormacaoAcademicaDTO formacaoDTO) {
-		formacao.setNome(formacaoDTO.getNome());
-		formacao.setInstituicao(formacaoDTO.getInstituicao());
-		formacao.setTipo(formacaoDTO.getTipo());
-		formacao.setAnoConclusao(formacaoDTO.getAnoConclusao());
 	}
 
 	@Transactional

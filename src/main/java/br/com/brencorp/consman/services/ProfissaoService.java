@@ -3,7 +3,6 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +14,7 @@ import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.repositories.ProfissaoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.services.utils.ProfissaoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -49,8 +49,7 @@ public class ProfissaoService {
 
 	@Transactional
 	public ProfissaoDTO insert(ProfissaoDTO profissaoDTO) {
-		ModelMapper modelMapper = new ModelMapper();
-		Profissao profissao = modelMapper.map(profissaoDTO, Profissao.class);
+		Profissao profissao = ProfissaoServiceUtil.insert(profissaoDTO);
 		return new ProfissaoDTO(repository.save(profissao));
 	}
 
@@ -58,16 +57,11 @@ public class ProfissaoService {
 	public ProfissaoDTO update(Long id, ProfissaoDTO profissaoDTO) {
 		try {
 			Profissao profissao = repository.getReferenceById(id);
-			updateProfissao(profissao, profissaoDTO);
+			ProfissaoServiceUtil.update(profissao, profissaoDTO);
 			return new ProfissaoDTO(repository.save(profissao));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
-	}
-
-	private void updateProfissao(Profissao profissao, ProfissaoDTO profissaoDTO) {
-		profissao.setNome(profissaoDTO.getNome());
-		profissao.setArea(profissaoDTO.getArea());
 	}
 	
 	@Transactional
