@@ -40,10 +40,11 @@ public class FormacaoAcademicaController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<FormacaoAcademicaDTO>> find(
-			@RequestParam(value = "Nome", required = false) String nome,
+	public ResponseEntity<List<FormacaoAcademicaDTO>> find(@RequestParam(value = "Nome", required = false) String nome,
 			@RequestParam(value = "Nome da instituição", required = false) String instituicao,
-			@RequestParam(value = "Tipo da formação", required = false) String tipo) {
+			@RequestParam(value = "Tipo da formação", required = false) String tipo,
+			@RequestParam(value = "Formados de", required = false) Integer anoInicio,
+			@RequestParam(value = "Formados até", required = false) Integer anoFim) {
 		if (nome != null) {
 			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -53,12 +54,15 @@ public class FormacaoAcademicaController {
 		} else if (tipo != null) {
 			List<FormacaoAcademicaDTO> list = service.findByTipo(tipo);
 			return ResponseEntity.ok(list);
+		} else if (anoInicio != null && anoFim != null) {
+			List<FormacaoAcademicaDTO> list = service.findFormadosByPeriodo(anoInicio, anoFim);
+			return ResponseEntity.ok(list);
 		} else {
 			List<FormacaoAcademicaDTO> list = service.findAll();
 			return ResponseEntity.ok().body(list);
 		}
 	}
-
+		
 	@PostMapping
 	public ResponseEntity<FormacaoAcademicaDTO> insert(@RequestBody @Valid FormacaoAcademicaDTO formacaoDTO) {
 		formacaoDTO = service.insert(formacaoDTO);

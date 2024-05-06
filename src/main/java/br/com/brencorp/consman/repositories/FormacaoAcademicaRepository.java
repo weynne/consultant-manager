@@ -15,4 +15,6 @@ public interface FormacaoAcademicaRepository extends JpaRepository<FormacaoAcade
 	List<FormacaoAcademica> findByInstituicaoContainingIgnoreCase(String instituicao);
 	
 	List<FormacaoAcademica> findByTipoContainingIgnoreCase(String tipo);
+	
+	List<FormacaoAcademica> findByAnoConclusaoBetween(Integer anoInicio, Integer anoFim);
 }
