@@ -2,10 +2,12 @@ package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Estado;
+import jakarta.validation.constraints.NotBlank;
 
 public class CidadeDTO {
 	
 	private Long id;
+	@NotBlank(message = "Nome da cidade é obrigatório")
 	private String nome;
 	private Estado estado;
 	

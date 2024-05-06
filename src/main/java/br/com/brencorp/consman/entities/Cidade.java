@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "cidade")
@@ -25,12 +26,11 @@ public class Cidade implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "Nome da cidade é obrigatório")
 	private String nome;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estado_id")
 	private Estado estado;
-	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cidade")
 	private List<Consultor> consultores = new ArrayList<>();

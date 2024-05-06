@@ -1,11 +1,14 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Profissao;
+import jakarta.validation.constraints.NotBlank;
 
 public class ProfissaoDTO {
 	
 	private Long id;
+	@NotBlank(message = "Nome da profissão é obrigatório.")
 	private String nome;
+	@NotBlank(message = "Área de atuação é obrigatório.")
 	private String area;
 	
 	public ProfissaoDTO() {

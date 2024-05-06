@@ -15,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "formacaoAcademica")
@@ -24,11 +26,15 @@ public class FormacaoAcademica implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "Nome do curso é obrigatório.")
 	private String nome;
+	@NotBlank(message = "Nome da instituição é obrigatório.")
 	private String instituicao;
+	@NotBlank(message = "Tipo do curso é obrigatório. Ex: Técnologo, Bacharelado, Mestrado")
 	private String tipo;
+	@NotBlank(message = "Ano de conclusão do curso é obrigatório.")
+	@Pattern(regexp = "[0-9]{4}", message = "Formato do ano inválido. Exemplo válido: 2010")
 	private Integer anoConclusao;
-
 	@Transient
 	private Integer tempoFormacao;
 

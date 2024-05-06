@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.brencorp.consman.dto.FormacaoAcademicaDTO;
 import br.com.brencorp.consman.services.FormacaoAcademicaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/formacoes")
@@ -59,7 +60,7 @@ public class FormacaoAcademicaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<FormacaoAcademicaDTO> insert(@RequestBody FormacaoAcademicaDTO formacaoDTO) {
+	public ResponseEntity<FormacaoAcademicaDTO> insert(@RequestBody @Valid FormacaoAcademicaDTO formacaoDTO) {
 		formacaoDTO = service.insert(formacaoDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(formacaoDTO.getId())
 				.toUri();
@@ -68,7 +69,7 @@ public class FormacaoAcademicaController {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<FormacaoAcademicaDTO> update(@PathVariable Long id,
-			@RequestBody FormacaoAcademicaDTO formacaoDTO) {
+			@RequestBody @Valid FormacaoAcademicaDTO formacaoDTO) {
 		formacaoDTO = service.update(id, formacaoDTO);
 		return ResponseEntity.ok().body(formacaoDTO);
 	}

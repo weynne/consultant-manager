@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.brencorp.consman.dto.ProfissaoDTO;
 import br.com.brencorp.consman.services.ProfissaoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/profissoes")
@@ -55,7 +56,7 @@ public class ProfissaoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ProfissaoDTO> insert(@RequestBody ProfissaoDTO profissaoDTO) {
+	public ResponseEntity<ProfissaoDTO> insert(@RequestBody @Valid ProfissaoDTO profissaoDTO) {
 		profissaoDTO = service.insert(profissaoDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId())
 				.toUri();
@@ -63,7 +64,7 @@ public class ProfissaoController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProfissaoDTO> update(@PathVariable Long id, @RequestBody ProfissaoDTO profissaoDTO) {
+	public ResponseEntity<ProfissaoDTO> update(@PathVariable Long id, @RequestBody @Valid ProfissaoDTO profissaoDTO) {
 		profissaoDTO = service.update(id, profissaoDTO);
 		return ResponseEntity.ok().body(profissaoDTO);
 	}
