@@ -1,11 +1,14 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.brencorp.consman.util.date.ConverteDataEmPeriodo;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import br.com.brencorp.consman.util.date.ConverteDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +20,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "consultor")
@@ -26,13 +32,25 @@ public class Consultor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Pattern(regexp = "[0-9]{11}", message = "Formato de CPF inválido")
 	private String cpf;
+
+	@Pattern(regexp = "[0-9]{14}", message = "Formato de CNPJ inválido")
 	private String cnpj;
+
+	@NotBlank(message = "Nome do consultor é obrigatório")
 	private String nome;
+
+	@Pattern(regexp = "[0-9]{11}", message = "Formato de telefone inválido")
 	private String telefone;
+
+	@Email(message = "E-mail inválido")
 	private String email;
-	private String nascimento;
-	
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataNascimento;
+
 	@Transient
 	private Integer idade;
 
@@ -59,8 +77,8 @@ public class Consultor implements Serializable {
 	public Consultor() {
 	}
 
-	public Consultor(Long id, String cpf, String cnpj, String nome, String telefone, String email, String nascimento,
-			Cidade cidade) {
+	public Consultor(Long id, String cpf, String cnpj, String nome, String telefone, String email,
+			LocalDate dataNascimento, Cidade cidade) {
 		super();
 		this.id = id;
 		this.cpf = cpf;
@@ -68,7 +86,7 @@ public class Consultor implements Serializable {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
-		this.nascimento = nascimento;
+		this.dataNascimento = dataNascimento;
 		this.cidade = cidade;
 	}
 
@@ -120,16 +138,16 @@ public class Consultor implements Serializable {
 		this.email = email;
 	}
 
-	public String getNascimento() {
-		return nascimento;
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setNascimento(String nascimento) {
-		this.nascimento = nascimento;
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
-	
+
 	public Integer getIdade() {
-		return ConverteDataEmPeriodo.periodoTempoData(this.nascimento);
+		return ConverteDate.periodoTempoData(this.dataNascimento);
 	}
 
 	public Cidade getCidade() {

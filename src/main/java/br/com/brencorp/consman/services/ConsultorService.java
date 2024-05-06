@@ -19,6 +19,7 @@ import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import br.com.brencorp.consman.util.date.ConverteDate;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -40,24 +41,24 @@ public class ConsultorService {
 		Consultor consultor = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new ConsultorDTO(consultor);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<ConsultorDTO> findByNome(String nome) {
 		List<Consultor> consultores = repository.findByNomeContainingIgnoreCase(nome);
 		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
 	}
-	
+
 	@Transactional(readOnly = true)
-    public List<ConsultorDTO> findByCidade(String cidade) {
-    	List<Consultor> consultores = repository.findByCidadeContainingIgnoreCase(cidade);
-    	return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-    }
-	
+	public List<ConsultorDTO> findByCidade(String cidade) {
+		List<Consultor> consultores = repository.findByCidadeContainingIgnoreCase(cidade);
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
+
 	@Transactional(readOnly = true)
-    public List<ConsultorDTO> findByEstado(String estado) {
-    	List<Consultor> consultores = repository.findByEstadoContainingIgnoreCase(estado);
-    	return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-    }
+	public List<ConsultorDTO> findByEstado(String estado) {
+		List<Consultor> consultores = repository.findByEstadoContainingIgnoreCase(estado);
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
@@ -103,24 +104,24 @@ public class ConsultorService {
 		consultor.setNome(consultorDTO.getNome());
 		consultor.setTelefone(consultorDTO.getTelefone());
 		consultor.setEmail(consultorDTO.getEmail());
-		consultor.setNascimento(consultorDTO.getNascimento());
+		consultor.setDataNascimento(ConverteDate.stringLocalDate(consultorDTO.getDataNascimentoString()));
 		consultor.setCidade(consultorDTO.getCidade());
 
 		for (int i = 0; i < consultorDTO.getFormacoes().size(); i++) {
 			FormacaoAcademica formacoes = modelMapper.map(consultorDTO.getFormacoes().get(i), FormacaoAcademica.class);
 			consultor.getFormacao().set(i, formacoes);
 		}
-		
+
 		for (int i = 0; i < consultorDTO.getProfissoes().size(); i++) {
 			Profissao profissoes = modelMapper.map(consultorDTO.getProfissoes().get(i), Profissao.class);
 			consultor.getProfissao().set(i, profissoes);
 		}
-		
+
 		for (int i = 0; i < consultorDTO.getProjetos().size(); i++) {
 			Projeto projetos = modelMapper.map(consultorDTO.getProjetos().get(i), Projeto.class);
 			consultor.getProjeto().set(i, projetos);
 		}
-		
+
 		for (int i = 0; i < consultorDTO.getCat().size(); i++) {
 			Cat cats = modelMapper.map(consultorDTO.getCat().get(i), Cat.class);
 			consultor.getCat().set(i, cats);

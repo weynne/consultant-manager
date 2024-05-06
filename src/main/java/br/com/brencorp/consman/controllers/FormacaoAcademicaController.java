@@ -42,8 +42,7 @@ public class FormacaoAcademicaController {
 	public ResponseEntity<List<FormacaoAcademicaDTO>> find(
 			@RequestParam(value = "Nome", required = false) String nome,
 			@RequestParam(value = "Nome da instituição", required = false) String instituicao,
-			@RequestParam(value = "Tipo da formação", required = false) String tipo,
-			@RequestParam(value = "Ano de conclusão", required = false) String anoConclusao) {
+			@RequestParam(value = "Tipo da formação", required = false) String tipo) {
 		if (nome != null) {
 			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -52,9 +51,6 @@ public class FormacaoAcademicaController {
 			return ResponseEntity.ok(list);
 		} else if (tipo != null) {
 			List<FormacaoAcademicaDTO> list = service.findByTipo(tipo);
-			return ResponseEntity.ok(list);
-		} else if (anoConclusao != null) {
-			List<FormacaoAcademicaDTO> list = service.findByAnoConclusao(anoConclusao);
 			return ResponseEntity.ok(list);
 		} else {
 			List<FormacaoAcademicaDTO> list = service.findAll();

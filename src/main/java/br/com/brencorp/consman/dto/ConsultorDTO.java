@@ -17,29 +17,30 @@ public class ConsultorDTO {
 	private String nome;
 	private String telefone;
 	private String email;
-	private String nascimento;
+	private String dataNascimentoString;
 	private Integer idade;
 	private Cidade cidade;
-	
+
 	private List<FormacaoAcademica> formacoes;
 	private List<Profissao> profissoes;
 	private List<Projeto> projetos;
 	private List<Cat> cat;
-	
+
 	public ConsultorDTO() {
 	}
 
-	public ConsultorDTO(Long id, String cpf, String cnpj, String nome, String telefone, String email, String nascimento, Cidade cidade) {
+	public ConsultorDTO(Long id, String cpf, String cnpj, String nome, String telefone, String email,
+			String dataNascimentoString, Cidade cidade) {
 		this.id = id;
 		this.cpf = cpf;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
-		this.nascimento = nascimento;
+		this.dataNascimentoString = dataNascimentoString;
 		this.cidade = cidade;
 	}
-	
+
 	public ConsultorDTO(Consultor consultor) {
 		id = consultor.getId();
 		cpf = consultor.getCpf();
@@ -47,14 +48,14 @@ public class ConsultorDTO {
 		nome = consultor.getNome();
 		telefone = consultor.getTelefone();
 		email = consultor.getEmail();
-		nascimento = consultor.getNascimento();
+		dataNascimentoString = consultor.getDataNascimento().toString();
 		idade = consultor.getIdade();
 		cidade = consultor.getCidade();
 		formacoes = consultor.getFormacao();
 		profissoes = consultor.getProfissao();
 		projetos = consultor.getProjeto();
 		cat = consultor.getCat();
-		
+
 	}
 
 	public Long getId() {
@@ -105,14 +106,14 @@ public class ConsultorDTO {
 		this.email = email;
 	}
 
-	public String getNascimento() {
-		return nascimento;
+	public String getDataNascimentoString() {
+		return dataNascimentoString;
 	}
 
-	public void setNascimento(String nascimento) {
-		this.nascimento = nascimento;
+	public void setDataNascimentoString(String dataNascimentoString) {
+		this.dataNascimentoString = dataNascimentoString;
 	}
-	
+
 	public Integer getIdade() {
 		return idade;
 	}

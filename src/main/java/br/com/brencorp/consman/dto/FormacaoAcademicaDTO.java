@@ -8,13 +8,13 @@ public class FormacaoAcademicaDTO {
 	private String nome;
 	private String instituicao;
 	private String tipo;
-	private String anoConclusao;
+	private Integer anoConclusao;
 	private Integer tempoFormacao;
 
 	public FormacaoAcademicaDTO() {
 	}
 
-	public FormacaoAcademicaDTO(Long id, String nome, String instituicao, String tipo, String anoConclusao) {
+	public FormacaoAcademicaDTO(Long id, String nome, String instituicao, String tipo, Integer anoConclusao) {
 		this.id = id;
 		this.nome = nome;
 		this.instituicao = instituicao;
@@ -63,11 +63,11 @@ public class FormacaoAcademicaDTO {
 		this.tipo = tipo;
 	}
 
-	public String getAnoConclusao() {
+	public Integer getAnoConclusao() {
 		return anoConclusao;
 	}
 
-	public void setAnoConclusao(String anoConclusao) {
+	public void setAnoConclusao(Integer anoConclusao) {
 		this.anoConclusao = anoConclusao;
 	}
 

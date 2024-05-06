@@ -52,12 +52,6 @@ public class FormacaoAcademicaService {
 		List<FormacaoAcademica> formacoes = repository.findByTipoContainingIgnoreCase(tipo);
 		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
 	}
-	
-	@Transactional(readOnly = true)
-	public List<FormacaoAcademicaDTO> findByAnoConclusao(String anoConclusao) {
-		List<FormacaoAcademica> formacoes = repository.findByAnoConclusaoContainingIgnoreCase(anoConclusao);
-		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
-	}
 
 	@Transactional
 	public FormacaoAcademicaDTO insert(FormacaoAcademicaDTO formacaoDTO) {

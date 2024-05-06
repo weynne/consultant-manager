@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.brencorp.consman.util.date.ConverteDataEmPeriodo;
+import br.com.brencorp.consman.util.date.ConverteDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +27,7 @@ public class FormacaoAcademica implements Serializable {
 	private String nome;
 	private String instituicao;
 	private String tipo;
-	private String anoConclusao;
+	private Integer anoConclusao;
 
 	@Transient
 	private Integer tempoFormacao;
@@ -39,7 +39,7 @@ public class FormacaoAcademica implements Serializable {
 	public FormacaoAcademica() {
 	}
 
-	public FormacaoAcademica(Long id, String nome, String instituicao, String tipo, String anoConclusao) {
+	public FormacaoAcademica(Long id, String nome, String instituicao, String tipo, Integer anoConclusao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -80,16 +80,16 @@ public class FormacaoAcademica implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public String getAnoConclusao() {
+	public Integer getAnoConclusao() {
 		return anoConclusao;
 	}
 
-	public void setAnoConclusao(String anoConclusao) {
+	public void setAnoConclusao(Integer anoConclusao) {
 		this.anoConclusao = anoConclusao;
 	}
 
 	public Integer getTempoFormacao() {
-		return ConverteDataEmPeriodo.periodoTempoAno(this.anoConclusao);
+		return ConverteDate.periodoTempoAno(this.anoConclusao);
 	}
 
 	public List<Consultor> getConsultores() {
