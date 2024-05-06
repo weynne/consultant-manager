@@ -94,9 +94,9 @@ public class TestConfig implements CommandLineRunner {
 
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 
-		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "8188888888",
+		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "81888888889",
 				"wjgcl@cesar.school", LocalDate.parse("01/09/1991", DateTimeFormatter.ofPattern("dd/MM/yyyy")), c2);
-		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school",
+		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "81999999999", "pcs2@cesar.school",
 				LocalDate.parse("01/11/1999", DateTimeFormatter.ofPattern("dd/MM/yyyy")), c3);
 
 		consultorRepository.saveAll(Arrays.asList(cons1, cons2));

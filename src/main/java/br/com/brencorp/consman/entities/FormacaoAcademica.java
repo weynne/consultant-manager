@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.brencorp.consman.util.date.ConverteDate;
+import br.com.brencorp.consman.util.date.ConverteData;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -89,7 +89,7 @@ public class FormacaoAcademica implements Serializable {
 	}
 
 	public Integer getTempoFormacao() {
-		return ConverteDate.periodoTempoAno(this.anoConclusao);
+		return ConverteData.periodoInteger(this.anoConclusao);
 	}
 
 	public List<Consultor> getConsultores() {

@@ -19,7 +19,6 @@ import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
-import br.com.brencorp.consman.util.date.ConverteDate;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -104,7 +103,7 @@ public class ConsultorService {
 		consultor.setNome(consultorDTO.getNome());
 		consultor.setTelefone(consultorDTO.getTelefone());
 		consultor.setEmail(consultorDTO.getEmail());
-		consultor.setDataNascimento(ConverteDate.stringLocalDate(consultorDTO.getDataNascimentoString()));
+		consultor.setDataNascimento(consultorDTO.getDataNascimento());
 		consultor.setCidade(consultorDTO.getCidade());
 
 		for (int i = 0; i < consultorDTO.getFormacoes().size(); i++) {

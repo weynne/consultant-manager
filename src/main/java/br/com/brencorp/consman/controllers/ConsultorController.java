@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.brencorp.consman.dto.ConsultorDTO;
 import br.com.brencorp.consman.services.ConsultorService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/consultores")
@@ -59,7 +60,7 @@ public class ConsultorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ConsultorDTO> insert(@RequestBody ConsultorDTO consultorDTO) {
+	public ResponseEntity<ConsultorDTO> insert(@RequestBody @Valid ConsultorDTO consultorDTO) {
 		consultorDTO = service.insert(consultorDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId())
 				.toUri();
@@ -67,9 +68,9 @@ public class ConsultorController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody ConsultorDTO consultorDTO) {
-		consultorDTO = service.update(id, consultorDTO);
-		return ResponseEntity.ok().body(consultorDTO);
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
+			consultorDTO = service.update(id, consultorDTO);
+			return ResponseEntity.ok().body(consultorDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")

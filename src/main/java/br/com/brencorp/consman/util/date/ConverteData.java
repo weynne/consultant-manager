@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-public class ConverteDate {
+public class ConverteData {
 
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -13,12 +13,12 @@ public class ConverteDate {
 		return data;
 	}
 
-	public static Integer periodoTempoData(LocalDate data) {
+	public static Integer periodoLocalDate(LocalDate data) {
 		Period periodo = Period.between(data, LocalDate.now());
 		return periodo.getYears();
 	}
 
-	public static Integer periodoTempoAno(Integer anoConclusao) {
-		return LocalDate.now().getYear() - anoConclusao;
+	public static Integer periodoInteger(Integer data) {
+		return LocalDate.now().getYear() - data;
 	}
 }

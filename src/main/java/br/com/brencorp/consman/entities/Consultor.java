@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.brencorp.consman.util.date.ConverteDate;
+import br.com.brencorp.consman.util.date.ConverteData;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,7 +44,7 @@ public class Consultor implements Serializable {
 
 	@Pattern(regexp = "[0-9]{11}", message = "Formato de telefone inválido")
 	private String telefone;
-
+	
 	@Email(message = "E-mail inválido")
 	private String email;
 
@@ -147,7 +147,7 @@ public class Consultor implements Serializable {
 	}
 
 	public Integer getIdade() {
-		return ConverteDate.periodoTempoData(this.dataNascimento);
+		return ConverteData.periodoLocalDate(this.dataNascimento);
 	}
 
 	public Cidade getCidade() {

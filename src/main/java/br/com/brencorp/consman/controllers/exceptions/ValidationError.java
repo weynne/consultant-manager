@@ -1,29 +1,29 @@
-package br.com.brencorp.consman.resources.exceptions;
+package br.com.brencorp.consman.controllers.exceptions;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class StandardError implements Serializable{
+public class ValidationError implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant timestamp;
 	private Integer status;
 	private String error;
-	private String message;
+	private Map<String, String> messages = new HashMap<>();;
 	private String path;
-	
-	public StandardError() {
+
+	public ValidationError() {
 	}
 
-	public StandardError(Instant timestamp, Integer status, String error, String message, String path) {
-		super();
+	public ValidationError(Instant timestamp, Integer status, String error, String path) {
 		this.timestamp = timestamp;
 		this.status = status;
 		this.error = error;
-		this.message = message;
 		this.path = path;
 	}
 
@@ -51,12 +51,12 @@ public class StandardError implements Serializable{
 		this.error = error;
 	}
 
-	public String getMessage() {
-		return message;
+	public Map<String, String> getMessages() {
+		return messages;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMessages(Map<String, String> messages) {
+		this.messages = messages;
 	}
 
 	public String getPath() {
