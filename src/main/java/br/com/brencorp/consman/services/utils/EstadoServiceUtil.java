@@ -10,8 +10,7 @@ public class EstadoServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static Estado insert(EstadoDTO estadoDTO) {
-		Estado estado = modelMapper.map(estadoDTO, Estado.class);
-		return estado;
+		return modelMapper.map(estadoDTO, Estado.class);
 	}
 
 	public static void update(Estado estado, EstadoDTO estadoDTO) {

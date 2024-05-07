@@ -10,8 +10,7 @@ public class ProjetoServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static Projeto insert(ProjetoDTO projetoDTO) {
-		Projeto projeto = modelMapper.map(projetoDTO, Projeto.class);
-		return projeto;
+		return modelMapper.map(projetoDTO, Projeto.class);
 	}
 
 	public static void update(Projeto projeto, ProjetoDTO projetoDTO) {

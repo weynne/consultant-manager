@@ -9,8 +9,7 @@ public class ConverteData {
 	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public static LocalDate stringLocalDate(String dataString) {
-		LocalDate data = LocalDate.parse(dataString, formatter);
-		return data;
+		return LocalDate.parse(dataString, formatter);
 	}
 
 	public static Integer periodoLocalDate(LocalDate data) {

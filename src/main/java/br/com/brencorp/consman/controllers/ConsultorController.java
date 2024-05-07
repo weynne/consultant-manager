@@ -77,7 +77,7 @@ public class ConsultorController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
+	public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
 			consultorDTO = service.update(id, consultorDTO);
 			return ResponseEntity.ok().body(consultorDTO);
 	}

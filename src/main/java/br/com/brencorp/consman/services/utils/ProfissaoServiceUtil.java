@@ -10,8 +10,7 @@ public class ProfissaoServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static Profissao insert(ProfissaoDTO profissaoDTO) {
-		Profissao profissao = modelMapper.map(profissaoDTO, Profissao.class);
-		return profissao;
+		return modelMapper.map(profissaoDTO, Profissao.class);
 	}
 
 	public static void update(Profissao profissao, ProfissaoDTO profissaoDTO) {

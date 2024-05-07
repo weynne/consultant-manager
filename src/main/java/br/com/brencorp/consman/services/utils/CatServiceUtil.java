@@ -10,8 +10,7 @@ public class CatServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static Cat insert(CatDTO catDTO) {
-		Cat cat = modelMapper.map(catDTO, Cat.class);
-		return cat;
+		return modelMapper.map(catDTO, Cat.class);
 	}
 
 	public static void update(Cat cat, CatDTO catDTO) {

@@ -10,8 +10,7 @@ public class FormacaoAcademicaServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static FormacaoAcademica insert(FormacaoAcademicaDTO formacaoDTO) {
-		FormacaoAcademica formacao = modelMapper.map(formacaoDTO, FormacaoAcademica.class);
-		return formacao;
+		return modelMapper.map(formacaoDTO, FormacaoAcademica.class);
 	}
 
 	public static void update(FormacaoAcademica formacao, FormacaoAcademicaDTO formacaoDTO) {

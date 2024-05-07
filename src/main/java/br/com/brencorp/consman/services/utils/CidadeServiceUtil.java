@@ -10,8 +10,7 @@ public class CidadeServiceUtil {
 	static ModelMapper modelMapper = new ModelMapper();
 
 	public static Cidade insert(CidadeDTO cidadeDTO) {
-		Cidade cidade = modelMapper.map(cidadeDTO, Cidade.class);
-		return cidade;
+		return modelMapper.map(cidadeDTO, Cidade.class);
 	}
 
 	public static void update(Cidade cidade, CidadeDTO cidadeDTO) {
