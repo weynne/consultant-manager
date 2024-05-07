@@ -14,7 +14,7 @@ public class ValidationError implements Serializable {
 	private Instant timestamp;
 	private Integer status;
 	private String error;
-	private Map<String, String> messages = new HashMap<>();;
+	private Map<String, String> messages = new HashMap<>();
 	private String path;
 
 	public ValidationError() {
