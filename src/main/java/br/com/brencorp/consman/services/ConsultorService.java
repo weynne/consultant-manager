@@ -61,8 +61,14 @@ public class ConsultorService {
 	
 	@Transactional(readOnly = true)
 	public List<ConsultorDTO> findByFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
-	    List<Consultor> formacoes = repository.findByAnoConclusaoBetween(anoInicio, anoFim);
-	    return formacoes.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	    List<Consultor> consultores = repository.findByAnoConclusaoBetween(anoInicio, anoFim);
+	    return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	public List<ConsultorDTO> findByIdade(Integer idadeMinima, Integer idadeMaxima){
+		List<Consultor> consultores = repository.findByIdade(idadeMinima, idadeMaxima);
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
 	}
 
 	@Transactional

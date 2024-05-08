@@ -34,4 +34,8 @@ public interface ConsultorRepository extends JpaRepository<Consultor, Long> {
 			+ "WHERE fo.anoConclusao BETWEEN :anoInicio AND :anoFim")
 	List<Consultor> findByAnoConclusaoBetween(Integer anoInicio, Integer anoFim);
 
+	@Query("SELECT c FROM Consultor c "
+			+ "WHERE YEAR(CURRENT_DATE) - YEAR(c.dataNascimento) BETWEEN :idadeMinima AND :idadeMaxima")
+	List<Consultor> findByIdade(Integer idadeMinima, Integer idadeMaxima);
+
 }

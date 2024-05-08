@@ -134,6 +134,7 @@ public class Consultor implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	@Transient
 	public Integer getIdade() {
 		return ConverteData.periodoLocalDate(this.dataNascimento);
 	}

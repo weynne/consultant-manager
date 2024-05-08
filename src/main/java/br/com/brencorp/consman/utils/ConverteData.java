@@ -13,8 +13,7 @@ public class ConverteData {
 	}
 
 	public static Integer periodoLocalDate(LocalDate data) {
-		Period periodo = Period.between(data, LocalDate.now());
-		return periodo.getYears();
+		return Period.between(data, LocalDate.now()).getYears();
 	}
 
 	public static Integer periodoInteger(Integer data) {

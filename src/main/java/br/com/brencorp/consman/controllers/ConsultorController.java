@@ -46,7 +46,9 @@ public class ConsultorController {
 			@RequestParam(value = "Estado", required = false) String estado,
 			@RequestParam(value = "Nome do curso", required = false) String formacao,
 			@RequestParam(value = "Formados de", required = false) Integer anoInicio,
-			@RequestParam(value = "Formados até", required = false) Integer anoFim) {
+			@RequestParam(value = "Formados até", required = false) Integer anoFim,
+			@RequestParam(value = "Idade de", required = false) Integer idadeMinima,
+			@RequestParam(value = "Idade até", required = false) Integer idadeMaxima) {
 		if (nome != null) {
 			List<ConsultorDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
@@ -61,6 +63,9 @@ public class ConsultorController {
 			return ResponseEntity.ok(list);
 		} else if (anoInicio != null && anoFim != null) {
 			List<ConsultorDTO> list = service.findByFormadosByPeriodo(anoInicio, anoFim);
+			return ResponseEntity.ok(list);
+		} else if (idadeMinima != null && idadeMaxima != null) {
+			List<ConsultorDTO> list = service.findByIdade(idadeMinima, idadeMaxima);
 			return ResponseEntity.ok(list);
 		}else {
 			List<ConsultorDTO> list = service.findAll();
