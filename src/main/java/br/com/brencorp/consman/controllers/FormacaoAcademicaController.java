@@ -39,12 +39,13 @@ public class FormacaoAcademicaController {
 		return ResponseEntity.ok(formacaoDTO);
 	}
 
-	@GetMapping("/search")
-	public ResponseEntity<List<FormacaoAcademicaDTO>> find(@RequestParam(value = "Nome", required = false) String nome,
-			@RequestParam(value = "Nome da instituição", required = false) String instituicao,
-			@RequestParam(value = "Tipo da formação", required = false) String tipo,
-			@RequestParam(value = "Formados de", required = false) Integer anoInicio,
-			@RequestParam(value = "Formados até", required = false) Integer anoFim) {
+	@GetMapping("/buscar")
+	public ResponseEntity<List<FormacaoAcademicaDTO>> find(
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "instituição", required = false) String instituicao,
+			@RequestParam(value = "tipo", required = false) String tipo,
+			@RequestParam(value = "anoInicio", required = false) Integer anoInicio,
+			@RequestParam(value = "anoFim", required = false) Integer anoFim) {
 		if (nome != null) {
 			List<FormacaoAcademicaDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);

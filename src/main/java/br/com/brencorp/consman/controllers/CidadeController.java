@@ -39,10 +39,10 @@ public class CidadeController {
 		return ResponseEntity.ok(cidadeDTO);
 	}
 	
-	@GetMapping("/search")
+	@GetMapping("/buscar")
 	public ResponseEntity<List<CidadeDTO>> find(
-			@RequestParam(value = "Cidade", required = false) String nome,
-			@RequestParam(value = "Estado", required = false) String estado) {
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "uf", required = false) String estado) {
 		if (nome != null) {
 			List<CidadeDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);

@@ -38,8 +38,9 @@ public class ProjetoController {
 		return ResponseEntity.ok(projetoDTO);
 	}
 	
-	@GetMapping("/search")
-	public ResponseEntity<List<ProjetoDTO>> find(@RequestParam(value = "Projeto", required = false) String nome) {
+	@GetMapping("/buscar")
+	public ResponseEntity<List<ProjetoDTO>> find(
+			@RequestParam(value = "nome", required = false) String nome) {
 		if (nome != null) {
 			List<ProjetoDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);

@@ -39,8 +39,8 @@ public class EstadoController {
 		return ResponseEntity.ok(estadoDTO);
 	}
 	
-	@GetMapping("/search")
-	public ResponseEntity<List<EstadoDTO>> find(@RequestParam(value = "Estado", required = false) String uf) {
+	@GetMapping("/buscar")
+	public ResponseEntity<List<EstadoDTO>> find(@RequestParam(value = "uf", required = false) String uf) {
 		if (uf != null) {
 			List<EstadoDTO> list = service.findByUf(uf);
 			return ResponseEntity.ok(list);

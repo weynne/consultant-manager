@@ -57,12 +57,12 @@ public class TestConfig implements CommandLineRunner {
 		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2018);
 		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras - Português", "UNICAP", "Licenciatura", 2010);
 		FormacaoAcademica f4 = new FormacaoAcademica(null, "Gestão de Tecnologia da Informação", "CESAR School", "Tecnólogo", 2019);
-		FormacaoAcademica f5 = new FormacaoAcademica(null, "Ciência da Computação", "UFPE", "Bacharelado", 2012);
-		FormacaoAcademica f6 = new FormacaoAcademica(null, "Contabilidade", "UNIBRA", "Bacharelado", 2013);
+		FormacaoAcademica f5 = new FormacaoAcademica(null, "Computação", "UFPE", "Técnico", 2012);
+		FormacaoAcademica f6 = new FormacaoAcademica(null, "Contabilidade", "UNIBRA", "Profissioanlizante", 2013);
 		FormacaoAcademica f7 = new FormacaoAcademica(null, "Educação Física", "UNIFBV", "Licenciatura", 2014);
 		FormacaoAcademica f8 = new FormacaoAcademica(null, "Direito Tributário", "UNINASSAU", "Mestrado", 2015);
-		FormacaoAcademica f9 = new FormacaoAcademica(null, "Direito", "UNIFG", "Bacharelado", 2016);
-		FormacaoAcademica f10 = new FormacaoAcademica(null, "Administração", "UNINABUCO", "Bacharelado", 2017);
+		FormacaoAcademica f9 = new FormacaoAcademica(null, "Direito - LGPD", "UNIFG", "Pós-Gradução", 2016);
+		FormacaoAcademica f10 = new FormacaoAcademica(null, "Administração", "UNINABUCO", "Doutorado", 2017);
 
 		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10));
 
@@ -89,39 +89,81 @@ public class TestConfig implements CommandLineRunner {
 
 		Estado e1 = new Estado(null, "PE");
 		Estado e2 = new Estado(null, "PB");
+		Estado e3 = new Estado(null, "RJ");
+		Estado e4 = new Estado(null, "BA");
+		Estado e5 = new Estado(null, "RN");
+		Estado e6 = new Estado(null, "RS");
 
 		Cidade c1 = new Cidade(null, "João Pessoa", e2);
 		Cidade c2 = new Cidade(null, "Recife", e1);
 		Cidade c3 = new Cidade(null, "Campina Grande", e2);
 		Cidade c4 = new Cidade(null, "Caruaru", e1);
+		Cidade c5 = new Cidade(null, "Natal", e5);
+		Cidade c6 = new Cidade(null, "Salvador", e4);
+		Cidade c7 = new Cidade(null, "Rio de Janeiro", e3);
+		Cidade c8 = new Cidade(null, "Porto Alegre", e6);
+		Cidade c9 = new Cidade(null, "Mossoró", e5);
+		Cidade c10 = new Cidade(null, "Niterói", e3);
 
-		estadoRepository.saveAll(Arrays.asList(e1, e2));
+		estadoRepository.saveAll(Arrays.asList(e1, e2, e3, e4, e5,e6));
 
-		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10));
 
-		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "81888888889",
-				"wjgcl@cesar.school", LocalDate.parse("01/09/1991", DateTimeFormatter.ofPattern("dd/MM/yyyy")), c2);
-		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "81999999999", "pcs2@cesar.school",
-				LocalDate.parse("01/11/1999", DateTimeFormatter.ofPattern("dd/MM/yyyy")), c3);
+		String cpf = "00011122200";
+		String cnpj = "00111222000100";
+		String telefone = "81912345678";
+		String dataFormatter = "dd/MM/yyyy";
 
-		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
+		Consultor cons1 = new Consultor(null, cpf, null, "Débora Carvalho", telefone,
+				"dbc@cesar.school", LocalDate.parse("01/10/1995", DateTimeFormatter.ofPattern(dataFormatter)), c1);
+		Consultor cons2 = new Consultor(null, null, cnpj, "Diego Tavares", telefone, "dts@cesar.school",
+				LocalDate.parse("01/06/1999", DateTimeFormatter.ofPattern(dataFormatter)), c2);
+		Consultor cons3 = new Consultor(null, cpf, null, "Isabel Gonçalves", telefone,
+				"igl@cesar.school", LocalDate.parse("01/08/2000", DateTimeFormatter.ofPattern(dataFormatter)), c5);
+		Consultor cons4 = new Consultor(null, null, cnpj, "Pedro Silva", telefone, "pcs2@cesar.school",
+				LocalDate.parse("01/11/2005", DateTimeFormatter.ofPattern(dataFormatter)), c9);
+		Consultor cons5 = new Consultor(null, null, cnpj, "Wendislau Silva", telefone,
+				"wvss@cesar.school", LocalDate.parse("01/12/1998", DateTimeFormatter.ofPattern(dataFormatter)), c4);
+		Consultor cons6 = new Consultor(null, cpf, null, "Weynne Guimarães", telefone, "wjgcl@cesar.school",
+				LocalDate.parse("24/09/1991", DateTimeFormatter.ofPattern(dataFormatter)), c3);
 
-		cons1.getCat().add(cat4);
-		cons1.getCat().add(cat3);
-		cons1.getFormacao().add(f3);
-		cons1.getFormacao().add(f4);
+		consultorRepository.saveAll(Arrays.asList(cons1, cons2, cons3, cons4, cons5, cons6));
+
+		cons1.getCat().add(cat1);
+		cons1.getCat().add(cat2);
+		cons1.getFormacao().add(f1);
+		cons1.getFormacao().add(f2);
+		cons1.getProfissao().add(prof1);
 		cons1.getProfissao().add(prof2);
-		cons1.getProfissao().add(prof3);
 		cons1.getProjeto().add(p1);
 		cons1.getProjeto().add(p2);
-		cons1.getProjeto().add(p3);
 
-		cons2.getCat().add(cat1);
-		cons2.getFormacao().add(f1);
+		cons2.getCat().add(cat3);
+		cons2.getFormacao().add(f3);
 		cons2.getProfissao().add(prof3);
-		cons2.getProjeto().add(p2);
+		cons2.getProjeto().add(p3);
 
-		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
+		cons3.getCat().add(cat4);
+		cons3.getFormacao().add(f4);
+		cons3.getProfissao().add(prof4);
+		cons3.getProjeto().add(p4);
+
+		cons4.getCat().add(cat1);
+		cons4.getFormacao().add(f5);
+		cons4.getProfissao().add(prof1);
+		cons4.getProjeto().add(p1);
+
+		cons5.getCat().add(cat2);
+		cons5.getFormacao().add(f6);
+		cons5.getProfissao().add(prof2);
+		cons5.getProjeto().add(p2);
+
+		cons6.getCat().add(cat3);
+		cons6.getFormacao().add(f7);
+		cons6.getProfissao().add(prof3);
+		cons6.getProjeto().add(p3);
+
+		consultorRepository.saveAll(Arrays.asList(cons1, cons2, cons3, cons4, cons5, cons6));
 
 	}
 

@@ -39,16 +39,16 @@ public class ConsultorController {
 		return ResponseEntity.ok(consultorDTO);
 	}
 
-	@GetMapping("/search")
+	@GetMapping("/buscar")
 	public ResponseEntity<List<ConsultorDTO>> find(
-			@RequestParam(value = "Nome", required = false) String nome,
-			@RequestParam(value = "Cidade", required = false) String cidade,
-			@RequestParam(value = "Estado", required = false) String estado,
-			@RequestParam(value = "Nome do curso", required = false) String formacao,
-			@RequestParam(value = "Formados de", required = false) Integer anoInicio,
-			@RequestParam(value = "Formados até", required = false) Integer anoFim,
-			@RequestParam(value = "Idade de", required = false) Integer idadeMinima,
-			@RequestParam(value = "Idade até", required = false) Integer idadeMaxima) {
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "cidade", required = false) String cidade,
+			@RequestParam(value = "estado", required = false) String estado,
+			@RequestParam(value = "formacao", required = false) String formacao,
+			@RequestParam(value = "anoFormacaoInicio", required = false) Integer anoInicio,
+			@RequestParam(value = "anoFormacaoFim", required = false) Integer anoFim,
+			@RequestParam(value = "idadeMin", required = false) Integer idadeMinima,
+			@RequestParam(value = "idadeMax", required = false) Integer idadeMaxima) {
 		if (nome != null) {
 			List<ConsultorDTO> list = service.findByNome(nome);
 			return ResponseEntity.ok(list);
