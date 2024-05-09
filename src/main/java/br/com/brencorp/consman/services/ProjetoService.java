@@ -1,14 +1,5 @@
 package br.com.brencorp.consman.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.brencorp.consman.dto.ProjetoDTO;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
@@ -16,29 +7,45 @@ import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.ProjetoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProjetoService {
 
+	private final ProjetoRepository repository;
+
 	@Autowired
-	private ProjetoRepository repository;
+	public ProjetoService(ProjetoRepository repository) {
+		this.repository = repository;
+	}
 
 	@Transactional(readOnly = true)
 	public List<ProjetoDTO> findAll() {
-		List<Projeto> projetos = repository.findAll();
-		return projetos.stream().map(ProjetoDTO::new).collect(Collectors.toList());
+		return repository.findAll()
+				.stream()
+				.map(ProjetoDTO::new)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public ProjetoDTO findById(Long id) {
-		Projeto projeto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new ProjetoDTO(projeto);
+		return repository.findById(id)
+				.map(ProjetoDTO::new)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Transactional(readOnly = true)
 	public List<ProjetoDTO> findByNome(String nome) {
-		List<Projeto> projetos = repository.findByNomeContainingIgnoreCase(nome);
-		return projetos.stream().map(ProjetoDTO::new).collect(Collectors.toList());
+		return repository.findByNomeContainingIgnoreCase(nome)
+				.stream()
+				.map(ProjetoDTO::new)
+				.toList();
 	}
 
 	@Transactional

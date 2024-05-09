@@ -1,12 +1,16 @@
 package br.com.brencorp.consman.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConverteData {
 
-	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public static LocalDate stringLocalDate(String dataString) {
 		return LocalDate.parse(dataString, formatter);

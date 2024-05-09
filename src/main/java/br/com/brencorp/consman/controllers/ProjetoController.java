@@ -16,8 +16,12 @@ import br.com.brencorp.consman.services.ProjetoService;
 @RequestMapping(value = "/projetos")
 public class ProjetoController {
 
+	private final ProjetoService service;
+
 	@Autowired
-	private ProjetoService service;
+	public ProjetoController(ProjetoService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<ProjetoDTO>> findAll() {

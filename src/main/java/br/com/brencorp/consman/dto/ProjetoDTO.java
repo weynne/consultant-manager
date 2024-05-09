@@ -1,38 +1,27 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Projeto;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class ProjetoDTO {
+import java.io.Serial;
+import java.io.Serializable;
 
+@NoArgsConstructor
+@Getter
+@Setter
+public class ProjetoDTO implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	@Setter(AccessLevel.NONE)
 	private Long id;
 	private String nome;
-	
-	public ProjetoDTO() {
-	}
 
-	public ProjetoDTO(Long id, String descricao) {
-		this.id = id;
-		this.nome = descricao;
-	}
-	
 	public ProjetoDTO(Projeto projeto) {
 		id = projeto.getId();
 		nome = projeto.getNome();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 }
