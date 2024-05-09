@@ -1,24 +1,27 @@
 package br.com.brencorp.consman.controllers;
 
-import java.net.URI;
-import java.util.List;
-
+import br.com.brencorp.consman.dto.CidadeDTO;
+import br.com.brencorp.consman.services.CidadeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.dto.CidadeDTO;
-import br.com.brencorp.consman.services.CidadeService;
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(value = "/cidades")
 public class CidadeController {
 
-	@Autowired
 	private CidadeService service;
+
+	@Autowired
+	public CidadeController(CidadeService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<CidadeDTO>> findAll() {

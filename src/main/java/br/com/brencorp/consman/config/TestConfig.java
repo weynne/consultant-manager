@@ -1,29 +1,16 @@
 
 package br.com.brencorp.consman.config;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-
+import br.com.brencorp.consman.entities.*;
+import br.com.brencorp.consman.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.com.brencorp.consman.entities.Cat;
-import br.com.brencorp.consman.entities.Cidade;
-import br.com.brencorp.consman.entities.Consultor;
-import br.com.brencorp.consman.entities.Estado;
-import br.com.brencorp.consman.entities.FormacaoAcademica;
-import br.com.brencorp.consman.entities.Profissao;
-import br.com.brencorp.consman.entities.Projeto;
-import br.com.brencorp.consman.repositories.CatRepository;
-import br.com.brencorp.consman.repositories.CidadeRepository;
-import br.com.brencorp.consman.repositories.ConsultorRepository;
-import br.com.brencorp.consman.repositories.EstadoRepository;
-import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
-import br.com.brencorp.consman.repositories.ProfissaoRepository;
-import br.com.brencorp.consman.repositories.ProjetoRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 @Configuration
 @Profile("test")
@@ -102,16 +89,16 @@ public class TestConfig implements CommandLineRunner {
         Estado e5 = new Estado("RN");
         Estado e6 = new Estado("RS");
 
-        Cidade c1 = new Cidade(null, "João Pessoa", e2);
-        Cidade c2 = new Cidade(null, "Recife", e1);
-        Cidade c3 = new Cidade(null, "Campina Grande", e2);
-        Cidade c4 = new Cidade(null, "Caruaru", e1);
-        Cidade c5 = new Cidade(null, "Natal", e5);
-        Cidade c6 = new Cidade(null, "Salvador", e4);
-        Cidade c7 = new Cidade(null, "Rio de Janeiro", e3);
-        Cidade c8 = new Cidade(null, "Porto Alegre", e6);
-        Cidade c9 = new Cidade(null, "Mossoró", e5);
-        Cidade c10 = new Cidade(null, "Niterói", e3);
+        Cidade c1 = new Cidade("João Pessoa", e2);
+        Cidade c2 = new Cidade("Recife", e1);
+        Cidade c3 = new Cidade("Campina Grande", e2);
+        Cidade c4 = new Cidade("Caruaru", e1);
+        Cidade c5 = new Cidade("Natal", e5);
+        Cidade c6 = new Cidade("Salvador", e4);
+        Cidade c7 = new Cidade("Rio de Janeiro", e3);
+        Cidade c8 = new Cidade("Porto Alegre", e6);
+        Cidade c9 = new Cidade("Mossoró", e5);
+        Cidade c10 = new Cidade("Niterói", e3);
 
         estadoRepository.saveAll(Arrays.asList(e1, e2, e3, e4, e5, e6));
 

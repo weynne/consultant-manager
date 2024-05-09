@@ -1,15 +1,5 @@
 package br.com.brencorp.consman.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.brencorp.consman.dto.ConsultorDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.brencorp.consman.dto.EstadoDTO;
 import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.repositories.EstadoRepository;
@@ -17,6 +7,13 @@ import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.EstadoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class EstadoService {

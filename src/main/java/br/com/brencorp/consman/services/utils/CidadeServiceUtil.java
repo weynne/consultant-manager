@@ -1,13 +1,16 @@
 package br.com.brencorp.consman.services.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import br.com.brencorp.consman.dto.CidadeDTO;
 import br.com.brencorp.consman.entities.Cidade;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CidadeServiceUtil {
 
-	static ModelMapper modelMapper = new ModelMapper();
+	private static final ModelMapper modelMapper = new ModelMapper();
 
 	public static Cidade insert(CidadeDTO cidadeDTO) {
 		return modelMapper.map(cidadeDTO, Cidade.class);

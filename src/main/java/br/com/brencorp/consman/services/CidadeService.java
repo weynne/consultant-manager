@@ -1,14 +1,5 @@
 package br.com.brencorp.consman.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.brencorp.consman.dto.CidadeDTO;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.repositories.CidadeRepository;
@@ -16,38 +7,54 @@ import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.CidadeServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CidadeService {
 
+	private final CidadeRepository repository;
+
 	@Autowired
-	private CidadeRepository repository;
+	public CidadeService(CidadeRepository repository) {
+		this.repository = repository;
+	}
 
 	@Transactional(readOnly = true)
 	public List<CidadeDTO> findAll() {
-		List<Cidade> cidades = repository.findAll();
-		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
+		return repository.findAll()
+				.stream()
+				.map(CidadeDTO::new)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public CidadeDTO findById(Long id) {
-		Cidade cidade = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new CidadeDTO(cidade);
+		return repository.findById(id)
+				.map(CidadeDTO::new)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	@Transactional(readOnly = true)
 	public List<CidadeDTO> findByNome(String nome) {
-		List<Cidade> cidades = repository.findByNomeContainingIgnoreCase(nome);
-		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
+		return repository.findByNomeContainingIgnoreCase(nome)
+				.stream()
+				.map(CidadeDTO::new)
+				.toList();
 	}
 	
 	@Transactional(readOnly = true)
 	public List<CidadeDTO> findByEstado(String estado) {
-		List<Cidade> cidades = repository.findByEstadoContainingIgnoreCase(estado);
-		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
+		return repository.findByEstadoContainingIgnoreCase(estado)
+				.stream()
+				.map(CidadeDTO::new)
+				.toList();
 	}
-	
-
 
 	@Transactional
 	public CidadeDTO insert(CidadeDTO cidadeDTO) {
