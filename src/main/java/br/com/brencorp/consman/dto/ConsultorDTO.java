@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.com.brencorp.consman.utils.ConverteData;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,13 +21,15 @@ import br.com.brencorp.consman.entities.Projeto;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class ConsultorDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -47,6 +50,7 @@ public class ConsultorDTO implements Serializable {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
+    @Transient
     @Setter(AccessLevel.NONE)
     private Integer idade;
     private Cidade cidade;

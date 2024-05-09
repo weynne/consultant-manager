@@ -16,8 +16,13 @@ import br.com.brencorp.consman.services.CatService;
 @RequestMapping(value = "/cat")
 public class CatController {
 
+
+	private final CatService service;
+
 	@Autowired
-	private CatService service;
+	public CatController(CatService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<CatDTO>> findAll() {

@@ -3,6 +3,7 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.brencorp.consman.dto.ConsultorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,19 +21,26 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class CatService {
 
+	private final CatRepository repository;
+
 	@Autowired
-	private CatRepository repository;
+	public CatService(CatRepository repository) {
+		this.repository = repository;
+	}
 
 	@Transactional(readOnly = true)
 	public List<CatDTO> findAll() {
-		List<Cat> cat = repository.findAll();
-		return cat.stream().map(CatDTO::new).collect(Collectors.toList());
+		return repository.findAll()
+				.stream()
+				.map(CatDTO::new)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public CatDTO findById(Long id) {
-		Cat cat = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new CatDTO(cat);
+		return repository.findById(id)
+				.map(CatDTO::new)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	@Transactional

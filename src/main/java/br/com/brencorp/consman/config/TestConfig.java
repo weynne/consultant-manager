@@ -81,10 +81,10 @@ public class TestConfig implements CommandLineRunner {
 
         profissaoRepository.saveAll(Arrays.asList(prof1, prof2, prof3, prof4));
 
-        Cat cat1 = new Cat(null, "Descrição Cat1");
-        Cat cat2 = new Cat(null, "Descrição Cat2");
-        Cat cat3 = new Cat(null, "Descrição Cat3");
-        Cat cat4 = new Cat(null, "Descrição Cat4");
+        Cat cat1 = new Cat("Descrição Cat1");
+        Cat cat2 = new Cat("Descrição Cat2");
+        Cat cat3 = new Cat("Descrição Cat3");
+        Cat cat4 = new Cat("Descrição Cat4");
 
         catRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
 

@@ -1,38 +1,24 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Cat;
+import lombok.*;
 
-public class CatDTO {
+import java.io.Serial;
+import java.io.Serializable;
 
+@NoArgsConstructor
+@Getter
+@Setter
+public class CatDTO implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	@Setter(AccessLevel.NONE)
 	private Long id;
 	private String descricao;
-
-	public CatDTO() {
-	}
-
-	public CatDTO(Long id, String descricao) {
-		this.id = id;
-		this.descricao = descricao;
-	}
 
 	public CatDTO(Cat cat) {
 		id = cat.getId();
 		descricao = cat.getDescricao();
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}	
 }
