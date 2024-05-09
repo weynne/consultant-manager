@@ -10,7 +10,7 @@ import br.com.brencorp.consman.entities.Cat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CatServiceUtil {
 
-	static ModelMapper modelMapper = new ModelMapper();
+	private static final ModelMapper modelMapper = new ModelMapper();
 
 	public static Cat insert(CatDTO catDTO) {
 		return modelMapper.map(catDTO, Cat.class);

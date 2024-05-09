@@ -3,6 +3,7 @@ package br.com.brencorp.consman.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.brencorp.consman.dto.ConsultorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,25 +21,34 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class EstadoService {
 
+	private final EstadoRepository repository;
+
 	@Autowired
-	private EstadoRepository repository;
+	public EstadoService(EstadoRepository repository) {
+		this.repository = repository;
+	}
 
 	@Transactional(readOnly = true)
 	public List<EstadoDTO> findAll() {
-		List<Estado> estados = repository.findAll();
-		return estados.stream().map(EstadoDTO::new).collect(Collectors.toList());
+		return repository.findAll()
+				.stream()
+				.map(EstadoDTO::new)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public EstadoDTO findById(Long id) {
-		Estado estado = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new EstadoDTO(estado);
+		return repository.findById(id)
+				.map(EstadoDTO::new)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Transactional(readOnly = true)
 	public List<EstadoDTO> findByUf(String uf) {
-		List<Estado> estados = repository.findByUfContainingIgnoreCase(uf);
-		return estados.stream().map(EstadoDTO::new).collect(Collectors.toList());
+		return repository.findByUfContainingIgnoreCase(uf)
+                .stream()
+				.map(EstadoDTO::new)
+				.toList();
 	}
 
 	@Transactional

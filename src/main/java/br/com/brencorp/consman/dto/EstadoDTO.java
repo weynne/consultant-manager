@@ -4,41 +4,30 @@ import br.com.brencorp.consman.entities.Estado;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class EstadoDTO {
+import java.io.Serial;
+import java.io.Serializable;
 
+@NoArgsConstructor
+@Getter
+@Setter
+public class EstadoDTO implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	@Setter(AccessLevel.NONE)
 	private Long id;
 	@NotBlank(message = "Sigla do estado é obrigatório")
 	@Pattern(regexp = "[A-Z]{2}", message = "Formato do estado inválido. Exemplo válido: PE")
 	@Column(unique = true)
 	private String uf;
 
-	public EstadoDTO() {
-	}
-
-	public EstadoDTO(Long id, String uf) {
-		this.id = id;
-		this.uf = uf;
-	}
-
 	public EstadoDTO(Estado estado) {
 		id = estado.getId();
 		uf = estado.getUf();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
 	}
 }

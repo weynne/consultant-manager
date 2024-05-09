@@ -17,8 +17,12 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/estados")
 public class EstadoController {
 
+	private final EstadoService service;
+
 	@Autowired
-	private EstadoService service;
+	public EstadoController(EstadoService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<EstadoDTO>> findAll() {

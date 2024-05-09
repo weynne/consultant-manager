@@ -95,12 +95,12 @@ public class TestConfig implements CommandLineRunner {
 
         projetoRepository.saveAll(Arrays.asList(p1, p2, p3, p4));
 
-        Estado e1 = new Estado(null, "PE");
-        Estado e2 = new Estado(null, "PB");
-        Estado e3 = new Estado(null, "RJ");
-        Estado e4 = new Estado(null, "BA");
-        Estado e5 = new Estado(null, "RN");
-        Estado e6 = new Estado(null, "RS");
+        Estado e1 = new Estado("PE");
+        Estado e2 = new Estado("PB");
+        Estado e3 = new Estado("RJ");
+        Estado e4 = new Estado("BA");
+        Estado e5 = new Estado("RN");
+        Estado e6 = new Estado("RS");
 
         Cidade c1 = new Cidade(null, "João Pessoa", e2);
         Cidade c2 = new Cidade(null, "Recife", e1);
