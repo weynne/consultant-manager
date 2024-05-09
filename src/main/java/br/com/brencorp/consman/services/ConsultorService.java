@@ -20,86 +20,106 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class ConsultorService {
 
-	@Autowired
-	private ConsultorRepository repository;
+    private final ConsultorRepository repository;
 
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findAll() {
-		List<Consultor> consultores = repository.findAll();
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
+    @Autowired
+    public ConsultorService(ConsultorRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional(readOnly = true)
-	public ConsultorDTO findById(Long id) {
-		Consultor consultor = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new ConsultorDTO(consultor);
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByNome(String nome) {
-		List<Consultor> consultores = repository.findByNomeContainingIgnoreCase(nome);
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
+    @Transactional(readOnly = true)
+    public ConsultorDTO findById(Long id) {
+        return repository.findById(id)
+                .map(ConsultorDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByCidade(String cidade) {
-		List<Consultor> consultores = repository.findByCidadeContainingIgnoreCase(cidade);
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByNome(String nome) {
+        return repository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByEstado(String estado) {
-		List<Consultor> consultores = repository.findByEstadoContainingIgnoreCase(estado);
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByFormacao(String formacao) {
-		List<Consultor> consultores = repository.findByFormacaoContainingIgnoreCase(formacao);
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
-	    List<Consultor> consultores = repository.findByAnoConclusaoBetween(anoInicio, anoFim);
-	    return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByCidade(String cidade) {
+        return repository.findByCidadeContainingIgnoreCase(cidade)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public List<ConsultorDTO> findByIdade(Integer idadeMinima, Integer idadeMaxima){
-		List<Consultor> consultores = repository.findByIdade(idadeMinima, idadeMaxima);
-		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByEstado(String estado) {
+        return repository.findByEstadoContainingIgnoreCase(estado)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
-		Consultor consultor = ConsultorServiceUtil.insert(consultorDTO);
-		return new ConsultorDTO(repository.save(consultor));
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByFormacao(String formacao) {
+        return repository.findByFormacaoContainingIgnoreCase(formacao)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public ConsultorDTO update(Long id, ConsultorDTO consultorDTO) {
-		try {
-			Consultor consultor = repository.getReferenceById(id);
-			ConsultorServiceUtil.update(consultor, consultorDTO);
-			return new ConsultorDTO(repository.save(consultor));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
+        return repository.findByAnoConclusaoBetween(anoInicio, anoFim)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (repository.existsById(id)) {
-				repository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+
+    @Transactional(readOnly = true)
+    public List<ConsultorDTO> findByIdade(Integer idadeMinima, Integer idadeMaxima) {
+        return repository.findByIdade(idadeMinima, idadeMaxima)
+                .stream()
+                .map(ConsultorDTO::new)
+                .toList();
+    }
+
+    @Transactional
+    public ConsultorDTO insert(ConsultorDTO consultorDTO) {
+        Consultor consultor = ConsultorServiceUtil.insert(consultorDTO);
+        return new ConsultorDTO(repository.save(consultor));
+    }
+
+    @Transactional
+    public ConsultorDTO update(Long id, ConsultorDTO consultorDTO) {
+        try {
+            Consultor consultor = repository.getReferenceById(id);
+            ConsultorServiceUtil.update(consultor, consultorDTO);
+            return new ConsultorDTO(repository.save(consultor));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

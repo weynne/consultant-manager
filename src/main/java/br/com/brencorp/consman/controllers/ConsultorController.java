@@ -17,72 +17,76 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/consultores")
 public class ConsultorController {
 
-	@Autowired
-	private ConsultorService service;
+    private final ConsultorService service;
 
-	@GetMapping
-	public ResponseEntity<List<ConsultorDTO>> findAll() {
-		List<ConsultorDTO> list = service.findAll();
-		return ResponseEntity.ok().body(list);
-	}
+    @Autowired
+    public ConsultorController(ConsultorService service) {
+        this.service = service;
+    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<ConsultorDTO> findById(@PathVariable Long id) {
-		ConsultorDTO consultorDTO = service.findById(id);
-		return ResponseEntity.ok(consultorDTO);
-	}
+    @GetMapping
+    public ResponseEntity<List<ConsultorDTO>> findAll() {
+        List<ConsultorDTO> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
 
-	@GetMapping("/buscar")
-	public ResponseEntity<List<ConsultorDTO>> find(
-			@RequestParam(value = "nome", required = false) String nome,
-			@RequestParam(value = "cidade", required = false) String cidade,
-			@RequestParam(value = "estado", required = false) String estado,
-			@RequestParam(value = "formacao", required = false) String formacao,
-			@RequestParam(value = "anoFormacaoInicio", required = false) Integer anoInicio,
-			@RequestParam(value = "anoFormacaoFim", required = false) Integer anoFim,
-			@RequestParam(value = "idadeMin", required = false) Integer idadeMinima,
-			@RequestParam(value = "idadeMax", required = false) Integer idadeMaxima) {
-		if (nome != null) {
-			List<ConsultorDTO> list = service.findByNome(nome);
-			return ResponseEntity.ok(list);
-		} else if (cidade != null) {
-			List<ConsultorDTO> list = service.findByCidade(cidade);
-			return ResponseEntity.ok(list);
-		} else if (estado != null) {
-			List<ConsultorDTO> list = service.findByEstado(estado);
-			return ResponseEntity.ok(list);		
-		} else if (formacao != null) {
-			List<ConsultorDTO> list = service.findByFormacao(formacao);
-			return ResponseEntity.ok(list);
-		} else if (anoInicio != null && anoFim != null) {
-			List<ConsultorDTO> list = service.findByFormadosByPeriodo(anoInicio, anoFim);
-			return ResponseEntity.ok(list);
-		} else if (idadeMinima != null && idadeMaxima != null) {
-			List<ConsultorDTO> list = service.findByIdade(idadeMinima, idadeMaxima);
-			return ResponseEntity.ok(list);
-		}else {
-			List<ConsultorDTO> list = service.findAll();
-			return ResponseEntity.ok().body(list);
-		}
-	}
-	
-	@PostMapping
-	public ResponseEntity<ConsultorDTO> insert(@RequestBody @Valid ConsultorDTO consultorDTO) {
-		consultorDTO = service.insert(consultorDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId())
-				.toUri();
-		return ResponseEntity.created(uri).body(consultorDTO);
-	}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ConsultorDTO> findById(@PathVariable Long id) {
+        ConsultorDTO consultorDTO = service.findById(id);
+        return ResponseEntity.ok(consultorDTO);
+    }
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
-			consultorDTO = service.update(id, consultorDTO);
-			return ResponseEntity.ok().body(consultorDTO);
-	}
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ConsultorDTO>> find(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "cidade", required = false) String cidade,
+            @RequestParam(value = "estado", required = false) String estado,
+            @RequestParam(value = "formacao", required = false) String formacao,
+            @RequestParam(value = "anoFormacaoInicio", required = false) Integer anoInicio,
+            @RequestParam(value = "anoFormacaoFim", required = false) Integer anoFim,
+            @RequestParam(value = "idadeMin", required = false) Integer idadeMinima,
+            @RequestParam(value = "idadeMax", required = false) Integer idadeMaxima) {
+        if (nome != null) {
+            List<ConsultorDTO> list = service.findByNome(nome);
+            return ResponseEntity.ok(list);
+        } else if (cidade != null) {
+            List<ConsultorDTO> list = service.findByCidade(cidade);
+            return ResponseEntity.ok(list);
+        } else if (estado != null) {
+            List<ConsultorDTO> list = service.findByEstado(estado);
+            return ResponseEntity.ok(list);
+        } else if (formacao != null) {
+            List<ConsultorDTO> list = service.findByFormacao(formacao);
+            return ResponseEntity.ok(list);
+        } else if (anoInicio != null && anoFim != null) {
+            List<ConsultorDTO> list = service.findByFormadosByPeriodo(anoInicio, anoFim);
+            return ResponseEntity.ok(list);
+        } else if (idadeMinima != null && idadeMaxima != null) {
+            List<ConsultorDTO> list = service.findByIdade(idadeMinima, idadeMaxima);
+            return ResponseEntity.ok(list);
+        } else {
+            List<ConsultorDTO> list = service.findAll();
+            return ResponseEntity.ok().body(list);
+        }
+    }
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    @PostMapping
+    public ResponseEntity<ConsultorDTO> insert(@RequestBody @Valid ConsultorDTO consultorDTO) {
+        consultorDTO = service.insert(consultorDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(consultorDTO);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
+        consultorDTO = service.update(id, consultorDTO);
+        return ResponseEntity.ok().body(consultorDTO);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

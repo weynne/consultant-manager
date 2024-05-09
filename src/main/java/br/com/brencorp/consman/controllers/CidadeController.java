@@ -12,7 +12,8 @@ import br.com.brencorp.consman.dto.CidadeDTO;
 import br.com.brencorp.consman.services.CidadeService;
 import jakarta.validation.Valid;
 
-@RestController@CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(value = "/cidades")
 public class CidadeController {
 

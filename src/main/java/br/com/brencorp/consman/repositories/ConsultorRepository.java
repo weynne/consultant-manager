@@ -11,6 +11,8 @@ import br.com.brencorp.consman.entities.Consultor;
 @Repository
 public interface ConsultorRepository extends JpaRepository<Consultor, Long> {
 
+	@Query("SELECT c FROM Consultor c "
+			+ "WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
 	List<Consultor> findByNomeContainingIgnoreCase(String nome);
 
 	@Query("SELECT c FROM Consultor c "
