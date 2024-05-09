@@ -18,65 +18,65 @@ import java.util.List;
 @Service
 public class ProjetoService {
 
-	private final ProjetoRepository repository;
+    private final ProjetoRepository repository;
 
-	@Autowired
-	public ProjetoService(ProjetoRepository repository) {
-		this.repository = repository;
-	}
+    @Autowired
+    public ProjetoService(ProjetoRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional(readOnly = true)
-	public List<ProjetoDTO> findAll() {
-		return repository.findAll()
-				.stream()
-				.map(ProjetoDTO::new)
-				.toList();
-	}
+    @Transactional(readOnly = true)
+    public List<ProjetoDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(ProjetoDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public ProjetoDTO findById(Long id) {
-		return repository.findById(id)
-				.map(ProjetoDTO::new)
-				.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ProjetoDTO> findByNome(String nome) {
-		return repository.findByNomeContainingIgnoreCase(nome)
-				.stream()
-				.map(ProjetoDTO::new)
-				.toList();
-	}
+    @Transactional(readOnly = true)
+    public ProjetoDTO findById(Long id) {
+        return repository.findById(id)
+                .map(ProjetoDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
-	@Transactional
-	public ProjetoDTO insert(ProjetoDTO projetoDTO) {
-		Projeto projeto = ProjetoServiceUtil.insert(projetoDTO);
-		return new ProjetoDTO(repository.save(projeto));
-	}
+    @Transactional(readOnly = true)
+    public List<ProjetoDTO> findByNome(String nome) {
+        return repository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(ProjetoDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public ProjetoDTO update(Long id, ProjetoDTO projetoDTO) {
-		try {
-			Projeto projeto = repository.getReferenceById(id);
-			ProjetoServiceUtil.update(projeto, projetoDTO);
-			return new ProjetoDTO(repository.save(projeto));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    @Transactional
+    public ProjetoDTO insert(ProjetoDTO projetoDTO) {
+        Projeto projeto = ProjetoServiceUtil.insert(projetoDTO);
+        return new ProjetoDTO(repository.save(projeto));
+    }
 
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (repository.existsById(id)) {
-				repository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional
+    public ProjetoDTO update(Long id, ProjetoDTO projetoDTO) {
+        try {
+            Projeto projeto = repository.getReferenceById(id);
+            ProjetoServiceUtil.update(projeto, projetoDTO);
+            return new ProjetoDTO(repository.save(projeto));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

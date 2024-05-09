@@ -18,73 +18,73 @@ import java.util.List;
 @Service
 public class ProfissaoService {
 
-	private final ProfissaoRepository repository;
+    private final ProfissaoRepository repository;
 
-	@Autowired
-	public ProfissaoService(ProfissaoRepository repository) {
-		this.repository = repository;
-	}
+    @Autowired
+    public ProfissaoService(ProfissaoRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional(readOnly = true)
-	public List<ProfissaoDTO> findAll() {
-		return repository.findAll()
-				.stream()
-				.map(ProfissaoDTO::new)
-				.toList();
-	}
+    @Transactional(readOnly = true)
+    public List<ProfissaoDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(ProfissaoDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public ProfissaoDTO findById(Long id) {
-		return repository.findById(id)
-				.map(ProfissaoDTO::new)
-				.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ProfissaoDTO> findByNome(String nome) {
-		return repository.findByNomeContainingIgnoreCase(nome)
-				.stream()
-				.map(ProfissaoDTO::new)
-				.toList();
-	}
-	
-	@Transactional(readOnly = true)
-	public List<ProfissaoDTO> findByArea(String area) {
-		return repository.findByAreaContainingIgnoreCase(area)
-				.stream()
-				.map(ProfissaoDTO::new)
-				.toList();
-	}
+    @Transactional(readOnly = true)
+    public ProfissaoDTO findById(Long id) {
+        return repository.findById(id)
+                .map(ProfissaoDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
-	@Transactional
-	public ProfissaoDTO insert(ProfissaoDTO profissaoDTO) {
-		Profissao profissao = ProfissaoServiceUtil.insert(profissaoDTO);
-		return new ProfissaoDTO(repository.save(profissao));
-	}
+    @Transactional(readOnly = true)
+    public List<ProfissaoDTO> findByNome(String nome) {
+        return repository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(ProfissaoDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public ProfissaoDTO update(Long id, ProfissaoDTO profissaoDTO) {
-		try {
-			Profissao profissao = repository.getReferenceById(id);
-			ProfissaoServiceUtil.update(profissao, profissaoDTO);
-			return new ProfissaoDTO(repository.save(profissao));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-	
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (repository.existsById(id)) {
-				repository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional(readOnly = true)
+    public List<ProfissaoDTO> findByArea(String area) {
+        return repository.findByAreaContainingIgnoreCase(area)
+                .stream()
+                .map(ProfissaoDTO::new)
+                .toList();
+    }
+
+    @Transactional
+    public ProfissaoDTO insert(ProfissaoDTO profissaoDTO) {
+        Profissao profissao = ProfissaoServiceUtil.insert(profissaoDTO);
+        return new ProfissaoDTO(repository.save(profissao));
+    }
+
+    @Transactional
+    public ProfissaoDTO update(Long id, ProfissaoDTO profissaoDTO) {
+        try {
+            Profissao profissao = repository.getReferenceById(id);
+            ProfissaoServiceUtil.update(profissao, profissaoDTO);
+            return new ProfissaoDTO(repository.save(profissao));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

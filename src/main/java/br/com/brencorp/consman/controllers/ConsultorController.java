@@ -1,16 +1,15 @@
 package br.com.brencorp.consman.controllers;
 
-import java.net.URI;
-import java.util.List;
-
+import br.com.brencorp.consman.dto.ConsultorDTO;
+import br.com.brencorp.consman.services.ConsultorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.dto.ConsultorDTO;
-import br.com.brencorp.consman.services.ConsultorService;
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")

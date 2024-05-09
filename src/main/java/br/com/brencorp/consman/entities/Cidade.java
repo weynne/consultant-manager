@@ -15,26 +15,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Cidade implements Serializable{
-	@Serial
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Setter(AccessLevel.NONE)
-	private Long id;
-	@NotBlank(message = "Nome da cidade é obrigatório")
-	private String nome;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "estado_id")
-	private Estado estado;
-	@JsonIgnore
-	@OneToMany(mappedBy = "cidade")
-	@Setter(AccessLevel.NONE)
-	private List<Consultor> consultores = new ArrayList<>();
+public class Cidade implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public Cidade(String nome, Estado estado) {
-		this.nome = nome;
-		this.estado = estado;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    @NotBlank(message = "Nome da cidade é obrigatório")
+    private String nome;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
+    @JsonIgnore
+    @OneToMany(mappedBy = "cidade")
+    @Setter(AccessLevel.NONE)
+    private List<Consultor> consultores = new ArrayList<>();
+
+    public Cidade(String nome, Estado estado) {
+        this.nome = nome;
+        this.estado = estado;
+    }
 }

@@ -18,65 +18,65 @@ import java.util.List;
 @Service
 public class EstadoService {
 
-	private final EstadoRepository repository;
+    private final EstadoRepository repository;
 
-	@Autowired
-	public EstadoService(EstadoRepository repository) {
-		this.repository = repository;
-	}
+    @Autowired
+    public EstadoService(EstadoRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional(readOnly = true)
-	public List<EstadoDTO> findAll() {
-		return repository.findAll()
-				.stream()
-				.map(EstadoDTO::new)
-				.toList();
-	}
-
-	@Transactional(readOnly = true)
-	public EstadoDTO findById(Long id) {
-		return repository.findById(id)
-				.map(EstadoDTO::new)
-				.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
-	
-	@Transactional(readOnly = true)
-	public List<EstadoDTO> findByUf(String uf) {
-		return repository.findByUfContainingIgnoreCase(uf)
+    @Transactional(readOnly = true)
+    public List<EstadoDTO> findAll() {
+        return repository.findAll()
                 .stream()
-				.map(EstadoDTO::new)
-				.toList();
-	}
+                .map(EstadoDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public EstadoDTO insert(EstadoDTO estadoDTO) {
-		Estado estado = EstadoServiceUtil.insert(estadoDTO);
-		return new EstadoDTO(repository.save(estado));
-	}
+    @Transactional(readOnly = true)
+    public EstadoDTO findById(Long id) {
+        return repository.findById(id)
+                .map(EstadoDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
-	@Transactional
-	public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
-		try {
-			Estado estado = repository.getReferenceById(id);
-			EstadoServiceUtil.update(estado, estadoDTO);
-			return new EstadoDTO(repository.save(estado));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    @Transactional(readOnly = true)
+    public List<EstadoDTO> findByUf(String uf) {
+        return repository.findByUfContainingIgnoreCase(uf)
+                .stream()
+                .map(EstadoDTO::new)
+                .toList();
+    }
 
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (repository.existsById(id)) {
-				repository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional
+    public EstadoDTO insert(EstadoDTO estadoDTO) {
+        Estado estado = EstadoServiceUtil.insert(estadoDTO);
+        return new EstadoDTO(repository.save(estado));
+    }
+
+    @Transactional
+    public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
+        try {
+            Estado estado = repository.getReferenceById(id);
+            EstadoServiceUtil.update(estado, estadoDTO);
+            return new EstadoDTO(repository.save(estado));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

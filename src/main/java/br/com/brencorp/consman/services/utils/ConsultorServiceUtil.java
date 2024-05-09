@@ -1,15 +1,10 @@
 package br.com.brencorp.consman.services.utils;
 
+import br.com.brencorp.consman.dto.ConsultorDTO;
+import br.com.brencorp.consman.entities.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-
-import br.com.brencorp.consman.dto.ConsultorDTO;
-import br.com.brencorp.consman.entities.Cat;
-import br.com.brencorp.consman.entities.Consultor;
-import br.com.brencorp.consman.entities.FormacaoAcademica;
-import br.com.brencorp.consman.entities.Profissao;
-import br.com.brencorp.consman.entities.Projeto;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConsultorServiceUtil {

@@ -13,15 +13,15 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class ProjetoDTO implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@Setter(AccessLevel.NONE)
-	private Long id;
-	private String nome;
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    private String nome;
 
-	public ProjetoDTO(Projeto projeto) {
-		id = projeto.getId();
-		nome = projeto.getNome();
-	}
+    public ProjetoDTO(Projeto projeto) {
+        id = projeto.getId();
+        nome = projeto.getNome();
+    }
 }

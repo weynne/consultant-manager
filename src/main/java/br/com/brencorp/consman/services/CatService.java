@@ -18,57 +18,57 @@ import java.util.List;
 @Service
 public class CatService {
 
-	private final CatRepository repository;
+    private final CatRepository repository;
 
-	@Autowired
-	public CatService(CatRepository repository) {
-		this.repository = repository;
-	}
+    @Autowired
+    public CatService(CatRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional(readOnly = true)
-	public List<CatDTO> findAll() {
-		return repository.findAll()
-				.stream()
-				.map(CatDTO::new)
-				.toList();
-	}
+    @Transactional(readOnly = true)
+    public List<CatDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(CatDTO::new)
+                .toList();
+    }
 
-	@Transactional(readOnly = true)
-	public CatDTO findById(Long id) {
-		return repository.findById(id)
-				.map(CatDTO::new)
-				.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
+    @Transactional(readOnly = true)
+    public CatDTO findById(Long id) {
+        return repository.findById(id)
+                .map(CatDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
-	@Transactional
-	public CatDTO insert(CatDTO catDTO) {
-		Cat cat = CatServiceUtil.insert(catDTO);
-		return new CatDTO(repository.save(cat));
-	}
+    @Transactional
+    public CatDTO insert(CatDTO catDTO) {
+        Cat cat = CatServiceUtil.insert(catDTO);
+        return new CatDTO(repository.save(cat));
+    }
 
-	@Transactional
-	public CatDTO update(Long id, CatDTO catDTO) {
-		try {
-			Cat cat = repository.getReferenceById(id);
-			CatServiceUtil.update(cat, catDTO);
-			return new CatDTO(repository.save(cat));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
+    @Transactional
+    public CatDTO update(Long id, CatDTO catDTO) {
+        try {
+            Cat cat = repository.getReferenceById(id);
+            CatServiceUtil.update(cat, catDTO);
+            return new CatDTO(repository.save(cat));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
+    }
 
-	@Transactional
-	public void delete(Long id) {
-		try {
-			if (repository.existsById(id)) {
-				repository.deleteById(id);
-			} else {
-				throw new ResourceNotFoundException(id);
-			}
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
+    @Transactional
+    public void delete(Long id) {
+        try {
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

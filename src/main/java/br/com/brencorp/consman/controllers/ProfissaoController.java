@@ -16,58 +16,58 @@ import java.util.List;
 @RequestMapping(value = "/profissoes")
 public class ProfissaoController {
 
-	private final ProfissaoService service;
+    private final ProfissaoService service;
 
-	@Autowired
-	public ProfissaoController(ProfissaoService service) {
-		this.service = service;
-	}
+    @Autowired
+    public ProfissaoController(ProfissaoService service) {
+        this.service = service;
+    }
 
-	@GetMapping
-	public ResponseEntity<List<ProfissaoDTO>> findAll() {
-		List<ProfissaoDTO> list = service.findAll();
-		return ResponseEntity.ok().body(list);
-	}
+    @GetMapping
+    public ResponseEntity<List<ProfissaoDTO>> findAll() {
+        List<ProfissaoDTO> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProfissaoDTO> findById(@PathVariable Long id) {
-		ProfissaoDTO profissaoDTO = service.findById(id);
-		return ResponseEntity.ok(profissaoDTO);
-	}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ProfissaoDTO> findById(@PathVariable Long id) {
+        ProfissaoDTO profissaoDTO = service.findById(id);
+        return ResponseEntity.ok(profissaoDTO);
+    }
 
-	@GetMapping("/buscar")
-	public ResponseEntity<List<ProfissaoDTO>> find(
-			@RequestParam(value = "nome", required = false) String nome,
-			@RequestParam(value = "area", required = false) String area) {
-		if (nome != null) {
-			List<ProfissaoDTO> list = service.findByNome(nome);
-			return ResponseEntity.ok(list);
-		} else if (area != null) {
-			List<ProfissaoDTO> list = service.findByArea(area);
-			return ResponseEntity.ok(list);
-		} else {
-			List<ProfissaoDTO> list = service.findAll();
-			return ResponseEntity.ok().body(list);
-		}
-	}
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ProfissaoDTO>> find(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "area", required = false) String area) {
+        if (nome != null) {
+            List<ProfissaoDTO> list = service.findByNome(nome);
+            return ResponseEntity.ok(list);
+        } else if (area != null) {
+            List<ProfissaoDTO> list = service.findByArea(area);
+            return ResponseEntity.ok(list);
+        } else {
+            List<ProfissaoDTO> list = service.findAll();
+            return ResponseEntity.ok().body(list);
+        }
+    }
 
-	@PostMapping
-	public ResponseEntity<ProfissaoDTO> insert(@RequestBody @Valid ProfissaoDTO profissaoDTO) {
-		profissaoDTO = service.insert(profissaoDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId())
-				.toUri();
-		return ResponseEntity.created(uri).body(profissaoDTO);
-	}
+    @PostMapping
+    public ResponseEntity<ProfissaoDTO> insert(@RequestBody @Valid ProfissaoDTO profissaoDTO) {
+        profissaoDTO = service.insert(profissaoDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(profissaoDTO);
+    }
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProfissaoDTO> update(@PathVariable Long id, @RequestBody @Valid ProfissaoDTO profissaoDTO) {
-		profissaoDTO = service.update(id, profissaoDTO);
-		return ResponseEntity.ok().body(profissaoDTO);
-	}
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProfissaoDTO> update(@PathVariable Long id, @RequestBody @Valid ProfissaoDTO profissaoDTO) {
+        profissaoDTO = service.update(id, profissaoDTO);
+        return ResponseEntity.ok().body(profissaoDTO);
+    }
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

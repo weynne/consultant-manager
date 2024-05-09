@@ -16,18 +16,18 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class EstadoDTO implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@Setter(AccessLevel.NONE)
-	private Long id;
-	@NotBlank(message = "Sigla do estado é obrigatório")
-	@Pattern(regexp = "[A-Z]{2}", message = "Formato do estado inválido. Exemplo válido: PE")
-	@Column(unique = true)
-	private String uf;
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    @NotBlank(message = "Sigla do estado é obrigatório")
+    @Pattern(regexp = "[A-Z]{2}", message = "Formato do estado inválido. Exemplo válido: PE")
+    @Column(unique = true)
+    private String uf;
 
-	public EstadoDTO(Estado estado) {
-		id = estado.getId();
-		uf = estado.getUf();
-	}
+    public EstadoDTO(Estado estado) {
+        id = estado.getId();
+        uf = estado.getUf();
+    }
 }

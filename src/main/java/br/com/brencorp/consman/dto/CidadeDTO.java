@@ -15,18 +15,18 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CidadeDTO implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@Setter(AccessLevel.NONE)
-	private Long id;
-	@NotBlank(message = "Nome da cidade é obrigatório")
-	private String nome;
-	private Estado estado;
-	
-	public CidadeDTO(Cidade cidade) {
-		id = cidade.getId();
-		nome = cidade.getNome();
-		estado = cidade.getEstado();
-	}
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    @NotBlank(message = "Nome da cidade é obrigatório")
+    private String nome;
+    private Estado estado;
+
+    public CidadeDTO(Cidade cidade) {
+        id = cidade.getId();
+        nome = cidade.getNome();
+        estado = cidade.getEstado();
+    }
 }

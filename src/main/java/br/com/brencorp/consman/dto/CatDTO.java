@@ -1,7 +1,10 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.Cat;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,15 +13,15 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CatDTO implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@Setter(AccessLevel.NONE)
-	private Long id;
-	private String descricao;
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    private String descricao;
 
-	public CatDTO(Cat cat) {
-		id = cat.getId();
-		descricao = cat.getDescricao();
-	}
+    public CatDTO(Cat cat) {
+        id = cat.getId();
+        descricao = cat.getDescricao();
+    }
 }

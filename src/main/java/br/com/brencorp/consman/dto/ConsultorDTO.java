@@ -1,31 +1,24 @@
 package br.com.brencorp.consman.dto;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
-
-import br.com.brencorp.consman.utils.ConverteData;
+import br.com.brencorp.consman.entities.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-
-import br.com.brencorp.consman.entities.Cat;
-import br.com.brencorp.consman.entities.Cidade;
-import br.com.brencorp.consman.entities.Consultor;
-import br.com.brencorp.consman.entities.FormacaoAcademica;
-import br.com.brencorp.consman.entities.Profissao;
-import br.com.brencorp.consman.entities.Projeto;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
