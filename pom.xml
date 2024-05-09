@@ -64,6 +64,12 @@
 			<version>1.18.32</version><!--$NO-MVN-MAN-VER$-->
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
