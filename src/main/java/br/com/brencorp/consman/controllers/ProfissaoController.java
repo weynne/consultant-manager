@@ -1,24 +1,27 @@
 package br.com.brencorp.consman.controllers;
 
-import java.net.URI;
-import java.util.List;
-
+import br.com.brencorp.consman.dto.ProfissaoDTO;
+import br.com.brencorp.consman.services.ProfissaoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.dto.ProfissaoDTO;
-import br.com.brencorp.consman.services.ProfissaoService;
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(value = "/profissoes")
 public class ProfissaoController {
 
+	private final ProfissaoService service;
+
 	@Autowired
-	private ProfissaoService service;
+	public ProfissaoController(ProfissaoService service) {
+		this.service = service;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<ProfissaoDTO>> findAll() {

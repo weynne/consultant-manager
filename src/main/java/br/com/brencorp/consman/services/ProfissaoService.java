@@ -1,14 +1,5 @@
 package br.com.brencorp.consman.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.brencorp.consman.dto.ProfissaoDTO;
 import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.repositories.ProfissaoRepository;
@@ -16,35 +7,53 @@ import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.ProfissaoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ProfissaoService {
 
+	private final ProfissaoRepository repository;
+
 	@Autowired
-	private ProfissaoRepository repository;
+	public ProfissaoService(ProfissaoRepository repository) {
+		this.repository = repository;
+	}
 
 	@Transactional(readOnly = true)
 	public List<ProfissaoDTO> findAll() {
-		List<Profissao> profissoes = repository.findAll();
-		return profissoes.stream().map(ProfissaoDTO::new).collect(Collectors.toList());
+		return repository.findAll()
+				.stream()
+				.map(ProfissaoDTO::new)
+				.toList();
 	}
 
 	@Transactional(readOnly = true)
 	public ProfissaoDTO findById(Long id) {
-		Profissao profissao = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		return new ProfissaoDTO(profissao);
+		return repository.findById(id)
+				.map(ProfissaoDTO::new)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	@Transactional(readOnly = true)
 	public List<ProfissaoDTO> findByNome(String nome) {
-		List<Profissao> profissoes = repository.findByNomeContainingIgnoreCase(nome);
-		return profissoes.stream().map(ProfissaoDTO::new).collect(Collectors.toList());
+		return repository.findByNomeContainingIgnoreCase(nome)
+				.stream()
+				.map(ProfissaoDTO::new)
+				.toList();
 	}
 	
 	@Transactional(readOnly = true)
 	public List<ProfissaoDTO> findByArea(String area) {
-		List<Profissao> profissoes = repository.findByAreaContainingIgnoreCase(area);
-		return profissoes.stream().map(ProfissaoDTO::new).collect(Collectors.toList());
+		return repository.findByAreaContainingIgnoreCase(area)
+				.stream()
+				.map(ProfissaoDTO::new)
+				.toList();
 	}
 
 	@Transactional

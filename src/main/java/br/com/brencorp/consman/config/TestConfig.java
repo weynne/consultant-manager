@@ -61,10 +61,10 @@ public class TestConfig implements CommandLineRunner {
 
         formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10));
 
-        Profissao prof1 = new Profissao(null, "Desenvolvedor", "Backend");
-        Profissao prof2 = new Profissao(null, "Desenvolvedor", "Frontend");
-        Profissao prof3 = new Profissao(null, "Engenheiro de Produção", "Dados");
-        Profissao prof4 = new Profissao(null, "Biólogo", "Aves Silvestres");
+        Profissao prof1 = new Profissao("Desenvolvedor", "Backend");
+        Profissao prof2 = new Profissao("Desenvolvedor", "Frontend");
+        Profissao prof3 = new Profissao("Engenheiro de Produção", "Dados");
+        Profissao prof4 = new Profissao("Biólogo", "Aves Silvestres");
 
         profissaoRepository.saveAll(Arrays.asList(prof1, prof2, prof3, prof4));
 
