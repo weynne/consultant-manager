@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjetoServiceUtil {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static Projeto insert(ProjetoDTO projetoDTO) {
-        return modelMapper.map(projetoDTO, Projeto.class);
+        return MODEL_MAPPER.map(projetoDTO, Projeto.class);
     }
 
     public static void update(Projeto projeto, ProjetoDTO projetoDTO) {

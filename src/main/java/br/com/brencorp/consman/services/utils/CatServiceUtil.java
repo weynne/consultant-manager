@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CatServiceUtil {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static Cat insert(CatDTO catDTO) {
-        return modelMapper.map(catDTO, Cat.class);
+        return MODEL_MAPPER.map(catDTO, Cat.class);
     }
 
     public static void update(Cat cat, CatDTO catDTO) {

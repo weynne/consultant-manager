@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EstadoServiceUtil {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static Estado insert(EstadoDTO estadoDTO) {
-        return modelMapper.map(estadoDTO, Estado.class);
+        return MODEL_MAPPER.map(estadoDTO, Estado.class);
     }
 
     public static void update(Estado estado, EstadoDTO estadoDTO) {

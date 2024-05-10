@@ -1,6 +1,7 @@
 package br.com.brencorp.consman.controllers;
 
 import br.com.brencorp.consman.dto.ConsultorDTO;
+import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.services.ConsultorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,17 @@ public class ConsultorController {
         return ResponseEntity.created(uri).body(consultorDTO);
     }
 
+    @PostMapping("/consultores/{idConsultor}/formacoes")
+    public ResponseEntity<ConsultorDTO> insertFormacaoAoConsultor(@PathVariable Long idConsultor, @RequestBody @Valid FormacaoAcademica formacaoAcademica) {
+        ConsultorDTO formacaoCriada = service.insertFormacaoAoConsultor(idConsultor, formacaoAcademica);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(formacaoCriada.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody @Valid ConsultorDTO consultorDTO) {
         consultorDTO = service.update(id, consultorDTO);
@@ -86,6 +98,12 @@ public class ConsultorController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/consultores/{idConsultor}/formacoes/{idFormacao}")
+    public ResponseEntity<Void> deleteFormacaoDoConsultor(@PathVariable Long idConsultor, @PathVariable Long idFormacao) {
+        service.deleteFormacaoDoConsultor(idConsultor, idFormacao);
         return ResponseEntity.noContent().build();
     }
 }

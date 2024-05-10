@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CidadeServiceUtil {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static Cidade insert(CidadeDTO cidadeDTO) {
-        return modelMapper.map(cidadeDTO, Cidade.class);
+        return MODEL_MAPPER.map(cidadeDTO, Cidade.class);
     }
 
     public static void update(Cidade cidade, CidadeDTO cidadeDTO) {

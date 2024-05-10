@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FormacaoAcademicaServiceUtil {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static FormacaoAcademica insert(FormacaoAcademicaDTO formacaoDTO) {
-        return modelMapper.map(formacaoDTO, FormacaoAcademica.class);
+        return MODEL_MAPPER.map(formacaoDTO, FormacaoAcademica.class);
     }
 
     public static void update(FormacaoAcademica formacao, FormacaoAcademicaDTO formacaoDTO) {
