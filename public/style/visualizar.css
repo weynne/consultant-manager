@@ -1,0 +1,48 @@
+.cardsContainer{
+    background: #ffff;
+    border-radius: 4px;
+    margin-bottom: 80px;
+    margin-top: 40px;
+}
+
+.cardsArea{
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.MuiCard-root{
+    /* max-width: fit-content; */
+    min-width: min-content;
+    max-width: 380px;
+}
+
+.cardTitles{
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.visuButtons{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 16px;
+}
+
+.cardContent p{
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.cardContent span {
+    font-weight: normal;
+    margin-left: 8px;
+}

@@ -1,0 +1,39 @@
+
+*{
+    margin: 0px;
+}
+
+body{
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+ul{
+    padding: 0px;
+    list-style: none;
+}
+
+a{
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    color: inherit; 
+}
+
+.MuiMenuItem-root a{
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+p{
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    color: inherit;
+}
+
+:root{
+    --gradient-sky: linear-gradient(180deg, rgba(22,98,192,1) 0%, rgba(129,200,255,1) 100%);
+}
+
+.bodyContainer{
+    height: 100%;
+    background: url(../img/waves.svg) no-repeat, var(--gradient-sky);
+    background-size: calc(100%), cover;
+}

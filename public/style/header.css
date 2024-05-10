@@ -1,0 +1,32 @@
+.headerContainer{
+    height: 7.81%;
+}
+
+.header{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    
+    box-sizing: border-box;
+    max-width: 87.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.headerUl{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+}
+
+.headerUl li a{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    color: #ffff;
+}
