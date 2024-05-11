@@ -82,7 +82,8 @@ public class ConsultorController {
     public ResponseEntity<ConsultorDTO> insertEntidadeAoConsultor(
             @PathVariable Long idConsultor,
             @RequestParam(value = "formacao", required = false) Long idFormacao,
-            @RequestParam(value = "profissao", required = false) Long idProfissao) {
+            @RequestParam(value = "profissao", required = false) Long idProfissao,
+            @RequestParam(value = "projeto", required = false) Long idProjeto) {
         if (idFormacao != null) {
             ConsultorDTO formacaoCriada = service.insertFormacaoAoConsultor(idConsultor, idFormacao);
             URI uri = ServletUriComponentsBuilder
@@ -97,6 +98,14 @@ public class ConsultorController {
                     .fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(profissaoCriada.getId())
+                    .toUri();
+            return ResponseEntity.created(uri).build();
+        } else if (idProjeto != null) {
+            ConsultorDTO projetoCriado = service.insertProjetoAoConsultor(idConsultor, idProjeto);
+            URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(projetoCriado.getId())
                     .toUri();
             return ResponseEntity.created(uri).build();
         } else {
@@ -120,12 +129,16 @@ public class ConsultorController {
     public ResponseEntity<Void> deleteEntidadeDoConsultor(
             @PathVariable Long idConsultor,
             @RequestParam(value = "formacao", required = false) Long idFormacao,
-            @RequestParam(value = "profissao", required = false) Long idProfissao) {
+            @RequestParam(value = "profissao", required = false) Long idProfissao,
+            @RequestParam(value = "projeto", required = false) Long idProjeto) {
         if (idFormacao != null) {
             service.deleteFormacaoDoConsultor(idConsultor, idFormacao);
             return ResponseEntity.noContent().build();
         } else if (idProfissao != null) {
             service.deleteProfissaoDoConsultor(idConsultor, idProfissao);
+            return ResponseEntity.noContent().build();
+        } else if (idProjeto != null) {
+            service.deleteProjetoDoConsultor(idConsultor, idProjeto);
             return ResponseEntity.noContent().build();
         } else {
             throw new InvalidParametersException("É necessário informar o id da entidade a ser deletada.");
