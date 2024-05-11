@@ -12,17 +12,17 @@ public interface FormacaoAcademicaRepository extends JpaRepository<FormacaoAcade
 
     @Query("SELECT f FROM FormacaoAcademica f "
             + "WHERE LOWER(f.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
-    List<FormacaoAcademica> findByNomeContainingIgnoreCase(String nome);
+    List<FormacaoAcademica> findByNome(String nome);
 
     @Query("SELECT f FROM FormacaoAcademica f "
             + "WHERE LOWER(f.instituicao) LIKE LOWER(CONCAT('%', :instituicao, '%'))")
-    List<FormacaoAcademica> findByInstituicaoContainingIgnoreCase(String instituicao);
+    List<FormacaoAcademica> findByInstituicao(String instituicao);
 
     @Query("SELECT f FROM FormacaoAcademica f "
             + "WHERE LOWER(f.tipo) LIKE LOWER(CONCAT('%', :tipo, '%'))")
-    List<FormacaoAcademica> findByTipoContainingIgnoreCase(String tipo);
+    List<FormacaoAcademica> findByTipo(String tipo);
 
     @Query("SELECT f FROM FormacaoAcademica f "
             + "WHERE f.anoConclusao BETWEEN :anoInicio AND :anoFim")
-    List<FormacaoAcademica> findByAnoConclusaoBetween(Integer anoInicio, Integer anoFim);
+    List<FormacaoAcademica> findByAnoConclusao(Integer anoInicio, Integer anoFim);
 }

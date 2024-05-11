@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.FormacaoAcademicaDTO;
 import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.FormacaoAcademicaServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class FormacaoAcademicaService {
     public FormacaoAcademicaDTO findById(Long id) {
         return repository.findById(id)
                 .map(FormacaoAcademicaDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<FormacaoAcademicaDTO> findByNome(String nome) {
-        return repository.findByNomeContainingIgnoreCase(nome)
+        return repository.findByNome(nome)
                 .stream()
                 .map(FormacaoAcademicaDTO::new)
                 .toList();
@@ -50,7 +51,7 @@ public class FormacaoAcademicaService {
 
     @Transactional(readOnly = true)
     public List<FormacaoAcademicaDTO> findByInstituicao(String instituicao) {
-        return repository.findByInstituicaoContainingIgnoreCase(instituicao)
+        return repository.findByInstituicao(instituicao)
                 .stream()
                 .map(FormacaoAcademicaDTO::new)
                 .toList();
@@ -58,7 +59,7 @@ public class FormacaoAcademicaService {
 
     @Transactional(readOnly = true)
     public List<FormacaoAcademicaDTO> findByTipo(String tipo) {
-        return repository.findByTipoContainingIgnoreCase(tipo)
+        return repository.findByTipo(tipo)
                 .stream()
                 .map(FormacaoAcademicaDTO::new)
                 .toList();
@@ -66,7 +67,7 @@ public class FormacaoAcademicaService {
 
     @Transactional(readOnly = true)
     public List<FormacaoAcademicaDTO> findFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
-        return repository.findByAnoConclusaoBetween(anoInicio, anoFim)
+        return repository.findByAnoConclusao(anoInicio, anoFim)
                 .stream()
                 .map(FormacaoAcademicaDTO::new)
                 .toList();
@@ -85,7 +86,7 @@ public class FormacaoAcademicaService {
             FormacaoAcademicaServiceUtil.update(formacao, formacaoDTO);
             return new FormacaoAcademicaDTO(repository.save(formacao));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage());
         }
     }
 
@@ -95,10 +96,10 @@ public class FormacaoAcademicaService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }

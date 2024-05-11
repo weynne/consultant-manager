@@ -3,13 +3,15 @@ package br.com.brencorp.consman.services;
 import br.com.brencorp.consman.dto.ConsultorDTO;
 import br.com.brencorp.consman.entities.Consultor;
 import br.com.brencorp.consman.entities.FormacaoAcademica;
+import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
+import br.com.brencorp.consman.repositories.ProfissaoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.ConsultorServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,16 +23,15 @@ import java.util.List;
 @Service
 public class ConsultorService {
 
-    public static final String CONSULTOR_NAO_ENCONTRADO = ". Consultor não encontrado.";
-    public static final String FORMACAO_NAO_ENCONTRADA = ". Formação acadêmica não encontrada.";
-
     private final ConsultorRepository consultorRepository;
     private final FormacaoAcademicaRepository formacaoAcademicaRepository;
+    private final ProfissaoRepository profissaoRepository;
 
     @Autowired
-    public ConsultorService(ConsultorRepository consultorRepository, FormacaoAcademicaRepository formacaoAcademicaRepository) {
+    public ConsultorService(ConsultorRepository consultorRepository, FormacaoAcademicaRepository formacaoAcademicaRepository, ProfissaoRepository profissaoRepository) {
         this.consultorRepository = consultorRepository;
         this.formacaoAcademicaRepository = formacaoAcademicaRepository;
+        this.profissaoRepository = profissaoRepository;
     }
 
     @Transactional(readOnly = true)
@@ -45,12 +46,12 @@ public class ConsultorService {
     public ConsultorDTO findById(Long id) {
         return consultorRepository.findById(id)
                 .map(ConsultorDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<ConsultorDTO> findByNome(String nome) {
-        return consultorRepository.findByNomeContainingIgnoreCase(nome)
+        return consultorRepository.findByNome(nome)
                 .stream()
                 .map(ConsultorDTO::new)
                 .toList();
@@ -58,7 +59,7 @@ public class ConsultorService {
 
     @Transactional(readOnly = true)
     public List<ConsultorDTO> findByCidade(String cidade) {
-        return consultorRepository.findByCidadeContainingIgnoreCase(cidade)
+        return consultorRepository.findByCidade(cidade)
                 .stream()
                 .map(ConsultorDTO::new)
                 .toList();
@@ -66,7 +67,7 @@ public class ConsultorService {
 
     @Transactional(readOnly = true)
     public List<ConsultorDTO> findByEstado(String estado) {
-        return consultorRepository.findByEstadoContainingIgnoreCase(estado)
+        return consultorRepository.findByEstado(estado)
                 .stream()
                 .map(ConsultorDTO::new)
                 .toList();
@@ -74,7 +75,7 @@ public class ConsultorService {
 
     @Transactional(readOnly = true)
     public List<ConsultorDTO> findByFormacao(String formacao) {
-        return consultorRepository.findByFormacaoContainingIgnoreCase(formacao)
+        return consultorRepository.findByFormacao(formacao)
                 .stream()
                 .map(ConsultorDTO::new)
                 .toList();
@@ -82,7 +83,7 @@ public class ConsultorService {
 
     @Transactional(readOnly = true)
     public List<ConsultorDTO> findByFormadosByPeriodo(Integer anoInicio, Integer anoFim) {
-        return consultorRepository.findByAnoConclusaoBetween(anoInicio, anoFim)
+        return consultorRepository.findByAnoConclusao(anoInicio, anoFim)
                 .stream()
                 .map(ConsultorDTO::new)
                 .toList();
@@ -103,15 +104,22 @@ public class ConsultorService {
     }
 
     @Transactional
-    public ConsultorDTO insertFormacaoAoConsultor(Long idConsultor, @Valid FormacaoAcademica formacaoAcademica) {
+    public ConsultorDTO insertFormacaoAoConsultor(Long idConsultor, Long idFormacao) {
         Consultor consultor = consultorRepository.findById(idConsultor)
-                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + CONSULTOR_NAO_ENCONTRADO));
-
-        if (!formacaoAcademicaRepository.existsById(formacaoAcademica.getId())) {
-            throw new ResourceNotFoundException(formacaoAcademica.getId() + FORMACAO_NAO_ENCONTRADA);
-        }
-
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
+        FormacaoAcademica formacaoAcademica = formacaoAcademicaRepository.findById(idFormacao)
+                .orElseThrow(() -> new ResourceNotFoundException(idFormacao + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage()));
         consultor.getFormacao().add(formacaoAcademica);
+        return new ConsultorDTO(consultorRepository.save(consultor));
+    }
+
+    @Transactional
+    public ConsultorDTO insertProfissaoAoConsultor(Long idConsultor, Long idProfissao) {
+        Consultor consultor = consultorRepository.findById(idConsultor)
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
+        Profissao profissao = profissaoRepository.findById(idProfissao)
+                .orElseThrow(() -> new ResourceNotFoundException(idProfissao + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage()));
+        consultor.getProfissao().add(profissao);
         return new ConsultorDTO(consultorRepository.save(consultor));
     }
 
@@ -132,7 +140,7 @@ public class ConsultorService {
             if (consultorRepository.existsById(id)) {
                 consultorRepository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id + CONSULTOR_NAO_ENCONTRADO);
+                throw new ResourceNotFoundException(id + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
@@ -144,12 +152,20 @@ public class ConsultorService {
     @Transactional
     public void deleteFormacaoDoConsultor(Long idConsultor, Long idFormacao) {
         Consultor consultor = consultorRepository.findById(idConsultor)
-                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + CONSULTOR_NAO_ENCONTRADO));
-
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
         FormacaoAcademica formacaoAcademica = formacaoAcademicaRepository.findById(idFormacao)
-                .orElseThrow(() -> new ResourceNotFoundException(idFormacao + FORMACAO_NAO_ENCONTRADA));
-
+                .orElseThrow(() -> new ResourceNotFoundException(idFormacao + ErrorMessage.FORMACAO_NAO_ENCONTRADA.getMessage()));
         consultor.getFormacao().remove(formacaoAcademica);
+        consultorRepository.save(consultor);
+    }
+
+    @Transactional
+    public void deleteProfissaoDoConsultor(Long idConsultor, Long idProfissao) {
+        Consultor consultor = consultorRepository.findById(idConsultor)
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
+        Profissao profissao = profissaoRepository.findById(idProfissao)
+                .orElseThrow(() -> new ResourceNotFoundException(idProfissao + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage()));
+        consultor.getProfissao().remove(profissao);
         consultorRepository.save(consultor);
     }
 }

@@ -1,8 +1,8 @@
 package br.com.brencorp.consman.controllers;
 
 import br.com.brencorp.consman.dto.ConsultorDTO;
-import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.services.ConsultorService;
+import br.com.brencorp.consman.services.exceptions.InvalidParametersException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -78,15 +78,30 @@ public class ConsultorController {
         return ResponseEntity.created(uri).body(consultorDTO);
     }
 
-    @PostMapping("/consultores/{idConsultor}/formacoes")
-    public ResponseEntity<ConsultorDTO> insertFormacaoAoConsultor(@PathVariable Long idConsultor, @RequestBody @Valid FormacaoAcademica formacaoAcademica) {
-        ConsultorDTO formacaoCriada = service.insertFormacaoAoConsultor(idConsultor, formacaoAcademica);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(formacaoCriada.getId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
+    @PostMapping("/consultores/{idConsultor}/")
+    public ResponseEntity<ConsultorDTO> insertEntidadeAoConsultor(
+            @PathVariable Long idConsultor,
+            @RequestParam(value = "formacao", required = false) Long idFormacao,
+            @RequestParam(value = "profissao", required = false) Long idProfissao) {
+        if (idFormacao != null) {
+            ConsultorDTO formacaoCriada = service.insertFormacaoAoConsultor(idConsultor, idFormacao);
+            URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(formacaoCriada.getId())
+                    .toUri();
+            return ResponseEntity.created(uri).build();
+        } else if (idProfissao != null) {
+            ConsultorDTO profissaoCriada = service.insertProfissaoAoConsultor(idConsultor, idProfissao);
+            URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(profissaoCriada.getId())
+                    .toUri();
+            return ResponseEntity.created(uri).build();
+        } else {
+            throw new InvalidParametersException("É necessário informar o id da entidade a ser inserida.");
+        }
     }
 
     @PutMapping(value = "/{id}")
@@ -101,9 +116,19 @@ public class ConsultorController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/consultores/{idConsultor}/formacoes/{idFormacao}")
-    public ResponseEntity<Void> deleteFormacaoDoConsultor(@PathVariable Long idConsultor, @PathVariable Long idFormacao) {
-        service.deleteFormacaoDoConsultor(idConsultor, idFormacao);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/consultores/{idConsultor}/")
+    public ResponseEntity<Void> deleteEntidadeDoConsultor(
+            @PathVariable Long idConsultor,
+            @RequestParam(value = "formacao", required = false) Long idFormacao,
+            @RequestParam(value = "profissao", required = false) Long idProfissao) {
+        if (idFormacao != null) {
+            service.deleteFormacaoDoConsultor(idConsultor, idFormacao);
+            return ResponseEntity.noContent().build();
+        } else if (idProfissao != null) {
+            service.deleteProfissaoDoConsultor(idConsultor, idProfissao);
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new InvalidParametersException("É necessário informar o id da entidade a ser deletada.");
+        }
     }
 }

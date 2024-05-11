@@ -12,6 +12,6 @@ public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
     @Query("SELECT e FROM Estado e "
             + "WHERE LOWER(e.uf) LIKE LOWER(CONCAT('%', :uf, '%'))")
-    List<Estado> findByUfContainingIgnoreCase(String uf);
+    List<Estado> findByUf(String uf);
 
 }

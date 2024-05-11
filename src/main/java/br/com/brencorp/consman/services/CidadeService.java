@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.CidadeDTO;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.CidadeServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class CidadeService {
     public CidadeDTO findById(Long id) {
         return repository.findById(id)
                 .map(CidadeDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.CIDADE_NAO_ENCONTRADA.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<CidadeDTO> findByNome(String nome) {
-        return repository.findByNomeContainingIgnoreCase(nome)
+        return repository.findByNome(nome)
                 .stream()
                 .map(CidadeDTO::new)
                 .toList();
@@ -50,7 +51,7 @@ public class CidadeService {
 
     @Transactional(readOnly = true)
     public List<CidadeDTO> findByEstado(String estado) {
-        return repository.findByEstadoContainingIgnoreCase(estado)
+        return repository.findByEstado(estado)
                 .stream()
                 .map(CidadeDTO::new)
                 .toList();
@@ -69,7 +70,7 @@ public class CidadeService {
             CidadeServiceUtil.update(cidade, cidadeDTO);
             return new CidadeDTO(repository.save(cidade));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CIDADE_NAO_ENCONTRADA.getMessage());
         }
     }
 
@@ -79,10 +80,10 @@ public class CidadeService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.CIDADE_NAO_ENCONTRADA.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CIDADE_NAO_ENCONTRADA.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }

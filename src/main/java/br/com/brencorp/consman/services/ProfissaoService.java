@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.ProfissaoDTO;
 import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.repositories.ProfissaoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.ProfissaoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class ProfissaoService {
     public ProfissaoDTO findById(Long id) {
         return repository.findById(id)
                 .map(ProfissaoDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<ProfissaoDTO> findByNome(String nome) {
-        return repository.findByNomeContainingIgnoreCase(nome)
+        return repository.findByNome(nome)
                 .stream()
                 .map(ProfissaoDTO::new)
                 .toList();
@@ -50,7 +51,7 @@ public class ProfissaoService {
 
     @Transactional(readOnly = true)
     public List<ProfissaoDTO> findByArea(String area) {
-        return repository.findByAreaContainingIgnoreCase(area)
+        return repository.findByArea(area)
                 .stream()
                 .map(ProfissaoDTO::new)
                 .toList();
@@ -69,7 +70,7 @@ public class ProfissaoService {
             ProfissaoServiceUtil.update(profissao, profissaoDTO);
             return new ProfissaoDTO(repository.save(profissao));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage());
         }
     }
 
@@ -79,10 +80,10 @@ public class ProfissaoService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.PROFISSAO_NAO_ENCONTRADA.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }

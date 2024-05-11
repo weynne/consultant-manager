@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.EstadoDTO;
 import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.EstadoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class EstadoService {
     public EstadoDTO findById(Long id) {
         return repository.findById(id)
                 .map(EstadoDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.ESTADO_NAO_ENCONTRADO.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<EstadoDTO> findByUf(String uf) {
-        return repository.findByUfContainingIgnoreCase(uf)
+        return repository.findByUf(uf)
                 .stream()
                 .map(EstadoDTO::new)
                 .toList();
@@ -61,7 +62,7 @@ public class EstadoService {
             EstadoServiceUtil.update(estado, estadoDTO);
             return new EstadoDTO(repository.save(estado));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.ESTADO_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -71,10 +72,10 @@ public class EstadoService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.ESTADO_NAO_ENCONTRADO.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.ESTADO_NAO_ENCONTRADO.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }

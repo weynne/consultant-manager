@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.ProjetoDTO;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.ProjetoServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class ProjetoService {
     public ProjetoDTO findById(Long id) {
         return repository.findById(id)
                 .map(ProjetoDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.PROJETO_NAO_ENCONTRADO.getMessage()));
     }
 
     @Transactional(readOnly = true)
     public List<ProjetoDTO> findByNome(String nome) {
-        return repository.findByNomeContainingIgnoreCase(nome)
+        return repository.findByNome(nome)
                 .stream()
                 .map(ProjetoDTO::new)
                 .toList();
@@ -61,7 +62,7 @@ public class ProjetoService {
             ProjetoServiceUtil.update(projeto, projetoDTO);
             return new ProjetoDTO(repository.save(projeto));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.PROJETO_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -71,10 +72,10 @@ public class ProjetoService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.PROJETO_NAO_ENCONTRADO.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.PROJETO_NAO_ENCONTRADO.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }

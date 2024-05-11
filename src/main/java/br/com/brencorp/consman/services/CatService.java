@@ -4,6 +4,7 @@ import br.com.brencorp.consman.dto.CatDTO;
 import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
+import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
 import br.com.brencorp.consman.services.utils.CatServiceUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,7 +38,7 @@ public class CatService {
     public CatDTO findById(Long id) {
         return repository.findById(id)
                 .map(CatDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException(id + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage()));
     }
 
     @Transactional
@@ -53,7 +54,7 @@ public class CatService {
             CatServiceUtil.update(cat, catDTO);
             return new CatDTO(repository.save(cat));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -63,10 +64,10 @@ public class CatService {
             if (repository.existsById(id)) {
                 repository.deleteById(id);
             } else {
-                throw new ResourceNotFoundException(id);
+                throw new ResourceNotFoundException(id + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
