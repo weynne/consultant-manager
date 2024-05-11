@@ -1,14 +1,8 @@
 package br.com.brencorp.consman.services;
 
 import br.com.brencorp.consman.dto.ConsultorDTO;
-import br.com.brencorp.consman.entities.Consultor;
-import br.com.brencorp.consman.entities.FormacaoAcademica;
-import br.com.brencorp.consman.entities.Profissao;
-import br.com.brencorp.consman.entities.Projeto;
-import br.com.brencorp.consman.repositories.ConsultorRepository;
-import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
-import br.com.brencorp.consman.repositories.ProfissaoRepository;
-import br.com.brencorp.consman.repositories.ProjetoRepository;
+import br.com.brencorp.consman.entities.*;
+import br.com.brencorp.consman.repositories.*;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ErrorMessage;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
@@ -29,13 +23,15 @@ public class ConsultorService {
     private final FormacaoAcademicaRepository formacaoAcademicaRepository;
     private final ProfissaoRepository profissaoRepository;
     private final ProjetoRepository projetoRepository;
+    private final CatRepository catRepository;
 
     @Autowired
-    public ConsultorService(ConsultorRepository consultorRepository, FormacaoAcademicaRepository formacaoAcademicaRepository, ProfissaoRepository profissaoRepository, ProjetoRepository projetoRepository) {
+    public ConsultorService(ConsultorRepository consultorRepository, FormacaoAcademicaRepository formacaoAcademicaRepository, ProfissaoRepository profissaoRepository, ProjetoRepository projetoRepository, CatRepository catRepository) {
         this.consultorRepository = consultorRepository;
         this.formacaoAcademicaRepository = formacaoAcademicaRepository;
         this.profissaoRepository = profissaoRepository;
         this.projetoRepository = projetoRepository;
+        this.catRepository = catRepository;
     }
 
     @Transactional(readOnly = true)
@@ -138,13 +134,23 @@ public class ConsultorService {
     }
 
     @Transactional
+    public ConsultorDTO insertCatAoConsultor(Long idConsultor, Long idCat) {
+        Consultor consultor = consultorRepository.findById(idConsultor)
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
+        Cat cat = catRepository.findById(idCat)
+                .orElseThrow(() -> new ResourceNotFoundException(idCat + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage()));
+        consultor.getCat().add(cat);
+        return new ConsultorDTO(consultorRepository.save(consultor));
+    }
+
+    @Transactional
     public ConsultorDTO update(Long id, ConsultorDTO consultorDTO) {
         try {
             Consultor consultor = consultorRepository.getReferenceById(id);
             ConsultorServiceUtil.update(consultor, consultorDTO);
             return new ConsultorDTO(consultorRepository.save(consultor));
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -157,7 +163,7 @@ public class ConsultorService {
                 throw new ResourceNotFoundException(id + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage());
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
+            throw new ResourceNotFoundException(id + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -190,6 +196,16 @@ public class ConsultorService {
         Projeto projeto = projetoRepository.findById(idProjeto)
                 .orElseThrow(() -> new ResourceNotFoundException(idProjeto + ErrorMessage.PROJETO_NAO_ENCONTRADO.getMessage()));
         consultor.getProjeto().remove(projeto);
+        consultorRepository.save(consultor);
+    }
+
+    @Transactional
+    public void deleteCatDoConsultor(Long idConsultor, Long idCat) {
+        Consultor consultor = consultorRepository.findById(idConsultor)
+                .orElseThrow(() -> new ResourceNotFoundException(idConsultor + ErrorMessage.CONSULTOR_NAO_ENCONTRADO.getMessage()));
+        Cat cat = catRepository.findById(idCat)
+                .orElseThrow(() -> new ResourceNotFoundException(idCat + ErrorMessage.CAT_NAO_ENCONTRADO.getMessage()));
+        consultor.getCat().remove(cat);
         consultorRepository.save(consultor);
     }
 }
