@@ -62,7 +62,6 @@ const Content = () => {
   //Dados backend
   useEffect(() => {
     getConsultores();
-    console.log(data);
   }, []);
 
   return (
@@ -167,7 +166,7 @@ const Content = () => {
                       }}
                     >
                       <Link to={`visualizar`}>
-                        <MenuItem onClick={onVisualizar}>Visualizar</MenuItem>
+                        <MenuItem onClick={handleClose}>Visualizar</MenuItem>
                       </Link>
                       <MenuItem onClick={handleClose}>Editar</MenuItem>
                       <MenuItem onClick={handleClose}>Excluir</MenuItem>
