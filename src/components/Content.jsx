@@ -23,6 +23,7 @@ import ProfileContext from '../util/Profile';
 
 import React, { useEffect } from 'react';
 import { useConsultores } from '../context/consultores';
+import { getConsultorBuscarAPI } from '../services/consultores';
 
 const Content = () => {
   //Table button menu
@@ -61,8 +62,13 @@ const Content = () => {
 
   //Dados backend
   useEffect(() => {
-    getConsultores();
+    getConsultorBuscarAPI({ formacao: 'computação' });
+    // getConsultores();
   }, []);
+
+  useEffect(() => {
+    // console.log(data);
+  }, [data]);
 
   return (
     <Container>
