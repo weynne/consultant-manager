@@ -15,14 +15,14 @@ import {
   TextField,
   Toolbar,
   Container,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from 'react-router-dom';
 
-import ProfileContext from "../util/Profile";
+import ProfileContext from '../util/Profile';
 
-import React, { useEffect } from "react";
-import { useConsultores } from "../context/consultores";
+import React, { useEffect } from 'react';
+import { useConsultores } from '../context/consultores';
 
 const Content = () => {
   //Table button menu
@@ -59,8 +59,10 @@ const Content = () => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
+  //Dados backend
   useEffect(() => {
     getConsultores();
+    console.log(data);
   }, []);
 
   return (
@@ -69,7 +71,7 @@ const Content = () => {
         <CardHeader
           title="Consultores"
           disableTypography={true}
-          sx={{ fontFamily: "Montserrat", fontWeight: "bold", fontSize: 20 }}
+          sx={{ fontFamily: 'Montserrat', fontWeight: 'bold', fontSize: 20 }}
         />
         <Divider />
         <Toolbar className="toolbar">
@@ -93,7 +95,7 @@ const Content = () => {
           <Button
             size="medium"
             variant="contained"
-            sx={{ boxShadow: 2, bgcolor: "#1CB5D5" }}
+            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
             startIcon={<img src="/img/plusIcon.svg" />}
           >
             Novo Consultor
@@ -102,19 +104,19 @@ const Content = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontFamily: "Montserrat", fontWeight: "bold" }}>
+              <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
                 Nome
               </TableCell>
-              <TableCell sx={{ fontFamily: "Montserrat", fontWeight: "bold" }}>
+              <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
                 Formação
               </TableCell>
-              <TableCell sx={{ fontFamily: "Montserrat", fontWeight: "bold" }}>
+              <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
                 Atuação
               </TableCell>
-              <TableCell sx={{ fontFamily: "Montserrat", fontWeight: "bold" }}>
-                Estado
+              <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
+                Localização
               </TableCell>
-              <TableCell sx={{ fontFamily: "Montserrat", fontWeight: "bold" }}>
+              <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
                 CAT
               </TableCell>
               <TableCell></TableCell>
@@ -128,17 +130,25 @@ const Content = () => {
                   <TableCell component="th" scope="row">
                     {row.nome}
                   </TableCell>
-                  <TableCell>{row.formacoes.map(f=>f.nome).toString()}</TableCell>
-                  <TableCell>{row.profissoes.map(f=>f.nome).toString()}</TableCell>
+                  <TableCell>
+                    {
+                      row.formacoes.toSorted(
+                        (a, b) => b.anoConclusao - a.anoConclusao,
+                      )[0].nome
+                    }
+                  </TableCell>
+                  <TableCell>
+                    {row.profissoes.map((f) => f.area)[0].toString()}
+                  </TableCell>
                   <TableCell>{`${row.cidade.nome}-${row.cidade.estado.uf}`}</TableCell>
-                  <TableCell>{row.cat.map(f=>f.descricao).toString()}</TableCell>
+                  <TableCell>{row.cat != [] ? 'Sim' : 'Não'}</TableCell>
                   <TableCell>
                     <Button
                       id="menuButton"
                       variant="contained"
-                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-controls={open ? 'basic-menu' : undefined}
                       aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
+                      aria-expanded={open ? 'true' : undefined}
                       onClick={(event) => {
                         setButtonMenu(event.currentTarget);
                         setSelectedRow(row);
@@ -153,7 +163,7 @@ const Content = () => {
                       open={open}
                       onClose={handleClose}
                       MenuListProps={{
-                        "aria-labelledby": "menuButton",
+                        'aria-labelledby': 'menuButton',
                       }}
                     >
                       <Link to={`visualizar`}>
