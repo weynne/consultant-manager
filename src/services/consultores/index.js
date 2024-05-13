@@ -27,7 +27,6 @@ export const postConsultorAPI = async (consultor) => {
 };
 
 export const getConsultorBuscarAPI = async (params) => {
-  // const params = { nome, cidade, estado, formacao, anoDeFormacao, idade };
   const response = await api.get(BASE_URL + '/buscar', { params });
   return response.data;
 };

@@ -56,17 +56,23 @@ export const ConsultoresProvider = ({ children }) => {
     anoDeFormacao = '',
     idade = '',
   } = {}) => {
+    const params = { nome, cidade, estado, formacao, anoDeFormacao, idade };
+    const filteredParams = Object.entries(params).reduce(
+      (acc, [key, value]) => {
+        if (value) {
+          // Checa se o valor não é vazio
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {},
+    );
     try {
-      return await getConsultorBuscarAPI({
-        nome,
-        cidade,
-        estado,
-        formacao,
-        anoDeFormacao,
-        idade,
-      }).then((response) => setData(response));
+      await getConsultorBuscarAPI(filteredParams).then((response) =>
+        setData(response),
+      );
     } catch (error) {
-      console.error(error);
+      return console.error(error);
     }
   };
 

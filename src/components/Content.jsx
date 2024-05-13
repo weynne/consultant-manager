@@ -23,9 +23,10 @@ import ProfileContext from '../util/Profile';
 
 import React, { useEffect } from 'react';
 import { useConsultores } from '../context/consultores';
-import { getConsultorBuscarAPI } from '../services/consultores';
 
 const Content = () => {
+  const { data, getConsultores, getConsultorBuscar } = useConsultores();
+
   //Table button menu
   const [buttonMenu, setButtonMenu] = React.useState(null);
   const open = Boolean(buttonMenu);
@@ -33,12 +34,11 @@ const Content = () => {
   const [selectedRow, setSelectedRow] = React.useState(null);
 
   const { setProfileData } = React.useContext(ProfileContext);
-  const { data, getConsultores } = useConsultores();
 
-  const onVisualizar = () => {
-    setProfileData(selectedRow);
-    handleClose();
-  };
+  // const onVisualizar = () => {
+  //   setProfileData(selectedRow);
+  //   handleClose();
+  // };
 
   const handleClose = () => {
     setButtonMenu(null);
@@ -62,14 +62,17 @@ const Content = () => {
 
   //Dados backend
   useEffect(() => {
-    getConsultorBuscarAPI({ formacao: 'computação' });
-    // getConsultores();
+    // getConsultorBuscar({ nome: 'Isabel' });
+    getConsultores();
   }, []);
 
-  useEffect(() => {
-    // console.log(data);
-  }, [data]);
+  //Buscar consultores
+  const [buscaValue, setBuscaValue] = React.useState(null);
 
+  const buscarConsultor = () => {
+    getConsultorBuscar({ nome: `${buscaValue}` });
+    console.log(buscaValue);
+  };
   return (
     <Container>
       <TableContainer className="tableContainer" sx={{ boxShadow: 2 }}>
@@ -84,15 +87,18 @@ const Content = () => {
             <TextField
               id="outlined-input"
               label="Pesquisar"
-              placeholder="Nome, formação, atuação..."
+              placeholder=""
               size="small"
               aria-label="Pesquisar"
+              value={buscaValue}
+              onChange={(event) => setBuscaValue(event.target.value)}
             />
             <Button
               id="searchButton"
               aria-label="Pesquisar"
               size="medium"
               variant="contained"
+              onClick={buscarConsultor}
             >
               <img src="/img/searchIcon.svg" alt="" />
             </Button>
