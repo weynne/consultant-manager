@@ -1,13 +1,13 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 import {
   getConsultoresAPI,
   getConsultorAPI,
   deleteConsultorAPI,
   postConsultorAPI,
   getConsultorBuscarAPI,
-  putConsultorAPI
-} from "../../services/consultores";
-import { useContext } from "react";
+  putConsultorAPI,
+} from '../../services/consultores';
+import { useContext } from 'react';
 
 const ConsultoresContext = createContext({});
 
@@ -48,27 +48,31 @@ export const ConsultoresProvider = ({ children }) => {
     }
   };
 
-  const getConsultorBuscar = async (
-    nome,
-    cidade,
-    estado,
-    formacao,
-    anoDeFormacao,
-    idade
-  ) => {
+  const getConsultorBuscar = async ({
+    nome = '',
+    cidade = '',
+    estado = '',
+    formacao = '',
+    anoDeFormacao = '',
+    idade = '',
+  } = {}) => {
+    const params = { nome, cidade, estado, formacao, anoDeFormacao, idade };
+    const filteredParams = Object.entries(params).reduce(
+      (acc, [key, value]) => {
+        if (value) {
+          // Checa se o valor não é vazio
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {},
+    );
     try {
-      setData(
-        await getConsultorBuscarAPI(
-          nome,
-          cidade,
-          estado,
-          formacao,
-          anoDeFormacao,
-          idade
-        )
+      await getConsultorBuscarAPI(filteredParams).then((response) =>
+        setData(response),
       );
     } catch (error) {
-      console.error(error);
+      return console.error(error);
     }
   };
 
@@ -90,7 +94,7 @@ export const ConsultoresProvider = ({ children }) => {
         deleteConsultor,
         postConsultor,
         getConsultorBuscar,
-        putConsultor
+        putConsultor,
       }}
     >
       {children}
