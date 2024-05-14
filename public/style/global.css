@@ -4,7 +4,7 @@
 }
 
 body{
-    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 ul{
@@ -13,17 +13,17 @@ ul{
 }
 
 a{
-    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     text-decoration: none;
     color: inherit; 
 }
 
 .MuiMenuItem-root a{
-    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 p{
-    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-decoration: none;
     color: inherit;
 }
