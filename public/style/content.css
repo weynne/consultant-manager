@@ -27,14 +27,6 @@
     gap: 4px;
 }
 
-#limparBusca{
-    display: none;
-}
-
-#limparBusca.active{
-    display: block;
-}
-
 #menuButton{
     background: #1CB5D5;
     min-width: 0px;

@@ -74,17 +74,10 @@ const Content = () => {
     getConsultorBuscar({ [buscaKey]: buscaValue });
   };
 
-  // const limpar = document.querySelector('#limparBusca');
-  // if (buscaValue != '') {
-  //   limpar.classList.add('active');
-  // } else {
-  //   limpar.classList.remove('active');
-  // }
-
-  // const handleBtnClick = () => {
-  //   setBuscaValue('');
-  //   getConsultores();
-  // };
+  const handleBtnClick = () => {
+    setBuscaValue('');
+    getConsultores();
+  };
 
   return (
     <Container>
@@ -130,15 +123,19 @@ const Content = () => {
             >
               <img src="/img/searchIcon.svg" alt="" />
             </Button>
-            {/* <Button
+            <Button
               id="limparBusca"
               size="small"
               variant="outlined"
-              sx={{ color: '#1CB5D5', borderColor: '#1CB5D5' }}
+              sx={{
+                color: '#1CB5D5',
+                borderColor: '#1CB5D5',
+                display: buscaValue !== '' ? 'block' : 'none',
+              }}
               onClick={handleBtnClick}
             >
               Limpar Busca
-            </Button> */}
+            </Button>
           </div>
           <Button
             size="medium"
