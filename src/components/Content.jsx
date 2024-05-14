@@ -3,6 +3,7 @@ import {
   CardHeader,
   Divider,
   Menu,
+  Select,
   MenuItem,
   Table,
   TableBody,
@@ -62,17 +63,29 @@ const Content = () => {
 
   //Dados backend
   useEffect(() => {
-    // getConsultorBuscar({ nome: 'Isabel' });
     getConsultores();
   }, []);
 
   //Buscar consultores
-  const [buscaValue, setBuscaValue] = React.useState(null);
+  const [buscaValue, setBuscaValue] = React.useState('');
+  const [buscaKey, setBuscaKey] = React.useState('nome');
 
   const buscarConsultor = () => {
-    getConsultorBuscar({ nome: `${buscaValue}` });
-    console.log(buscaValue);
+    getConsultorBuscar({ [buscaKey]: buscaValue });
   };
+
+  // const limpar = document.querySelector('#limparBusca');
+  // if (buscaValue != '') {
+  //   limpar.classList.add('active');
+  // } else {
+  //   limpar.classList.remove('active');
+  // }
+
+  // const handleBtnClick = () => {
+  //   setBuscaValue('');
+  //   getConsultores();
+  // };
+
   return (
     <Container>
       <TableContainer className="tableContainer" sx={{ boxShadow: 2 }}>
@@ -87,12 +100,27 @@ const Content = () => {
             <TextField
               id="outlined-input"
               label="Pesquisar"
-              placeholder=""
               size="small"
               aria-label="Pesquisar"
               value={buscaValue}
               onChange={(event) => setBuscaValue(event.target.value)}
             />
+            <Select
+              id="filtro"
+              name="filtro"
+              size="small"
+              value={buscaKey}
+              onChange={(event) => {
+                setBuscaKey(event.target.value);
+              }}
+            >
+              <MenuItem value="nome">Nome</MenuItem>
+              <MenuItem value="cidade">Cidade</MenuItem>
+              <MenuItem value="estado">Estado</MenuItem>
+              <MenuItem value="formacao">Formação</MenuItem>
+              <MenuItem value="anoDeFormacao">Ano de Formação</MenuItem>
+              <MenuItem value="idade">Idade</MenuItem>
+            </Select>
             <Button
               id="searchButton"
               aria-label="Pesquisar"
@@ -102,6 +130,15 @@ const Content = () => {
             >
               <img src="/img/searchIcon.svg" alt="" />
             </Button>
+            {/* <Button
+              id="limparBusca"
+              size="small"
+              variant="outlined"
+              sx={{ color: '#1CB5D5', borderColor: '#1CB5D5' }}
+              onClick={handleBtnClick}
+            >
+              Limpar Busca
+            </Button> */}
           </div>
           <Button
             size="medium"
