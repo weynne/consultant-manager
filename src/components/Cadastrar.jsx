@@ -3,6 +3,7 @@ import ProfileContext from '../util/Profile';
 import { Link } from 'react-router-dom';
 import {
   Box,
+  Button,
   CardHeader,
   Container,
   Divider,
@@ -28,7 +29,6 @@ const Cadastrar = () => {
 
   const [selectValue, setSelectValue] = useState(formData.estado);
 
-  //list estados
   const estados = [
     'AC',
     'AL',
@@ -58,6 +58,124 @@ const Cadastrar = () => {
     'SE',
     'TO',
   ];
+
+  //formacoes
+  const [numFormacoesInput, setNumFormacoesInput] = useState('1');
+  const [numFormacoes, setNumFormacoes] = useState(1);
+  const [formacoes, setFormacoes] = useState([
+    { formacao: '', instituicao: '', tipo: '', anoConclusao: '' },
+  ]);
+
+  const handleNumFormacoesChange = (event) => {
+    const value = event.target.value;
+    setNumFormacoesInput(value);
+
+    const newNum = parseInt(value, 10);
+
+    if (!isNaN(newNum) && newNum > 0) {
+      setNumFormacoes(newNum);
+
+      const newFormacoes = [...formacoes];
+      if (newNum > formacoes.length) {
+        for (let i = formacoes.length; i < newNum; i++) {
+          newFormacoes.push({
+            formacao: '',
+            instituicao: '',
+            tipo: '',
+            anoConclusao: '',
+          });
+        }
+      } else {
+        newFormacoes.length = newNum;
+      }
+      setFormacoes(newFormacoes);
+    }
+  };
+
+  //profissoes
+  const [numProfissoesInput, setNumProfissoesInput] = useState('1');
+  const [numProfissoes, setNumProfissoes] = useState(1);
+  const [profissoes, setProfissoes] = useState([{ profissao: '', area: '' }]);
+
+  const handleNumProfissoesChange = (event) => {
+    const value = event.target.value;
+    setNumProfissoesInput(value);
+
+    const novoNum = parseInt(value, 10);
+
+    if (!isNaN(novoNum) && novoNum > 0) {
+      setNumProfissoes(novoNum);
+
+      const newProfissoes = [...profissoes];
+      if (novoNum > profissoes.length) {
+        for (let i = profissoes.length; i < novoNum; i++) {
+          newProfissoes.push({
+            profissao: '',
+            area: '',
+          });
+        }
+      } else {
+        newProfissoes.length = novoNum;
+      }
+      setProfissoes(newProfissoes);
+    }
+  };
+
+  //projetos
+  const [numProjetosInput, setNumProjetosInput] = useState('1');
+  const [numProjetos, setNumProjetos] = useState(1);
+  const [projetos, setProjetos] = useState([{ projeto: '' }]);
+
+  const handleProjetosChange = (event) => {
+    const value = event.target.value;
+    setNumProjetosInput(value);
+
+    const novoNum = parseInt(value, 10);
+
+    if (!isNaN(novoNum) && novoNum > 0) {
+      setNumProjetos(novoNum);
+
+      const newProjetos = [...projetos];
+      if (novoNum > projetos.length) {
+        for (let i = projetos.length; i < novoNum; i++) {
+          newProjetos.push({
+            projeto: '',
+          });
+        }
+      } else {
+        newProjetos.length = novoNum;
+      }
+      setProjetos(newProjetos);
+    }
+  };
+
+  //cat
+  const [numCatsInput, setNumCatsInput] = useState('1');
+  const [numCats, setNumCats] = useState(1);
+  const [cats, setCats] = useState([{ descricao: '' }]);
+
+  const handleCatsChange = (event) => {
+    const value = event.target.value;
+    setNumCatsInput(value);
+
+    const novoNum = parseInt(value, 10);
+
+    if (!isNaN(novoNum) && novoNum > 0) {
+      setNumCats(novoNum);
+
+      const newCat = [...cats];
+      if (novoNum > cats.length) {
+        for (let i = cats.length; i < novoNum; i++) {
+          newCat.push({
+            descricao: '',
+          });
+        }
+      } else {
+        newCat.length = novoNum;
+      }
+      setCats(newCat);
+    }
+  };
 
   return (
     <Container>
@@ -156,7 +274,117 @@ const Cadastrar = () => {
               />
             </div>
           </div>
+          <CardHeader
+            title="Informações Acadêmicas"
+            disableTypography={true}
+            sx={{ fontFamily: 'Montserrat', fontSize: 20, paddingLeft: 0 }}
+            className="cardHeaderForm"
+          />
+          <div className="formInfosAcademicas">
+            <TextField
+              label="Número de Formações"
+              name="numDeFormacoes"
+              type="number"
+              sx={{ width: 250 }}
+              value={numFormacoesInput}
+              inputProps={{ min: 1 }}
+              onChange={handleNumFormacoesChange}
+            />
+            {formacoes.map((formacao, index) => (
+              <div className="formFormacao" key={index}>
+                <TextField label={`Formação ${index + 1}`} name="formacao" />
+                <TextField label="Instituição" name="instituicao" />
+                <TextField
+                  label="Tipo de Formação"
+                  name="tipo"
+                  placeholder="ex: Licenciatura, mestrado..."
+                />
+                <TextField
+                  label="Ano de Conclusão"
+                  name="anoConclusao"
+                  type="number"
+                />
+                <Divider sx={{ gridColumn: '1/-1' }} />
+              </div>
+            ))}
+          </div>
+          <CardHeader
+            title="Informações Profissionais"
+            disableTypography={true}
+            sx={{ fontFamily: 'Montserrat', fontSize: 20, paddingLeft: 0 }}
+            className="cardHeaderForm"
+          />
+          <div className="formInfosProfissionais">
+            <TextField
+              label="Número de Profissões/Áreas"
+              name="numDeProfissoes"
+              type="number"
+              sx={{ width: 250 }}
+              value={numProfissoesInput}
+              inputProps={{ min: 1 }}
+              onChange={handleNumProfissoesChange}
+            />
+            {profissoes.map((profissao, index) => (
+              <div className="formProfissao" key={index}>
+                <TextField label={`Profissão ${index + 1}`} name="profissao" />
+                <TextField label={`Área de Atuação ${index + 1}`} name="area" />
+                <Divider sx={{ gridColumn: '1/-1' }} />
+              </div>
+            ))}
+            <TextField
+              label="Número de Projetos"
+              name="numDeProjetos"
+              type="number"
+              sx={{ width: 250 }}
+              value={numProjetosInput}
+              inputProps={{ min: 1 }}
+              onChange={handleProjetosChange}
+            />
+            {projetos.map((projeto, index) => (
+              <div className="formProjeto" key={index}>
+                <TextField label={`Projeto ${index + 1}`} name="projeto" />
+                <Divider sx={{ gridColumn: '1/-1' }} />
+              </div>
+            ))}
+            <TextField
+              label="Número de CAT"
+              name="numCat"
+              type="number"
+              sx={{ width: 250 }}
+              value={numCatsInput}
+              inputProps={{ min: 1 }}
+              onChange={handleCatsChange}
+            />
+            {cats.map((cat, index) => (
+              <div className="formCat" key={index}>
+                <TextField label={`Descrição CAT ${index + 1}`} name="cat" />
+                <Divider sx={{ gridColumn: '1/-1' }} />
+              </div>
+            ))}
+          </div>
         </form>
+        <div className="formFooter">
+          <Button
+            size="medium"
+            variant="contained"
+            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+          >
+            Salvar
+          </Button>
+          <Link to={'/'}>
+            <Button
+              id="btnCancel"
+              size="medium"
+              variant="outlined"
+              sx={{
+                color: '#C23229',
+                borderColor: '#C23229',
+              }}
+            >
+              Cancelar
+            </Button>
+          </Link>
+        </div>
       </Box>
     </Container>
   );

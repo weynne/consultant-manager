@@ -124,7 +124,6 @@ const Content = () => {
               <img src="/img/searchIcon.svg" alt="" />
             </Button>
             <Button
-              id="limparBusca"
               size="small"
               variant="outlined"
               sx={{
@@ -137,14 +136,16 @@ const Content = () => {
               Limpar Busca
             </Button>
           </div>
-          <Button
-            size="medium"
-            variant="contained"
-            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
-            startIcon={<img src="/img/plusIcon.svg" />}
-          >
-            Novo Consultor
-          </Button>
+          <Link to={`cadastrar`}>
+            <Button
+              size="medium"
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+            >
+              Novo Consultor
+            </Button>
+          </Link>
         </Toolbar>
         <Table>
           <TableHead>
