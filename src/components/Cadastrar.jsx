@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ProfileContext from '../util/Profile';
 import { Link } from 'react-router-dom';
+import { useValidation } from '../util/ValidationContext';
 import {
   Box,
   Button,
@@ -13,21 +13,19 @@ import {
 } from '@mui/material';
 
 const Cadastrar = () => {
-  const { profileData } = React.useContext(ProfileContext);
+  const [formData, setFormData] = useState({
+    nome: '',
+    nascimento: '',
+    cpf: '',
+    cnpj: '',
+    email: '',
+    telefone: '',
+    estado: '',
+    cidade: '',
+  });
 
-  const [formData, setFormData] = React.useState(profileData);
-
-  //envio do form para o back
-  const handleSubmit = () => {};
-
-  //dados
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
-  };
-
-  const [selectValue, setSelectValue] = useState(formData.estado);
+  const { errors, handleBlur, handleInputChange, handleSubmit } =
+    useValidation();
 
   const estados = [
     'AC',
@@ -59,8 +57,9 @@ const Cadastrar = () => {
     'TO',
   ];
 
-  //dados profissionais
-
+  const [combinedData, setCombinedData] = useState([]);
+  const [visibleText, setVisibleText] = useState(false);
+  const [selectValue, setSelectValue] = useState(formData.estado);
   const [formacoes, setFormacoes] = useState([
     { formacao: '', instituicao: '', tipo: '', anoConclusao: '' },
   ]);
@@ -74,15 +73,12 @@ const Cadastrar = () => {
       { formacao: '', instituicao: '', tipo: '', anoConclusao: '' },
     ]);
   };
-
   const addNewCat = () => {
     setCats([...cats, { descricao: '' }]);
   };
-
   const addNewProjeto = () => {
     setProjetos([...projetos, { nome: '' }]);
   };
-
   const addNewProfissao = () => {
     setProfissoes([...profissoes, { profissao: '', area: '' }]);
   };
@@ -93,21 +89,18 @@ const Cadastrar = () => {
       setFormacoes(newFormacoes);
     }
   };
-
   const removeCat = (index) => {
     if (cats.length > 1) {
       const newCats = cats.filter((_, i) => i !== index);
       setCats(newCats);
     }
   };
-
   const removeProjeto = (index) => {
     if (projetos.length > 1) {
       const newProjetos = projetos.filter((_, i) => i !== index);
       setProjetos(newProjetos);
     }
   };
-
   const removeProfissao = (index) => {
     if (profissoes.length > 1) {
       const newProfissoes = profissoes.filter((_, i) => i !== index);
@@ -135,6 +128,33 @@ const Cadastrar = () => {
     }
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    handleInputChange(name, value);
+  };
+
+  const handleBlurField = (event) => {
+    const { name, value } = event.target;
+    handleBlur(name, value);
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const dadosCombinados = {
+      ...formData,
+      formacoes,
+      profissoes,
+      cats,
+      projetos,
+    };
+    if (handleSubmit(dadosCombinados)) {
+      //       <--------------------Enviar os dados para o backend
+      console.log('Dados válidos:', dadosCombinados);
+      setCombinedData(dadosCombinados);
+    }
+  };
+
   return (
     <Container>
       <Box className="formContainer" sx={{ boxShadow: 2 }}>
@@ -158,14 +178,15 @@ const Cadastrar = () => {
                 label="Nome Completo"
                 name="nome"
                 value={formData.nome}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
               />
               <TextField
                 name="nascimento"
                 value={formData.nascimento}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
+                onFocus={() => setVisibleText(true)}
+                onBlur={() => setVisibleText(false)}
+                helperText={visibleText ? 'Data de Nascimento' : ''}
                 type="date"
               />
             </div>
@@ -173,19 +194,20 @@ const Cadastrar = () => {
               <TextField
                 label="CPF"
                 name="cpf"
-                maxLength="14"
                 value={formData.cpf}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
-                inputProps={{ maxLength: 14 }} //14 com os . - (nao botei ainda)
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.cpf}
+                helperText={errors.cpf}
               />
               <TextField
                 label="CNPJ"
                 name="cnpj"
                 value={formData.cnpj}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
-                inputProps={{ maxLength: 14 }}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.cnpj}
+                helperText={errors.cnpj}
               />
             </div>
             <div className="formContatos">
@@ -193,29 +215,31 @@ const Cadastrar = () => {
                 label="Email"
                 name="email"
                 value={formData.email}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.email}
+                helperText={errors.email}
                 type="email"
               />
               <TextField
                 label="Telefone"
                 name="telefone"
                 value={formData.telefone}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.telefone}
+                helperText={errors.telefone}
                 type="tel"
               />
             </div>
             <div className="formCidadeUf">
               <Select
-                label="Estado"
                 name="estado"
                 value={selectValue}
                 onChange={(event) => {
-                  handleInputChange;
                   setSelectValue(event.target.value);
+                  handleChange(event);
                 }}
-                onBlur={handleInputChange}
               >
                 {estados.map((estado) => (
                   <MenuItem key={estado} value={estado}>
@@ -227,11 +251,11 @@ const Cadastrar = () => {
                 label="Cidade"
                 name="cidade"
                 value={formData.cidade}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
               />
             </div>
           </div>
+
           <CardHeader
             title="Informações Acadêmicas"
             disableTypography={true}
@@ -284,8 +308,8 @@ const Cadastrar = () => {
                 <TextField
                   label="Ano de Conclusão"
                   name="anoConclusao"
-                  value={formacao.anoConclusao}
                   type="number"
+                  value={formacao.anoConclusao}
                   onChange={(e) =>
                     handleInfosInputChange(
                       index,
@@ -300,7 +324,8 @@ const Cadastrar = () => {
                   sx={{
                     color: '#1CB5D5',
                     borderColor: '#1CB5D5',
-                    width: 150,
+                    maxWidth: 120,
+                    height: 'maxContent',
                   }}
                   onClick={() => removeFormacao(index)}
                   disabled={formacoes.length <= 1}
@@ -318,6 +343,7 @@ const Cadastrar = () => {
               Formação
             </Button>
           </div>
+
           <CardHeader
             title="Informações Profissionais"
             disableTypography={true}
@@ -358,8 +384,8 @@ const Cadastrar = () => {
                   sx={{
                     color: '#1CB5D5',
                     borderColor: '#1CB5D5',
-                    width: 150,
-                    gridColumn: 1,
+                    maxWidth: 120,
+                    height: 'maxContent',
                   }}
                   onClick={() => removeProfissao(index)}
                   disabled={profissoes.length <= 1}
@@ -391,15 +417,15 @@ const Cadastrar = () => {
                       'cat',
                     )
                   }
-                  style={{ marginRight: '8px' }}
                 />
                 <Button
                   variant="outlined"
+                  size="medium"
                   sx={{
                     color: '#1CB5D5',
                     borderColor: '#1CB5D5',
-                    width: 150,
-                    gridColumn: 1,
+                    maxWidth: 120,
+                    height: 'maxContent',
                   }}
                   onClick={() => removeCat(index)}
                   disabled={cats.length <= 1}
@@ -431,15 +457,14 @@ const Cadastrar = () => {
                       'projeto',
                     )
                   }
-                  style={{ marginRight: '8px' }}
                 />
                 <Button
                   variant="outlined"
                   sx={{
                     color: '#1CB5D5',
                     borderColor: '#1CB5D5',
-                    width: 150,
-                    gridColumn: 1,
+                    maxWidth: 120,
+                    height: 'maxContent',
                   }}
                   onClick={() => removeProjeto(index)}
                   disabled={projetos.length <= 1}
@@ -463,6 +488,7 @@ const Cadastrar = () => {
             size="medium"
             variant="contained"
             sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+            onClick={onSubmit}
           >
             Salvar
           </Button>
@@ -471,10 +497,7 @@ const Cadastrar = () => {
               id="btnCancel"
               size="medium"
               variant="outlined"
-              sx={{
-                color: '#C23229',
-                borderColor: '#C23229',
-              }}
+              sx={{ color: '#C23229', borderColor: '#C23229' }}
             >
               Cancelar
             </Button>

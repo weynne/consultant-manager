@@ -72,20 +72,21 @@
 .formProjeto{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column: 1;
+    align-items: center;
     gap: 16px;
 }
 
 .formCat{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column: 1;
+    align-items: center;
     gap: 16px;
 }
 
 .formFooter{
     padding: 16px;
     display: flex;
+    justify-content: end;
     gap: 16px;
 }
 
