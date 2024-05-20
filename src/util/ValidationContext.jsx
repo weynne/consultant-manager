@@ -7,19 +7,19 @@ export const ValidationProvider = ({ children }) => {
 
   const validateCPF = (cpf) => {
     if (cpf === '') return true;
-    const regex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+    const regex = /^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/;
     return regex.test(cpf);
   };
 
   const validateCNPJ = (cnpj) => {
     if (cnpj === '') return true;
-    const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+    const regex = /^\d{2}\.?\d{3}\.?\d{3}\/?\d{4}\-?\d{2}$/;
     return regex.test(cnpj);
   };
 
   const validateTelefone = (telefone) => {
     if (telefone === '') return true;
-    const regex = /^\(?\d{2}\)?[\s-]?[\s9]?\d{4}-?\d{4}$/;
+    const regex = /^\(?\d{2}\)?[\s-]?[\s9]?\d{5}-?\d{4}$/;
     return regex.test(telefone);
   };
 

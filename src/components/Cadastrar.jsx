@@ -11,11 +11,14 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { useConsultores } from '../context/consultores';
 
 const Cadastrar = () => {
   const [formData, setFormData] = useState({
+    id: 0,
     nome: '',
-    nascimento: '',
+    dataNascimento: '',
+    idade: 0,
     cpf: '',
     cnpj: '',
     email: '',
@@ -23,10 +26,6 @@ const Cadastrar = () => {
     estado: '',
     cidade: '',
   });
-
-  const { errors, handleBlur, handleInputChange, handleSubmit } =
-    useValidation();
-
   const estados = [
     'AC',
     'AL',
@@ -56,6 +55,10 @@ const Cadastrar = () => {
     'SE',
     'TO',
   ];
+
+  const { errors, handleBlur, handleInputChange, handleSubmit } =
+    useValidation();
+  const { postConsultor } = useConsultores();
 
   const [combinedData, setCombinedData] = useState([]);
   const [visibleText, setVisibleText] = useState(false);
@@ -133,25 +136,78 @@ const Cadastrar = () => {
     setFormData({ ...formData, [name]: value });
     handleInputChange(name, value);
   };
-
   const handleBlurField = (event) => {
     const { name, value } = event.target;
     handleBlur(name, value);
   };
 
+  const calcularIdade = (dataNascimento) => {
+    const hoje = new Date();
+    const nascimento = new Date(dataNascimento);
+    let idade = hoje.getFullYear() - nascimento.getFullYear();
+    const mes = hoje.getMonth() - nascimento.getMonth();
+    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+      idade--;
+    }
+    return idade;
+  };
+  const calcularFormacao = (anoConclusao) => {
+    const hoje = new Date();
+    const formacao = new Date(anoConclusao);
+    let tempoFormacao = hoje.getFullYear() - formacao.getFullYear();
+    return tempoFormacao;
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
+
+    const idade = calcularIdade(formData.dataNascimento);
+
     const dadosCombinados = {
-      ...formData,
-      formacoes,
-      profissoes,
-      cats,
-      projetos,
+      id: 0,
+      cpf: formData.cpf,
+      cnpj: formData.cnpj,
+      nome: formData.nome,
+      telefone: formData.telefone,
+      email: formData.email,
+      dataNascimento: formData.dataNascimento,
+      idade: idade,
+      cidade: {
+        id: 0,
+        nome: formData.cidade,
+        estado: {
+          id: 0,
+          uf: formData.estado,
+        },
+      },
+      formacoes: formacoes.map((formacao) => ({
+        id: 0,
+        nome: formacao.formacao,
+        instituicao: formacao.instituicao,
+        tipo: formacao.tipo,
+        anoConclusao: parseInt(formacao.anoConclusao, 10),
+        tempoFormacao: calcularFormacao(formacao.anoConclusao),
+      })),
+      profissoes: profissoes.map((profissao) => ({
+        id: 0,
+        nome: profissao.profissao,
+        area: profissao.area,
+      })),
+      projetos: projetos.map((projeto) => ({
+        id: 0,
+        nome: projeto.nome,
+      })),
+      cat: cats.map((cat) => ({
+        id: 0,
+        descricao: cat.descricao,
+      })),
     };
+
     if (handleSubmit(dadosCombinados)) {
       //       <--------------------Enviar os dados para o backend
       console.log('Dados válidos:', dadosCombinados);
       setCombinedData(dadosCombinados);
+      postConsultor(dadosCombinados);
     }
   };
 
@@ -165,7 +221,7 @@ const Cadastrar = () => {
         />
         <Divider />
 
-        <form onSubmit={handleSubmit} className="formCadastro">
+        <form onSubmit={onSubmit} className="formCadastro">
           <CardHeader
             title="Informações Pessoais"
             disableTypography={true}
@@ -181,8 +237,8 @@ const Cadastrar = () => {
                 onChange={handleChange}
               />
               <TextField
-                name="nascimento"
-                value={formData.nascimento}
+                name="dataNascimento"
+                value={formData.dataNascimento}
                 onChange={handleChange}
                 onFocus={() => setVisibleText(true)}
                 onBlur={() => setVisibleText(false)}
