@@ -26,7 +26,8 @@ import React, { useEffect } from 'react';
 import { useConsultores } from '../context/consultores';
 
 const Content = () => {
-  const { data, getConsultores, getConsultorBuscar } = useConsultores();
+  const { data, getConsultores, getConsultorBuscar, getConsultor } =
+    useConsultores();
 
   //Table button menu
   const [buttonMenu, setButtonMenu] = React.useState(null);
@@ -34,12 +35,13 @@ const Content = () => {
 
   const [selectedRow, setSelectedRow] = React.useState(null);
 
-  const { setProfileData } = React.useContext(ProfileContext);
+  // const { setProfileData } = React.useContext(ProfileContext);
 
-  // const onVisualizar = () => {
-  //   setProfileData(selectedRow);
-  //   handleClose();
-  // };
+  const onVisualizar = () => {
+    // setProfileData(selectedRow);
+    console.log(selectedRow);
+    handleClose();
+  };
 
   const handleClose = () => {
     setButtonMenu(null);
@@ -213,7 +215,7 @@ const Content = () => {
                       }}
                     >
                       <Link to={`visualizar`}>
-                        <MenuItem onClick={handleClose}>Visualizar</MenuItem>
+                        <MenuItem onClick={onVisualizar}>Visualizar</MenuItem>
                       </Link>
                       <MenuItem onClick={handleClose}>Editar</MenuItem>
                       <MenuItem onClick={handleClose}>Excluir</MenuItem>
