@@ -34,12 +34,12 @@ const Content = () => {
   const open = Boolean(buttonMenu);
 
   const [selectedRow, setSelectedRow] = React.useState(null);
+  const [selectedId, setSelectedId] = React.useState(null);
 
-  // const { setProfileData } = React.useContext(ProfileContext);
+  const { setProfileData } = React.useContext(ProfileContext);
 
   const onVisualizar = () => {
-    // setProfileData(selectedRow);
-    console.log(selectedRow);
+    setProfileData(selectedRow);
     handleClose();
   };
 
@@ -199,6 +199,7 @@ const Content = () => {
                       aria-expanded={open ? 'true' : undefined}
                       onClick={(event) => {
                         setButtonMenu(event.currentTarget);
+                        setSelectedId(row.id);
                         setSelectedRow(row);
                       }}
                     >
@@ -214,7 +215,7 @@ const Content = () => {
                         'aria-labelledby': 'menuButton',
                       }}
                     >
-                      <Link to={`visualizar`}>
+                      <Link to={`visualizar/${selectedId}`}>
                         <MenuItem onClick={onVisualizar}>Visualizar</MenuItem>
                       </Link>
                       <MenuItem onClick={handleClose}>Editar</MenuItem>

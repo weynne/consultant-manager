@@ -1,26 +1,53 @@
+import { number } from 'prop-types';
 import { createContext, useState } from 'react';
 
 const ProfileContext = createContext({
   profileData: {
     id: '',
-    nome: '',
-    nascimento: '',
-    idade: '',
     cpf: '',
     cnpj: '',
-    email: '',
+    nome: '',
     telefone: '',
-    estado: '',
-    cidade: '',
-    profissao: '',
-    atuacao: '',
-    cat: '',
-    observacao: '',
-    formacao: [],
-    tipoDeFormacao: '',
-    anoDeFormacao: '',
-    tempoDeFormado: '',
-    instituicao: '',
+    email: '',
+    dataNascimento: '',
+    idade: '',
+    cidade: {
+      id: '',
+      nome: '',
+      estado: {
+        id: '',
+        uf: '',
+      },
+    },
+    formacoes: [
+      {
+        id: '',
+        nome: '',
+        instituicao: '',
+        tipo: '',
+        anoConclusao: '',
+        tempoFormacao: '',
+      },
+    ],
+    profissoes: [
+      {
+        id: '',
+        nome: '',
+        area: '',
+      },
+    ],
+    projetos: [
+      {
+        id: '',
+        nome: '',
+      },
+    ],
+    cat: [
+      {
+        id: '',
+        descricao: '',
+      },
+    ],
   },
   setProfileData: () => {},
 });
@@ -28,25 +55,53 @@ const ProfileContext = createContext({
 export const ProfileDataProvider = ({ children }) => {
   const [profileData, setProfileData] = useState({
     id: '',
-    nome: '',
-    nascimento: '',
-    idade: '',
     cpf: '',
     cnpj: '',
-    email: '',
+    nome: '',
     telefone: '',
-    estado: '',
-    cidade: '',
-    profissao: '',
-    atuacao: '',
-    cat: '',
-    observacao: '',
-    formacao: [],
-    tipoDeFormacao: '',
-    anoDeFormacao: '',
-    tempoDeFormado: '',
-    instituicao: '',
+    email: '',
+    dataNascimento: '',
+    idade: '',
+    cidade: {
+      id: '',
+      nome: '',
+      estado: {
+        id: '',
+        uf: '',
+      },
+    },
+    formacoes: [
+      {
+        id: '',
+        nome: '',
+        instituicao: '',
+        tipo: '',
+        anoConclusao: '',
+        tempoFormacao: '',
+      },
+    ],
+    profissoes: [
+      {
+        id: '',
+        nome: '',
+        area: '',
+      },
+    ],
+    projetos: [
+      {
+        id: '',
+        nome: '',
+      },
+    ],
+    cat: [
+      {
+        id: '',
+        descricao: '',
+      },
+    ],
   });
+
+  const [selectedId, setSelectedId] = useState('');
 
   return (
     <ProfileContext.Provider value={{ profileData, setProfileData }}>
