@@ -100,6 +100,13 @@ const Visualizar = () => {
                     </p>
                   </div>
                 ))}
+                {profileData.projetos?.map((projeto, index) => (
+                  <div key={index}>
+                    <p>
+                      Projeto: <span>{projeto.nome}</span>
+                    </p>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
