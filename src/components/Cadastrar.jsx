@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import ProfileContext from '../util/Profile';
 import { Link } from 'react-router-dom';
+import { useValidation } from '../util/ValidationContext';
 import {
   Box,
+  Button,
   CardHeader,
   Container,
   Divider,
@@ -18,23 +19,18 @@ import { postProjetosAPI } from '../services/projetos';
 import { postCatAPI } from '../services/cat';
 
 const Cadastrar = () => {
-  const { profileData } = React.useContext(ProfileContext);
-
-  const [formData, setFormData] = React.useState(profileData);
-
-  //envio do form para o back
-  const handleSubmit = () => {};
-
-  //dados
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
-  };
-
-  const [selectValue, setSelectValue] = useState(formData.estado);
-
-  //list estados
+  const [formData, setFormData] = useState({
+    id: 0,
+    nome: '',
+    dataNascimento: '',
+    idade: 0,
+    cpf: '',
+    cnpj: '',
+    email: '',
+    telefone: '',
+    estado: '',
+    cidade: '',
+  });
   const estados = [
     'AC',
     'AL',
@@ -310,7 +306,7 @@ const Cadastrar = () => {
         />
         <Divider />
 
-        <form onSubmit={handleSubmit} className="formCadastro">
+        <form onSubmit={onSubmit} className="formCadastro">
           <CardHeader
             title="Informações Pessoais"
             disableTypography={true}
@@ -323,14 +319,15 @@ const Cadastrar = () => {
                 label="Nome Completo"
                 name="nome"
                 value={formData.nome}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
               />
               <TextField
-                name="nascimento"
-                value={formData.nascimento}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                name="dataNascimento"
+                value={formData.dataNascimento}
+                onChange={handleChange}
+                onFocus={() => setVisibleText(true)}
+                onBlur={() => setVisibleText(false)}
+                helperText={visibleText ? 'Data de Nascimento' : ''}
                 type="date"
               />
             </div>
@@ -338,19 +335,20 @@ const Cadastrar = () => {
               <TextField
                 label="CPF"
                 name="cpf"
-                maxLength="14"
                 value={formData.cpf}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
-                inputProps={{ maxLength: 14 }} //14 com os . - (nao botei ainda)
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.cpf}
+                helperText={errors.cpf}
               />
               <TextField
                 label="CNPJ"
                 name="cnpj"
                 value={formData.cnpj}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
-                inputProps={{ maxLength: 14 }}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.cnpj}
+                helperText={errors.cnpj}
               />
             </div>
             <div className="formContatos">
@@ -358,29 +356,31 @@ const Cadastrar = () => {
                 label="Email"
                 name="email"
                 value={formData.email}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.email}
+                helperText={errors.email}
                 type="email"
               />
               <TextField
                 label="Telefone"
                 name="telefone"
                 value={formData.telefone}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
+                onBlur={handleBlurField}
+                error={!!errors.telefone}
+                helperText={errors.telefone}
                 type="tel"
               />
             </div>
             <div className="formCidadeUf">
               <Select
-                label="Estado"
                 name="estado"
                 value={selectValue}
                 onChange={(event) => {
-                  handleInputChange;
                   setSelectValue(event.target.value);
+                  handleChange(event);
                 }}
-                onBlur={handleInputChange}
               >
                 {estados.map((estado) => (
                   <MenuItem key={estado} value={estado}>
@@ -392,12 +392,258 @@ const Cadastrar = () => {
                 label="Cidade"
                 name="cidade"
                 value={formData.cidade}
-                onChange={handleInputChange}
-                onBlur={handleInputChange}
+                onChange={handleChange}
               />
             </div>
           </div>
+
+          <CardHeader
+            title="Informações Acadêmicas"
+            disableTypography={true}
+            sx={{ fontFamily: 'Montserrat', fontSize: 20, paddingLeft: 0 }}
+            className="cardHeaderForm"
+          />
+          <div className="formInfosAcademicas">
+            {formacoes.map((formacao, index) => (
+              <div className="formFormacao" key={index}>
+                <TextField
+                  label="Formação"
+                  name="formacao"
+                  value={formacao.formacao}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'formacao',
+                      e.target.value,
+                      'formacao',
+                    )
+                  }
+                />
+                <TextField
+                  label="Instituição"
+                  name="instituicao"
+                  value={formacao.instituicao}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'instituicao',
+                      e.target.value,
+                      'formacao',
+                    )
+                  }
+                />
+                <TextField
+                  label="Tipo de Formação"
+                  name="tipo"
+                  placeholder="ex: Licenciatura, mestrado..."
+                  value={formacao.tipo}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'tipo',
+                      e.target.value,
+                      'formacao',
+                    )
+                  }
+                />
+                <TextField
+                  label="Ano de Conclusão"
+                  name="anoConclusao"
+                  type="number"
+                  value={formacao.anoConclusao}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'anoConclusao',
+                      e.target.value,
+                      'formacao',
+                    )
+                  }
+                />
+                <Button
+                  variant="outlined"
+                  sx={{
+                    color: '#1CB5D5',
+                    borderColor: '#1CB5D5',
+                    maxWidth: 120,
+                    height: 'maxContent',
+                  }}
+                  onClick={() => removeFormacao(index)}
+                  disabled={formacoes.length <= 1}
+                >
+                  Remover
+                </Button>
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5', width: 150 }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+              onClick={addNewFormacao}
+            >
+              Formação
+            </Button>
+          </div>
+
+          <CardHeader
+            title="Informações Profissionais"
+            disableTypography={true}
+            sx={{ fontFamily: 'Montserrat', fontSize: 20, paddingLeft: 0 }}
+            className="cardHeaderForm"
+          />
+          <div className="formInfosProfissionais">
+            {profissoes.map((profissao, index) => (
+              <div className="formProfissao" key={index}>
+                <TextField
+                  label="Profissão"
+                  name="profissao"
+                  value={profissao.profissao}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'profissao',
+                      e.target.value,
+                      'profissao',
+                    )
+                  }
+                />
+                <TextField
+                  label="Área de Atuação"
+                  name="area"
+                  value={profissao.area}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'area',
+                      e.target.value,
+                      'profissao',
+                    )
+                  }
+                />
+                <Button
+                  variant="outlined"
+                  sx={{
+                    color: '#1CB5D5',
+                    borderColor: '#1CB5D5',
+                    maxWidth: 120,
+                    height: 'maxContent',
+                  }}
+                  onClick={() => removeProfissao(index)}
+                  disabled={profissoes.length <= 1}
+                >
+                  Remover
+                </Button>
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5', width: 150 }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+              onClick={addNewProfissao}
+            >
+              Profissão
+            </Button>
+            <Divider />
+            {cats.map((cat, index) => (
+              <div className="formCat" key={index}>
+                <TextField
+                  label="Descrição do CAT"
+                  name="descricao"
+                  value={cat.descricao}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'descricao',
+                      e.target.value,
+                      'cat',
+                    )
+                  }
+                />
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  sx={{
+                    color: '#1CB5D5',
+                    borderColor: '#1CB5D5',
+                    maxWidth: 120,
+                    height: 'maxContent',
+                  }}
+                  onClick={() => removeCat(index)}
+                  disabled={cats.length <= 1}
+                >
+                  Remover
+                </Button>
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5', width: 150 }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+              onClick={addNewCat}
+            >
+              CAT
+            </Button>
+            <Divider />
+            {projetos.map((projeto, index) => (
+              <div className="formProjeto" key={index}>
+                <TextField
+                  label="Nome do Projeto"
+                  name="nome"
+                  value={projeto.nome}
+                  onChange={(e) =>
+                    handleInfosInputChange(
+                      index,
+                      'nome',
+                      e.target.value,
+                      'projeto',
+                    )
+                  }
+                />
+                <Button
+                  variant="outlined"
+                  sx={{
+                    color: '#1CB5D5',
+                    borderColor: '#1CB5D5',
+                    maxWidth: 120,
+                    height: 'maxContent',
+                  }}
+                  onClick={() => removeProjeto(index)}
+                  disabled={projetos.length <= 1}
+                >
+                  Remover
+                </Button>
+              </div>
+            ))}
+            <Button
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5', width: 150 }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+              onClick={addNewProjeto}
+            >
+              Projeto
+            </Button>
+          </div>
         </form>
+        <div className="formFooter">
+          <Button
+            size="medium"
+            variant="contained"
+            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+            onClick={onSubmit}
+          >
+            Salvar
+          </Button>
+          <Link to={'/'}>
+            <Button
+              id="btnCancel"
+              size="medium"
+              variant="outlined"
+              sx={{ color: '#C23229', borderColor: '#C23229' }}
+            >
+              Cancelar
+            </Button>
+          </Link>
+        </div>
       </Box>
     </Container>
   );

@@ -17,7 +17,6 @@
 
 #searchButton{
     background: #1CB5D5;
-    margin-left: 4px;
     min-width: 0px;
     padding: 4px;
 }
@@ -25,6 +24,7 @@
 .search{
     display: flex;
     align-items: center;
+    gap: 4px;
 }
 
 #menuButton{

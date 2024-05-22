@@ -6,6 +6,7 @@ import { Container } from '@mui/material';
 import Visualizar from './components/Visualizar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppProvider from './providers/appProvider';
+import Cadastrar from './components/Cadastrar';
 
 const App = () => {
   return (
@@ -18,7 +19,8 @@ const App = () => {
           <div className="contentContainer">
             <Routes>
               <Route path="/" element={<Content />} />
-              <Route path="visualizar" element={<Visualizar />} />
+              <Route path="visualizar/:id/" element={<Visualizar />} />
+              <Route path="cadastrar" element={<Cadastrar />} />
             </Routes>
           </div>
           <div className="footerContainer">

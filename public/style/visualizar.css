@@ -20,7 +20,7 @@
 }
 
 .cardTitles{
-    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -39,7 +39,11 @@
 
 .cardContent p{
     font-weight: bold;
-    margin-bottom: 16px;
+    margin-top: 16px;
+}
+
+.cardContent:first-child{
+    margin-top: -16px;
 }
 
 .cardContent span {

@@ -3,6 +3,7 @@ import {
   CardHeader,
   Divider,
   Menu,
+  Select,
   MenuItem,
   Table,
   TableBody,
@@ -25,20 +26,22 @@ import React, { useEffect } from 'react';
 import { useConsultores } from '../context/consultores';
 
 const Content = () => {
-  const { data, getConsultores, getConsultorBuscar } = useConsultores();
+  const { data, getConsultores, getConsultorBuscar, getConsultor } =
+    useConsultores();
 
   //Table button menu
   const [buttonMenu, setButtonMenu] = React.useState(null);
   const open = Boolean(buttonMenu);
 
   const [selectedRow, setSelectedRow] = React.useState(null);
+  const [selectedId, setSelectedId] = React.useState(null);
 
   const { setProfileData } = React.useContext(ProfileContext);
 
-  // const onVisualizar = () => {
-  //   setProfileData(selectedRow);
-  //   handleClose();
-  // };
+  const onVisualizar = () => {
+    setProfileData(selectedRow);
+    handleClose();
+  };
 
   const handleClose = () => {
     setButtonMenu(null);
@@ -62,17 +65,22 @@ const Content = () => {
 
   //Dados backend
   useEffect(() => {
-    // getConsultorBuscar({ nome: 'Isabel' });
     getConsultores();
   }, []);
 
   //Buscar consultores
-  const [buscaValue, setBuscaValue] = React.useState(null);
+  const [buscaValue, setBuscaValue] = React.useState('');
+  const [buscaKey, setBuscaKey] = React.useState('nome');
 
   const buscarConsultor = () => {
-    getConsultorBuscar({ nome: `${buscaValue}` });
-    console.log(buscaValue);
+    getConsultorBuscar({ [buscaKey]: buscaValue });
   };
+
+  const handleBtnClick = () => {
+    setBuscaValue('');
+    getConsultores();
+  };
+
   return (
     <Container>
       <TableContainer className="tableContainer" sx={{ boxShadow: 2 }}>
@@ -87,12 +95,27 @@ const Content = () => {
             <TextField
               id="outlined-input"
               label="Pesquisar"
-              placeholder=""
               size="small"
               aria-label="Pesquisar"
               value={buscaValue}
               onChange={(event) => setBuscaValue(event.target.value)}
             />
+            <Select
+              id="filtro"
+              name="filtro"
+              size="small"
+              value={buscaKey}
+              onChange={(event) => {
+                setBuscaKey(event.target.value);
+              }}
+            >
+              <MenuItem value="nome">Nome</MenuItem>
+              <MenuItem value="cidade">Cidade</MenuItem>
+              <MenuItem value="estado">Estado</MenuItem>
+              <MenuItem value="formacao">Formação</MenuItem>
+              <MenuItem value="anoDeFormacao">Ano de Formação</MenuItem>
+              <MenuItem value="idade">Idade</MenuItem>
+            </Select>
             <Button
               id="searchButton"
               aria-label="Pesquisar"
@@ -102,15 +125,29 @@ const Content = () => {
             >
               <img src="/img/searchIcon.svg" alt="" />
             </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              sx={{
+                color: '#1CB5D5',
+                borderColor: '#1CB5D5',
+                display: buscaValue !== '' ? 'block' : 'none',
+              }}
+              onClick={handleBtnClick}
+            >
+              Limpar Busca
+            </Button>
           </div>
-          <Button
-            size="medium"
-            variant="contained"
-            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
-            startIcon={<img src="/img/plusIcon.svg" />}
-          >
-            Novo Consultor
-          </Button>
+          <Link to={`cadastrar`}>
+            <Button
+              size="medium"
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+              startIcon={<img src="/img/plusIcon.svg" />}
+            >
+              Novo Consultor
+            </Button>
+          </Link>
         </Toolbar>
         <Table>
           <TableHead>
@@ -162,6 +199,7 @@ const Content = () => {
                       aria-expanded={open ? 'true' : undefined}
                       onClick={(event) => {
                         setButtonMenu(event.currentTarget);
+                        setSelectedId(row.id);
                         setSelectedRow(row);
                       }}
                     >
@@ -177,8 +215,8 @@ const Content = () => {
                         'aria-labelledby': 'menuButton',
                       }}
                     >
-                      <Link to={`visualizar`}>
-                        <MenuItem onClick={handleClose}>Visualizar</MenuItem>
+                      <Link to={`visualizar/${selectedId}`}>
+                        <MenuItem onClick={onVisualizar}>Visualizar</MenuItem>
                       </Link>
                       <MenuItem onClick={handleClose}>Editar</MenuItem>
                       <MenuItem onClick={handleClose}>Excluir</MenuItem>

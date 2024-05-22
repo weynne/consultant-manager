@@ -7,7 +7,7 @@ import {
   Box,
   Container,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProfileContext from '../util/Profile';
 import { Link } from 'react-router-dom';
 
@@ -42,10 +42,10 @@ const Visualizar = () => {
                   Nome:<span>{profileData.nome}</span>
                 </p>
                 <p>
-                  Nascimento:<span>{profileData.nascimento}</span>
+                  Nascimento:<span>{profileData.dataNascimento}</span>
                 </p>
                 <p>
-                  Idade:<span>{profileData.idade}</span>
+                  Idade:<span>{profileData.idade} anos</span>
                 </p>
                 <p>
                   CPF:<span>{profileData.cpf}</span>
@@ -60,10 +60,10 @@ const Visualizar = () => {
                   Telefone:<span>{profileData.telefone}</span>
                 </p>
                 <p>
-                  Estado:<span>{profileData.estado}</span>
+                  Estado:<span>{profileData.cidade?.estado?.uf}</span>
                 </p>
                 <p>
-                  Cidade:<span>{profileData.cidade}</span>
+                  Cidade:<span>{profileData.cidade?.nome}</span>
                 </p>
               </div>
             </CardContent>
@@ -80,19 +80,33 @@ const Visualizar = () => {
             <Divider />
             <CardContent>
               <div className="cardContent">
-                <p>
-                  Profissão:<span>{profileData.profissao}</span>
-                </p>
-                <p>
-                  Atuação:<span>{profileData.atuacao}</span>
-                </p>
-                <p>
-                  CAT:<span>{profileData.cat}</span>
-                </p>
-                <p>
-                  Observação:
-                  <span>{profileData.observacao}</span>
-                </p>
+                {profileData.profissoes?.map((profissao, index) => (
+                  <div key={index}>
+                    <p>
+                      Profissão: <span>{profissao.nome}</span>
+                    </p>
+                    <p>
+                      Area: <span>{profissao.area}</span>
+                    </p>
+                    {profileData.profissoes.length > 1 && (
+                      <Divider sx={{ marginTop: 2 }} />
+                    )}
+                  </div>
+                ))}
+                {profileData.cat?.map((catDesc, index) => (
+                  <div key={index}>
+                    <p>
+                      CAT: <span>{catDesc.descricao}</span>
+                    </p>
+                  </div>
+                ))}
+                {profileData.projetos?.map((projeto, index) => (
+                  <div key={index}>
+                    <p>
+                      Projeto: <span>{projeto.nome}</span>
+                    </p>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -108,21 +122,30 @@ const Visualizar = () => {
             <Divider />
             <CardContent>
               <div className="cardContent">
-                <p>
-                  Formação:<span>{profileData.formacao}</span>
-                </p>
-                <p>
-                  Tipo de Fomação:<span>{profileData.tipoDeFormacao}</span>
-                </p>
-                <p>
-                  Ano de Fomação:<span>{profileData.anoDeFormacao}</span>
-                </p>
-                <p>
-                  Tempo de formado:<span>{profileData.tempoDeFormado}</span>
-                </p>
-                <p>
-                  Instituição:<span>{profileData.instituicao}</span>
-                </p>
+                {profileData.formacoes?.map((formacao, index) => (
+                  <div key={index}>
+                    <p>
+                      Formação: <span>{formacao.nome}</span>
+                    </p>
+                    <p>
+                      Tipo de Formação: <span>{formacao.tipo}</span>
+                    </p>
+                    <p>
+                      Ano de Formação: <span>{formacao.anoConclusao}</span>
+                    </p>
+                    <p>
+                      Tempo de Formação:{' '}
+                      <span>{formacao.tempoFormacao} anos</span>
+                    </p>
+                    <p>
+                      Instituição: <span>{formacao.instituicao}</span>
+                    </p>
+                    {profileData.formacoes.length > 1 &&
+                      index !== profileData.formacoes.length - 1 && (
+                        <Divider sx={{ marginTop: 2 }} />
+                      )}
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

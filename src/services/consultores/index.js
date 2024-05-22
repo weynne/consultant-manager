@@ -9,7 +9,7 @@ export const getConsultoresAPI = async () => {
 };
 
 export const getConsultorAPI = async (id) => {
-  const response = await api.get(BASE_URL + '/' + id);
+  const response = await api.get(BASE_URL + `/${id}`);
 
   return response.data;
 };
