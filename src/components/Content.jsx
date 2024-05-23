@@ -231,24 +231,26 @@ const Content = () => {
             )}
           </TableBody>
           <TableFooter>
-            <TablePagination
-              count={data.length}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              rowsPerPageOptions={[10, 20, 40]}
-              labelRowsPerPage="Linhas por página"
-              labelDisplayedRows={function defaultLabelDisplayedRows({
-                from,
-                to,
-                count,
-              }) {
-                return `${from}–${to} de ${
-                  count !== -1 ? count : `more than ${to}`
-                }`;
-              }}
-            />
+            <TableRow>
+              <TablePagination
+                count={data.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[10, 20, 40]}
+                labelRowsPerPage="Linhas por página"
+                labelDisplayedRows={function defaultLabelDisplayedRows({
+                  from,
+                  to,
+                  count,
+                }) {
+                  return `${from}–${to} de ${
+                    count !== -1 ? count : `more than ${to}`
+                  }`;
+                }}
+              />
+            </TableRow>
           </TableFooter>
         </Table>
       </TableContainer>
