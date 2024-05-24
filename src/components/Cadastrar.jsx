@@ -17,6 +17,7 @@ import { postFormacoesAPI } from '../services/formacoes';
 import { postProfissaoAPI } from '../services/profissoes';
 import { postProjetosAPI } from '../services/projetos';
 import { postCatAPI } from '../services/cat';
+import { postEstadosAPI } from '../services/estados';
 
 const Cadastrar = () => {
   const [formData, setFormData] = useState({
@@ -170,84 +171,132 @@ const Cadastrar = () => {
 
     const idade = calcularIdade(formData.dataNascimento);
 
-    const dadosPessoais = {
-      id: 0,
-      cpf: formData.cpf,
-      cnpj: formData.cnpj,
-      nome: formData.nome,
-      telefone: formData.telefone,
-      email: formData.email,
-      dataNascimento: formData.dataNascimento,
-      idade: idade,
-    };
-
-    const dadosLocalizacao = {
-      id: 0,
-      cidade: {
-        nome: formData.cidade,
-        estado: {
-          uf: formData.estado,
-        },
-      },
-    };
-
-    const dadosAcademicos = {
-      formacoes: formacoes.map((formacao) => ({
-        id: 0,
-        nome: formacao.formacao,
-        instituicao: formacao.instituicao,
-        tipo: formacao.tipo,
-        anoConclusao: parseInt(formacao.anoConclusao, 10),
-        tempoFormacao: calcularFormacao(formacao.anoConclusao),
-      })),
-    };
-
-    const dadosProfissao = {
-      profissoes: profissoes.map((profissao) => ({
-        id: 0,
-        nome: profissao.area,
-        area: profissao.area,
-      })),
-    };
-
-    const dadosProjeto = {
-      projetos: projetos.map((projeto) => ({
-        id: 0,
-        nome: projeto.nome,
-      })),
-    };
-
-    const dadosCat = {
-      cat: cats.map((cat) => ({
-        id: 0,
-        descricao: cat.descricao,
-      })),
-    };
+    // const dadosPessoais = {
+    //   id: 0,
+    //   cpf: formData.cpf,
+    //   cnpj: formData.cnpj,
+    //   nome: formData.nome,
+    //   telefone: formData.telefone,
+    //   email: formData.email,
+    //   dataNascimento: formData.dataNascimento,
+    //   idade: idade,
+    // };
 
     try {
-      if (handleSubmit(dadosPessoais)) {
-        await postConsultor(dadosPessoais);
+      const dadosEstado = {
+        uf: formData.estado,
+      };
+      const estadoDados = await postEstadosAPI(dadosEstado);
 
-        await postCidadeAPI(dadosLocalizacao);
+      const dadosCidade = {
+        nome: formData.cidade,
+        estado: {
+          id: estadoDados.id,
+        },
+      };
+      const cidadeDados = await postCidadeAPI(dadosCidade);
 
-        await postFormacoesAPI(dadosAcademicos);
+      const postFormacoesObjetos = async (formacoes) => {
+        const formacoesIds = [];
+        for (const formacao of formacoes) {
+          const dadosAcademicos = {
+            nome: formacao.formacao,
+            instituicao: formacao.instituicao,
+            tipo: formacao.tipo,
+            anoConclusao: parseInt(formacao.anoConclusao, 10),
+          };
+          try {
+            const response = await postFormacoesAPI(dadosAcademicos);
+            formacoesIds.push(response.id);
+          } catch (error) {
+            console.error('Erro ao enviar formação:', error);
+          }
+        }
+        return formacoesIds;
+      };
 
-        await postProfissaoAPI(dadosProfissao);
+      const postProfissoesObjetos = async (profissoes) => {
+        const profissoesIds = [];
+        for (const profissao of profissoes) {
+          const dadosProfissao = {
+            nome: profissao.profissao,
+            area: profissao.area,
+          };
+          try {
+            const response = await postProfissaoAPI(dadosProfissao);
+            profissoesIds.push(response.id);
+          } catch (error) {
+            console.error('Erro ao enviar profissão:', error);
+          }
+        }
+        return profissoesIds;
+      };
 
-        await postProjetosAPI(dadosProjeto);
+      const postProjetosObjetos = async (projetos) => {
+        const projetosIds = [];
+        for (const projeto of projetos) {
+          const dadosProjeto = {
+            nome: projeto.nome,
+          };
+          try {
+            const response = await postProjetosAPI(dadosProjeto);
+            projetosIds.push(response.id);
+          } catch (error) {
+            console.error('Erro ao enviar projeto:', error);
+          }
+        }
+        return projetosIds;
+      };
 
-        await postCatAPI(dadosCat);
+      const postCatsObjetos = async (cats) => {
+        const catsIds = [];
+        for (const cat of cats) {
+          const dadosCat = {
+            descricao: cat.descricao,
+          };
+          try {
+            const response = await postCatAPI(dadosCat);
+            catsIds.push(response.id);
+            console.log('CAT enviado com sucesso:', response);
+          } catch (error) {
+            console.error('Erro ao enviar CAT:', error);
+          }
+        }
+        return catsIds;
+      };
 
-        console.log('Todos os dados foram enviados com sucesso!');
-        setCombinedData({
-          ...dadosPessoais,
-          ...dadosLocalizacao,
-          ...dadosAcademicosProfissionais,
-        });
-      }
+      const formacoesIds = await postFormacoesObjetos(formacoes);
+      const profissoesIds = await postProfissoesObjetos(profissoes);
+      const projetosIds = await postProjetosObjetos(projetos);
+      const catsIds = await postCatsObjetos(cats);
+
+      const dadosConsultor = {
+        cpf: formData.cpf,
+        cnpj: formData.cnpj,
+        nome: formData.nome,
+        telefone: formData.telefone,
+        email: formData.email,
+        dataNascimento: formData.dataNascimento,
+        idade: idade,
+        cidade: { id: cidadeDados.id },
+        formacoes: { id: formacoesIds.map((id) => id) },
+        profissoes: { id: profissoesIds.map((id) => id) },
+        projetos: { id: projetosIds.map((id) => id) },
+        cat: { id: catsIds.map((id) => id) },
+      };
+
+      const ConsultorDados = await postConsultor(dadosConsultor);
+
+      console.log('Todos os dados foram enviados com sucesso!');
     } catch (error) {
       console.error('Erro ao enviar os dados:', error);
     }
+
+    // setCombinedData({
+    //   ...dadosPessoais,
+    //   ...dadosLocalizacao,
+    //   ...dadosAcademicosProfissionais,
+    // });
   };
 
   // const onSubmit = (event) => {
