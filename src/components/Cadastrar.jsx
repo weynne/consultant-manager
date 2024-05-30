@@ -279,10 +279,10 @@ const Cadastrar = () => {
         dataNascimento: formData.dataNascimento,
         idade: idade,
         cidade: { id: cidadeDados.id },
-        formacoes: { id: formacoesIds.map((id) => id) },
-        profissoes: { id: profissoesIds.map((id) => id) },
-        projetos: { id: projetosIds.map((id) => id) },
-        cat: { id: catsIds.map((id) => id) },
+        formacoes: formacoesIds.map((id) => ({ id })),
+        profissoes: profissoesIds.map((id) => ({ id })),
+        projetos: projetosIds.map((id) => ({ id })),
+        cat: catsIds.map((id) => ({ id })),
       };
 
       const ConsultorDados = await postConsultor(dadosConsultor);

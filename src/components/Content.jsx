@@ -218,7 +218,9 @@ const Content = () => {
                       <Link to={`visualizar/${selectedId}`}>
                         <MenuItem onClick={onVisualizar}>Visualizar</MenuItem>
                       </Link>
-                      <MenuItem onClick={handleClose}>Editar</MenuItem>
+                      <Link to={`editar/${selectedId}`}>
+                        <MenuItem onClick={handleClose}>Editar</MenuItem>
+                      </Link>
                       <MenuItem onClick={handleClose}>Excluir</MenuItem>
                     </Menu>
                   </TableCell>

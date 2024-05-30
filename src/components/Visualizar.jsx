@@ -161,14 +161,16 @@ const Visualizar = () => {
               Página Anterior
             </Button>
           </Link>
-          <Button
-            size="medium"
-            variant="contained"
-            sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
-            startIcon={<img src="/img/pensilIcon.svg" />}
-          >
-            Editar
-          </Button>
+          <Link to={`/editar/${profileData.id}`}>
+            <Button
+              size="medium"
+              variant="contained"
+              sx={{ boxShadow: 2, bgcolor: '#1CB5D5' }}
+              startIcon={<img src="/img/pensilIcon.svg" />}
+            >
+              Editar
+            </Button>
+          </Link>
         </div>
       </Box>
     </Container>

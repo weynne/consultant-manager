@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import Content from './components/Content';
 import Footer from './components/Footer';
+import Editar from './components/Editar';
 import { Container } from '@mui/material';
 import Visualizar from './components/Visualizar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -21,6 +22,7 @@ const App = () => {
               <Route path="/" element={<Content />} />
               <Route path="visualizar/:id/" element={<Visualizar />} />
               <Route path="cadastrar" element={<Cadastrar />} />
+              <Route path="editar/:id/" element={<Editar />} />
             </Routes>
           </div>
           <div className="footerContainer">
