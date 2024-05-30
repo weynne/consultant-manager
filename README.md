@@ -7,5 +7,4 @@
 3. No navegador, acesse o endereço: `localhost:8080/swagger-ui` ;
 4. Todos os endpoints estarão disponíveis para teste no endereço acima.  
 
-**Java 17 | Spring Boot 3 | Maven**
-**Java Script | React**
+**Java 17 | Spring Boot 3 | Java Script | React**
