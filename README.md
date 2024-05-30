@@ -8,3 +8,4 @@
 4. Todos os endpoints estarão disponíveis para teste no endereço acima.  
 
 **Java 17 | Spring Boot 3 | Maven**
+** Java Script | React **
